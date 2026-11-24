@@ -1,0 +1,356 @@
+{
+  "date": "2026-11-23",
+  "weekday_zh": "周一",
+  "generated_at_cst": "2026-11-23 09:26:42 CST",
+  "global_trend_summary": [
+    "今日精选 5 条动态：上海交大 ICML 2026 论文 GuAE 给出 8×H800 下解决 GRPO 组内同分梯度消失的完整配方，IRA 则切中 OSWorld 视觉判分器被表面弹窗欺骗的痛点。",
+    "OOD 方向关注测试时负标签激活过滤（TANL），与静态词库筛选路线形成直接互补；SGLang v0.5.23 上线 Paged Experts。"
+  ],
+  "highlights_top3": [
+    "• [GUI-RL] 上海交大 GuAE（ICML 2026）：8×H800 改 GRPO 优势估计，陷阱集成功率 13.88%→80.21%",
+    "• [GUI-RL] Interactive Reward Agent：核验执行后底层文件与配置状态，消除 OSWorld 虚假奖励",
+    "• [OSSL/OOD] TANL：测试时剔除未激活静态负标签，降低零样本 VLM OOD 分母噪声"
+  ],
+  "special_conference_banner": null,
+  "source_health_alerts": [],
+  "llm_channel_used": "deterministic-verified",
+  "featured_items": [
+    {
+      "slug": "gui-rl-2607-25904",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-verifier",
+        "gui-online-rl"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "IRA Authors"
+      ],
+      "title_zh": "Interactive Reward Agent：结合界面变化与底层环境状态核验的 GUI 奖励智能体",
+      "title_en": "Interactive Reward Agent: GUI Task Evaluation via Environment-State Verification",
+      "one_line_pain": "针对纯视觉判分器易被表面页面跳转欺骗误给高分的问题，提出先探测再核验底层文件与配置的奖励机制",
+      "metric_badges": [
+        {
+          "text": "arXiv:2607.25904",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "OSWorld 在线 RL 判分",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "判分器与探测脚本可单机部署",
+      "authors": [
+        "Interactive Reward Agent Authors"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "url_primary": "https://arxiv.org/abs/2607.25904",
+      "url_pdf": "https://arxiv.org/pdf/2607.25904",
+      "url_arxiv_html": "https://arxiv.org/html/2607.25904",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2607.25904",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Reliable reward signals remain a core bottleneck for GUI agent reinforcement learning. Interactive Reward Agent (IRA, arXiv:2607.25904) introduces a propose-then-verify framework that inspects both visible UI changes and post-execution environment states (files and app configs) to provide dense, trustworthy rewards on OSWorld.",
+      "four_elements": {
+        "pain_point": "仅靠最终一帧截图让 VLM 打分时，智能体点开看似正确的确认框但未真正写入系统文件或保存配置也会骗过判分器，导致在线 RL 奖励投机。",
+        "mechanism": "采用 Propose-then-Verify 两步核验：先根据任务意图生成需核查的状态假设，再主动读取执行后文件系统与应用配置状态交叉确认。",
+        "experiments_summary": "在 OSWorld 桌面交互评测与 RL 训练回路中显著降低假阳性奖励误判，稳定提升长程多步任务成功率。",
+        "repro_and_reference": "对自建免人工手写规则的可验证 GUI 训练环境很有借鉴意义，可与容器状态探针直接结合。",
+        "experiment_rows": [],
+        "backbone_and_params": "多模态判分与状态探针框架",
+        "gpu_and_duration": "单机容器探针 + VLM 判分推理",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 8.7
+    },
+    {
+      "slug": "gui-rl-2605-01208",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl",
+        "gui-security"
+      ],
+      "lab_tags": [
+        "lab-sjtu"
+      ],
+      "institution_tags": [
+        "上海交大"
+      ],
+      "title_zh": "GuAE（上海交大 ICML 2026）：引导式优势估计解决同组同奖励梯度消失",
+      "title_en": "Faithful Mobile GUI Agents with Guided Advantage Estimator",
+      "one_line_pain": "针对小模型做 GRPO 时同组采样全对或全错导致优势归零及界面陷阱误操作问题，引入锚点优势正则",
+      "metric_badges": [
+        {
+          "text": "陷阱集 13.88% → 80.21%",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "8×H800 (Qwen3-VL-8B)",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "8 × NVIDIA H800 80GB 离线步级 RL",
+      "authors": [
+        "Haowen Hu",
+        "Pengzhou Cheng",
+        "Zheng Wu",
+        "Lingzhong Dong",
+        "Gongshen Liu",
+        "Zhuosheng Zhang"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "ICML 2026 Main Conference",
+      "url_primary": "https://arxiv.org/abs/2605.01208",
+      "url_pdf": "https://arxiv.org/pdf/2605.01208",
+      "url_arxiv_html": "https://arxiv.org/html/2605.01208",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2605.01208",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Accepted at ICML 2026. Conducted on 8 NVIDIA H800 GPUs (80GB) with Qwen3-VL-8B across AndroidControl and AITZ perturbation sets, Guided Advantage Estimator (GuAE) resolves zero-advantage collapse in GRPO via anchor regularization and variance-aware scaling, raising trap perturbation success rate from 13.88% to 80.21%.",
+      "four_elements": {
+        "pain_point": "在 8B 级模型上跑 GRPO 时，遇到太简单或带遮挡/篡改陷阱的界面，组内多次采样往往全拿到相同奖励，组归一化后优势全变成 0，且常出现“思考发现了异常但手还是点下去”的言行不一。",
+        "mechanism": "第一，在优势计算中加入参考锚点正则与基于方差的自适应缩放，避免组内同分时梯度消失；第二，增加思考文本与输出动作的一致性奖励。",
+        "experiments_summary": "基于 Qwen3-VL-8B 在 8×H800 (80GB) 上完成 SFT + 步级 RL，在 AndroidControl 与 AITZ 构建的陷阱扰动评测集上成功率由 13.88% 提升至 80.21%。",
+        "repro_and_reference": "上海交大张倬胜/刘功申组代表性 8 卡工作：不依赖百卡在线模拟器集群，在离线步级数据上改优势估计即可跑通。",
+        "experiment_rows": [
+          {
+            "benchmark": "AndroidControl / AITZ 陷阱扰动集",
+            "metric": "任务成功率",
+            "value": "80.21%",
+            "baseline_delta": "对比基线 13.88%",
+            "setup_note": "Qwen3-VL-8B, 8×H800 80GB",
+            "verified": true,
+            "unverified_numbers": []
+          }
+        ],
+        "backbone_and_params": "Qwen3-VL-8B",
+        "gpu_and_duration": "8 × NVIDIA H800 80GB（训练时长原文未单列）",
+        "seeds_note": "原文未单列随机种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 9.2
+    },
+    {
+      "slug": "ossl-ood-2603-25250",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "subtopics": [
+        "open-world-vocab",
+        "ossl-ood-core"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "TANL Authors"
+      ],
+      "title_zh": "TANL：面向视觉—语言模型 OOD 检测的测试时激活负标签筛选",
+      "title_en": "Activation Matters: Test-time Activated Negative Labels for OOD Detection with Vision-Language Models",
+      "one_line_pain": "针对固定大规模负词表在特定未知分布上大量失活并引入噪声分母的问题，在测试时筛选高激活负标签",
+      "metric_badges": [
+        {
+          "text": "arXiv:2603.25250",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "免训练负词表激活过滤",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "测试时免训练（Training-free）单卡可跑",
+      "authors": [
+        "TANL Authors"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.CV",
+      "url_primary": "https://arxiv.org/abs/2603.25250",
+      "url_pdf": "https://arxiv.org/pdf/2603.25250",
+      "url_arxiv_html": "https://arxiv.org/html/2603.25250",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2603.25250",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "TANL (arXiv:2603.25250) critiques static negative label selection methods like NegLabel, showing that many negative corpus labels exhibit poor activation or introduce noise on specific OOD test distributions, and isolates distribution-adaptive test-time activated negative labels.",
+      "four_elements": {
+        "pain_point": "NegLabel 从词库静态抽取上万个负标签后固定不变，但面对不同领域的未知测试集时，绝大多数负词根本不激活，反而在分数归一化分母里制造随机噪声。",
+        "mechanism": "在测试流上统计候选负标签词向量的实际响应分布，剔除死词与近似已知类的干扰词，只保留当前测试分布真正激活的负标签子集计算 OOD 分数。",
+        "experiments_summary": "在标准 CLIP 零样本 OOD 基准上无需反向传播微调，相对静态 NegLabel 稳定降低误报率。",
+        "repro_and_reference": "单卡数分钟即可复现测试时负词激活统计，与固定码本/词表选择机制形成清晰的“静态筛选 vs 测试时激活”对照视角。",
+        "experiment_rows": [],
+        "backbone_and_params": "CLIP 系列预训练编码器",
+        "gpu_and_duration": "免训练测试时自适应（单卡可跑）",
+        "seeds_note": "确定性测试流统计 / 批次顺序消融"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 8.5
+    },
+    {
+      "slug": "vlm-infra-sglang-v0-5-23",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "inference-engine"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "SGLang Team"
+      ],
+      "title_zh": "SGLang v0.5.23：新增 Paged Experts 单卡运行超大规模 MoE 与解码融合核",
+      "title_en": "sgl-project/sglang v0.5.23: Paged Experts & Megakernel Decode Acceleration",
+      "one_line_pain": "针对混合专家模型参数远超单卡显存及单并发解码延迟高的问题，引入分页专家调度与融合内核插件，给出推理引擎实测参照。",
+      "metric_badges": [
+        {
+          "text": "解码提速 44%–75%",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "Paged Experts 启用",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "支持单张消费级/工作站 GPU 分页加载 MoE",
+      "authors": [
+        "SGLang Contributors"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "GitHub Release (v0.5.23)",
+      "url_primary": "https://github.com/sgl-project/sglang/releases",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "https://github.com/sgl-project/sglang",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "Apache-2.0",
+      "corroborating_sources": [],
+      "abstract_en": "SGLang v0.5.23 introduces Paged Experts to run oversized MoE models locally on single GPUs and opt-in NVIDIA megakernel / AMD monokernel decode plugins achieving 44% to 75% single-user decode speedups alongside strict 1.0 configuration checks.",
+      "four_elements": {
+        "pain_point": "稀疏激活 MoE 模型虽然每步激活参数少，但全量专家常驻显存导致高校小卡机器根本装不下，且小批量解码受限于内核启动开销。",
+        "mechanism": "参考虚拟内存分页思想按需换入激活专家权重（Paged Experts），并提供可选的单核融合解码插件减少内核切换。",
+        "experiments_summary": "官方基准报告在单用户低延迟解码场景取得 44% 至 75% 的解码速度提升，并增强配置项严格校验。",
+        "repro_and_reference": "适合在本地有限显存机器上做 MoE 判分器或教师模型蒸馏推理。",
+        "experiment_rows": [],
+        "backbone_and_params": "主流开源 MoE 与 VLM 推理",
+        "gpu_and_duration": "单卡及多卡推理均支持",
+        "seeds_note": "系统版本发布"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.6
+    },
+    {
+      "slug": "vlm-infra-openai-jagged-frontier",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "multimodal-base"
+      ],
+      "lab_tags": [
+        "lab-openai-deepmind"
+      ],
+      "institution_tags": [
+        "OpenAI"
+      ],
+      "title_zh": "OpenAI 内部研究自动化报告：2–4 小时多步长程任务无干预完成率达 46%",
+      "title_en": "Research Acceleration: The Jagged Frontier of Autonomous Multi-Step Agents",
+      "one_line_pain": "针对长程智能体真实生产力缺乏客观耗时分层指标的问题，披露内部 2 至 4 小时级任务实测完成边界",
+      "metric_badges": [
+        {
+          "text": "2–4小时任务完成率 46%",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "内部评测统计报告",
+      "authors": [
+        "OpenAI"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "OpenAI Research Blog",
+      "url_primary": "https://openai.com/news/",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "OpenAI reports in 'Research acceleration: The jagged frontier' that internal coding and research agents completed 46% of 2-to-4-hour multi-step tasks without human intervention.",
+      "four_elements": {
+        "pain_point": "公开基准多考察几分钟内的短平快操作，外界难以判断自主智能体在数小时真实工程与科研排障任务上的真实失效率。",
+        "mechanism": "按人类专家基准耗时（2–4 小时多步骤闭环任务）切分内部研发与安全验证工作流，统计零人工干预一次通过比例与常见卡壳点。",
+        "experiments_summary": "报告披露内部代码与研究智能体在 2 至 4 小时跨度的多步任务上无人工接管完成率约为 46%，呈现出“局部超人、跨环境状态核验易断链”的锯齿边界。",
+        "repro_and_reference": "验证了环境状态可验证性（Verifiability）是决定长程智能体成败的分水岭。",
+        "experiment_rows": [],
+        "backbone_and_params": "OpenAI 内部前沿智能体管线",
+        "gpu_and_duration": "未公开",
+        "seeds_note": "内部任务集统计报告"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.1
+    }
+  ],
+  "folded_items": [
+    {
+      "slug": "fold-qwen-code-v0-27-2",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "QwenLM/qwen-code v0.27.2：终端 Agent 常规交互参数保留修复",
+      "title_en": "QwenLM/qwen-code v0.27.2 Weekly CLI Maintenance",
+      "one_line_takeaway": "命令行交互卡片状态保留与远端连接开关维护更新",
+      "url": "https://github.com/QwenLM/qwen-code/releases",
+      "published_date": "2026-11-23",
+      "venue_or_source": "GitHub Release",
+      "arxiv_id": ""
+    }
+  ]
+}

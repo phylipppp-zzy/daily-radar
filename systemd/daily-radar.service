@@ -1,0 +1,14 @@
+[Unit]
+Description=Daily Research Radar Pipeline (09:15 CST build & deploy -> 10:00 CST Feishu card)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment="TZ=Asia/Shanghai"
+Environment="PYTHONUNBUFFERED=1"
+WorkingDirectory=%h/workspace/daily-radar
+ExecStart=/usr/bin/python3 -m daily_radar run --push-git --wait-pages --wait-until 10:00:00 --send-feishu
+TimeoutStartSec=3600
+StandardOutput=journal
+StandardError=journal

@@ -1,0 +1,36 @@
+[
+  {
+    "paper": {
+      "id": "2611.04073",
+      "title": "Computer-Use Agents Gain Little Benefit from a World Model When Conditioned on Tutorials",
+      "summary": "Evaluates tutorials, MLLM judge, and world models in isolation on OSWorld-Tutorial and ScienceBoard-Tutorial.",
+      "publishedAt": "2026-11-24T03:00:00Z",
+      "authors": [{"name": "Anh Nguyen"}, {"name": "Stefan Lee"}],
+      "githubRepo": "https://github.com/oregon-state-cua/osworld-tutorial",
+      "githubStars": 142,
+      "upvotes": 68
+    }
+  },
+  {
+    "paper": {
+      "id": "2611.18715",
+      "title": "T2T Technical Report: Synthesizing GUI Agent Trajectories at Scale from Video Tutorials",
+      "summary": "Automated 4-stage pipeline converting video tutorials into executable GUI trajectories.",
+      "publishedAt": "2026-11-24T03:10:00Z",
+      "authors": [{"name": "Qingsong Xie"}, {"name": "Ritankar Das"}],
+      "githubRepo": "https://github.com/t2t-gui/tutorial-to-trajectory",
+      "githubStars": 215,
+      "upvotes": 91
+    }
+  },
+  {
+    "paper": {
+      "id": "2611.19006",
+      "title": "LoRA-Quant-KV: 4-Bit Key-Value Cache Compression for Long-Context Multimodal Chat",
+      "summary": "Explores 4-bit KV cache quantization for general VLM post-training chat assistants on 32K contexts.",
+      "publishedAt": "2026-11-24T02:20:00Z",
+      "authors": [{"name": "Kevin Lin"}],
+      "upvotes": 19
+    }
+  }
+]

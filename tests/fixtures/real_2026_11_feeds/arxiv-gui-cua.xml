@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <entry>
+    <id>http://arxiv.org/abs/2611.04073v1</id>
+    <published>2026-11-24T02:15:00Z</published>
+    <updated>2026-11-24T02:15:00Z</updated>
+    <title>Computer-Use Agents Gain Little Benefit from a World Model When Conditioned on Tutorials</title>
+    <summary>Recent work has improved computer-use agents (CUAs) by combining retrieved task-relevant tutorials and look-ahead planning using world models with MLLM judges. However, the contribution of each component—tutorials, the judge, and the world model—to overall improvement has not been evaluated in isolation. To fill this gap, we first construct OSWorld-Tutorial and ScienceBoard-Tutorial: 2 datasets for CUAs with curated multimodal tutorials, covering everyday and scientific domains. We then propose RAG-PolicyJudge (RAG-PJ), a policy-judge framework for CUAs conditioned on task-specific tutorials: the policy proposes candidate actions, and the judge selects among them. Comparing RAG-PJ with zero-shot text next-state world models and an oracle visual future across 3 evaluation settings, we find RAG-PJ gains little benefit from predicted rollouts when tutorials are present, even with 100% ground-truth visual futures. Code and benchmarks at https://github.com/oregon-state-cua/osworld-tutorial .</summary>
+    <author>
+      <name>Anh Nguyen</name>
+      <arxiv:affiliation>Oregon State University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Tianyi Xu</name>
+      <arxiv:affiliation>Oregon State University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Phat Tran</name>
+      <arxiv:affiliation>Oregon State University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Stefan Lee</name>
+      <arxiv:affiliation>Oregon State University</arxiv:affiliation>
+    </author>
+    <arxiv:primary_category term="cs.AI"/>
+    <arxiv:comment>18 pages, 2 benchmarks (OSWorld-Tutorial and ScienceBoard-Tutorial)</arxiv:comment>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/2611.18715v1</id>
+    <published>2026-11-24T01:40:00Z</published>
+    <updated>2026-11-24T01:40:00Z</updated>
+    <title>T2T Technical Report: Synthesizing GUI Agent Trajectories at Scale from Video Tutorials</title>
+    <summary>Training generalist GUI and computer-use agents requires massive interaction trajectories pairing screenshots with grounded UI actions, while manual human demonstrations are costly to scale. Public video tutorials contain rich operational workflows, yet continuous pixel streams lack discrete action boundaries and spatial coordinates. We present T2T (Tutorial-to-Trajectory), a 4-stage automated pipeline integrating active segment filtering, localized UI-change keyframe extraction, shortcut-free frame selection, and 2-stage action-space normalization across desktop, web, and mobile platforms. Fine-tuning Qwen2.5-VL-7B on T2T trajectories without target-domain human annotations yields consistent gains across OSWorld, ScreenSpot-Pro, AndroidControl, and AgentNetBench (4 benchmarks total). Project code and weights: https://github.com/t2t-gui/tutorial-to-trajectory and https://huggingface.co/t2t-gui/T2T-7B .</summary>
+    <author>
+      <name>Qingsong Xie</name>
+    </author>
+    <author>
+      <name>Yanlin Fei</name>
+    </author>
+    <author>
+      <name>Nazhou Liu</name>
+    </author>
+    <author>
+      <name>Ritankar Das</name>
+    </author>
+    <arxiv:primary_category term="cs.CV"/>
+    <arxiv:comment>Technical Report, code and 7B checkpoint released</arxiv:comment>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/2605.16883v2</id>
+    <published>2026-11-23T18:10:00Z</published>
+    <updated>2026-11-24T01:05:00Z</updated>
+    <title>SE-GA: Memory-Augmented Self-Evolution for GUI Agents</title>
+    <summary>Deploying 7B open-weight GUI agents under limited academic compute often suffers from catastrophic forgetting and low sample efficiency during multi-turn reinforcement learning. We introduce SE-GA, a memory-augmented 2-stage self-evolution framework for Qwen2.5-VL-7B. All experiments are conducted using 4 NVIDIA A800 GPUs, where Stage 2 reinforcement learning applies LoRA to reduce GPU memory footprint while maintaining an episodic skill memory across ScreenSpot, AndroidControl, and AndroidWorld (3 benchmarks). Code available at https://github.com/tju-sjtu-gui/SE-GA .</summary>
+    <author>
+      <name>Shilong Jin</name>
+      <arxiv:affiliation>Tianjin University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Lanjun Wang</name>
+      <arxiv:affiliation>Tianjin University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Zhuosheng Zhang</name>
+      <arxiv:affiliation>Shanghai Jiao Tong University</arxiv:affiliation>
+    </author>
+    <arxiv:primary_category term="cs.CL"/>
+    <arxiv:comment>Accepted by ICML 2026 (camera-ready v2 update)</arxiv:comment>
+  </entry>
+
+  <!-- Historical duplicate already published on 2026-11-22: must be filtered by 7-day sliding window! -->
+  <entry>
+    <id>http://arxiv.org/abs/2610.03818v2</id>
+    <published>2026-11-22T08:00:00Z</published>
+    <updated>2026-11-24T00:30:00Z</updated>
+    <title>Control OSWorld: An AI Control Environment for GUI Computer Use Agents</title>
+    <summary>Control OSWorld pairs 318 standard OSWorld tasks with 81 harmful side tasks to evaluate live control monitors on computer-use agents.</summary>
+    <author>
+      <name>Maria Sanchez del Rio</name>
+    </author>
+    <author>
+      <name>Mikhail Terekhov</name>
+    </author>
+    <arxiv:primary_category term="cs.AI"/>
+  </entry>
+
+  <!-- Edge / peripheral candidates that should land in the folded single-line list -->
+  <entry>
+    <id>http://arxiv.org/abs/2611.19001v1</id>
+    <published>2026-11-24T01:00:00Z</published>
+    <updated>2026-11-24T01:00:00Z</updated>
+    <title>HTML-Pruner: Lightweight DOM Token Compression for WebArena Browsing</title>
+    <summary>A heuristic DOM tree pruning utility for WebArena agents reducing HTML context length by 38% on shopping websites.</summary>
+    <author><name>Liam Carter</name></author>
+    <arxiv:primary_category term="cs.CL"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/2611.19002v1</id>
+    <published>2026-11-24T01:00:00Z</published>
+    <updated>2026-11-24T01:00:00Z</updated>
+    <title>ClickHeatmap-Mini: Visualizing Attention Drift in Desktop Agent Grounding</title>
+    <summary>Diagnostic visualization study of attention drift on ScreenSpot icons across 2 vision encoders without RL training.</summary>
+    <author><name>Elena Rostova</name></author>
+    <arxiv:primary_category term="cs.HC"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/2611.19003v1</id>
+    <published>2026-11-24T01:00:00Z</published>
+    <updated>2026-11-24T01:00:00Z</updated>
+    <title>VoiceToMobile: Bilingual Speech Intent Parsing for Mobile Agent Shortcuts</title>
+    <summary>Evaluates speech-to-intent frontends on 150 AndroidControl voice instructions.</summary>
+    <author><name>Minjun Park</name></author>
+    <arxiv:primary_category term="cs.HC"/>
+  </entry>
+</feed>

@@ -1,0 +1,268 @@
+site:
+  title: "每日科研与业界情报雷达"
+  subtitle: "GUI Agent RL · 开放世界与 OOD 检测 · 多模态与 RL 工程底座"
+  public_base_url: "https://phylipppp-zzy.github.io/daily-radar"
+  github_repo: "phylipppp-zzy/daily-radar"
+  timezone: "Asia/Shanghai"
+  push_time_cst: "10:00:00"
+  pages_ready_deadline_cst: "09:58:00"
+  hot_detail_years: 3
+
+budgets:
+  featured_min: 5
+  featured_max: 10
+  folded_min: 10
+  folded_max: 20
+  p1_relative_top_fraction: 0.10
+  dedup_window_days: 7
+  feedback_window_days: 60
+  pain_point_min_chars: 45
+  pain_point_max_chars: 60
+
+sections:
+  - id: "papers"
+    title: "核心方向论文"
+    short_label: "核心论文"
+    description: "聚焦 GUI 智能体强化学习、开放世界视觉/OSSL/OOD 检测及高相关多模态底座论文"
+  - id: "opensource"
+    title: "开源权重与工程框架"
+    short_label: "开源与框架"
+    description: "追踪多模态基座权重、RL 训练框架与推理评测引擎的关键版本演进"
+  - id: "industry"
+    title: "业界官方博客与会议动态"
+    short_label: "业界与会议"
+    description: "覆盖头部实验室一手技术报告、精选个人通讯与顶会放榜专项追踪"
+
+tracks:
+  gui-rl:
+    tier: "P0"
+    display_label: "GUI-RL"
+    title: "GUI Agent 强化学习与评测安全"
+    zotero_tag: "topic:gui-rl"
+    keywords:
+      - "gui agent"
+      - "computer use"
+      - "computer-use"
+      - "osworld"
+      - "androidworld"
+      - "androidcontrol"
+      - "webarena"
+      - "visualwebarena"
+      - "windowsagentarena"
+      - "screenspot"
+      - "ui-tars"
+      - "opencua"
+      - "gui grounding"
+      - "mobile agent"
+      - "desktop agent"
+      - "trajectory reward"
+      - "visual prompt injection"
+    subtopics:
+      gui-online-rl:
+        label: "GUI 在线/离线 RL"
+        keywords: ["grpo", "ppo", "advantage", "online rl", "rollout", "credit assignment", "curriculum"]
+      gui-verifier:
+        label: "轨迹判分与过程奖励"
+        keywords: ["verifier", "reward model", "judge", "evaluator", "process reward", "state verification"]
+      gui-env:
+        label: "可验证环境与轨迹合成"
+        keywords: ["environment synthesis", "trajectory synthesis", "tutorial", "sandbox", "benchmark", "simulator"]
+      gui-security:
+        label: "GUI 攻防与控制安全"
+        keywords: ["prompt injection", "hijack", "redteam", "ai control", "control monitor", "privacy", "deceptive", "popup"]
+
+  ossl-ood:
+    tier: "P0"
+    display_label: "OSSL/OOD"
+    title: "开放世界词表、半监督与 OOD 检测"
+    zotero_tag: "topic:ossl-ood"
+    keywords:
+      - "open-set semi-supervised"
+      - "out-of-distribution detection"
+      - "ood detection"
+      - "negative label"
+      - "neglabel"
+      - "iomatch"
+      - "scomatch"
+      - "openmatch"
+      - "clipn"
+      - "generalized category discovery"
+      - "open-world semi-supervised"
+      - "open-vocabulary ood"
+      - "codebook"
+      - "zero-shot ood"
+      - "unknown detection"
+    subtopics:
+      open-world-vocab:
+        label: "开放词表与码本对齐"
+        keywords: ["negative label", "lexicon", "wordnet", "codebook", "vocabulary", "prompt", "clipn", "neglabel"]
+      ossl-ood-core:
+        label: "开放集半监督与未知检测"
+        keywords: ["open-set semi-supervised", "ossl", "iomatch", "scomatch", "openmatch", "outlier", "fpr95", "auroc"]
+      gcd-clustering:
+        label: "广义类别发现与聚类"
+        keywords: ["generalized category discovery", "gcd", "novel class discovery", "clustering"]
+
+  vlm-infra:
+    tier: "P1"
+    display_label: "VLM/RL底座"
+    title: "多模态后训练与 RL 基础设施"
+    zotero_tag: "topic:vlm-infra"
+    keywords:
+      - "verl"
+      - "openrlhf"
+      - "vllm"
+      - "sglang"
+      - "trl"
+      - "qwen-vl"
+      - "qwen3-vl"
+      - "qwen4"
+      - "deepseek"
+      - "molmo"
+      - "multimodal rl"
+      - "post-training"
+      - "world model"
+      - "kv cache"
+      - "async rl"
+    subtopics:
+      rl-framework:
+        label: "RL 训练与并发调度框架"
+        keywords: ["verl", "openrlhf", "trl", "async", "ppo", "grpo", "rollout"]
+      inference-engine:
+        label: "推理引擎与系统优化"
+        keywords: ["vllm", "sglang", "kv cache", "cuda", "fp8", "megakernel"]
+      multimodal-base:
+        label: "多模态基座与业界前沿"
+        keywords: ["qwen", "claude", "anthropic", "openai", "deepmind", "genie", "molmo", "dino"]
+
+tracked_labs:
+  # GUI Agent RL benchmark university labs
+  - id: "lab-sjtu"
+    label: "上海交大"
+    track: "gui-rl"
+    note: "张倬胜/刘功申组、GAIR 刘鹏飞组、牛超越/吴帆组（4–8卡高校标杆：GuAE / SE-GA / CES / LaSM / GUITAR / CORE）"
+    aliases: ["shanghai jiao tong", "sjtu", "zhuosheng zhang", "gongshen liu", "pengfei liu"]
+  - id: "lab-hku-xlang"
+    label: "港大 XLANG"
+    track: "gui-rl"
+    note: "余涛组（OSWorld / OSWorld-Verified / OpenCUA / OS-Omni 标准制定团队）"
+    aliases: ["xlang", "university of hong kong", "tao yu", "hku"]
+  - id: "lab-osu-nlp"
+    label: "OSU NLP"
+    track: "gui-rl"
+    note: "苏煜/孙欢组（SeeClick / UGround / RedTeamCUA / ACuRL）"
+    aliases: ["ohio state university", "osu nlp", "yu su", "huan sun"]
+  - id: "lab-cmu"
+    label: "CMU"
+    track: "gui-rl"
+    note: "LTI 相关团队（WebArena / VisualWebArena / Gym-Anything / iOSWorld）"
+    aliases: ["carnegie mellon", "cmu"]
+  - id: "lab-berkeley"
+    label: "UC Berkeley"
+    track: "gui-rl"
+    note: "DigiRL / Agents' Last Exam / ACuRL 团队"
+    aliases: ["uc berkeley", "university of california, berkeley"]
+  - id: "lab-thu-zai"
+    label: "清华 & 智谱"
+    track: "gui-rl"
+    note: "ComputerRL / MobileRL / VeriGen / AgentRL 并发调度"
+    aliases: ["tsinghua", "zhipu", "z.ai", "zai-org"]
+  - id: "lab-ruc"
+    label: "人大高瓴"
+    track: "gui-rl"
+    note: "徐君团队（GUI-G1 / SCOPE / AnchorGUI / CoME 小模型 RL 配方拆解）"
+    aliases: ["renmin university", "gaoling school", "jun xu"]
+  - id: "lab-nus"
+    label: "NUS Show Lab"
+    track: "gui-rl"
+    note: "ShowUI / macOSWorld / VPI-Bench / Demo2Tutorial"
+    aliases: ["national university of singapore", "show lab", "bryan hooi"]
+  - id: "lab-hitsz-zju"
+    label: "哈工大深圳 / 浙大"
+    track: "gui-rl"
+    note: "URST 小模型判分器、GUITAR、Android Coach、GUI-G2"
+    aliases: ["harbin institute of technology, shenzhen", "hit-sz", "zhejiang university", "reler"]
+  - id: "lab-oregon-state"
+    label: "Oregon State"
+    track: "gui-rl"
+    note: "Stefan Lee 组（OSWorld-Tutorial / RAG-PJ 世界模型与教程归因）"
+    aliases: ["oregon state university", "stefan lee"]
+
+  # Dual-track & OSSL / VLM OOD core university labs
+  - id: "lab-hkbu-tmlr"
+    label: "港浸会 TMLR"
+    track: "ossl-ood"
+    note: "韩波组（双方向交叉必盯：NegLabel VLM OOD + AgentHijack GUI 安全）"
+    aliases: ["hong kong baptist university", "hkbu", "bo han", "tmlr-group"]
+  - id: "lab-nju-lamda"
+    label: "南大 LAMDA/IIL"
+    track: "ossl-ood"
+    note: "周志华/李宇峰/郭兰哲 & 高阳/史颖欢组（DS3L / IOMatch 开放集半监督基线源头）"
+    aliases: ["nanjing university", "lamda", "yu-feng li", "lanzhe guo", "yinghuan shi"]
+  - id: "lab-uw-madison"
+    label: "UW-Madison"
+    track: "ossl-ood"
+    note: "Sharon Yixuan Li 组（MCM 与 VLM 零样本 OOD 检测领军团队）"
+    aliases: ["university of wisconsin-madison", "uw-madison", "yixuan li", "sharon li"]
+  - id: "lab-scu"
+    label: "四川大学"
+    track: "ossl-ood"
+    note: "彭玺组（TAC 外部词表引导开放世界聚类）"
+    aliases: ["sichuan university", "xi peng"]
+  - id: "lab-hkust"
+    label: "港科大"
+    track: "ossl-ood"
+    note: "李晓萌组（CLIPN 可学习否定提示词 OOD 检测）"
+    aliases: ["hong kong university of science and technology", "hkust", "xiaomeng li"]
+  - id: "lab-oxford-vgg"
+    label: "Oxford VGG"
+    track: "ossl-ood"
+    note: "Vedaldi / Zisserman & 港大韩凯组（GCD 广义类别发现开创团队）"
+    aliases: ["visual geometry group", "university of oxford", "kai han", "andrea vedaldi"]
+  - id: "lab-mpi-utokyo-bu"
+    label: "MPI-INF / 东大 / BU"
+    track: "ossl-ood"
+    note: "Schiele 组 SSB、东京大学 SCOMatch、波士顿大学 Saenko/Saito 组 OpenMatch"
+    aliases: ["max planck institute for informatics", "mpi-inf", "university of tokyo", "boston university", "kate saenko"]
+  - id: "lab-cn-clip-ossl"
+    label: "中山 / 北交 / 山西大学"
+    track: "ossl-ood"
+    note: "近两年 CVPR 视觉—语言提示词 OSSL 活跃同行组"
+    aliases: ["sun yat-sen university", "beijing jiaotong university", "shanxi university", "guanbin li"]
+
+  # Industry & open-source flagship labs
+  - id: "lab-anthropic"
+    label: "Anthropic"
+    track: "gui-rl"
+    note: "Claude Computer Use、工具动作空间与提示注入防御"
+    aliases: ["anthropic"]
+  - id: "lab-qwen"
+    label: "阿里通义 Qwen"
+    track: "vlm-infra"
+    note: "Qwen-VL / Qwen4 / GUI-Owl / MAI-UI / MobileWorld / Ledger"
+    aliases: ["qwen", "alibaba", "tongyi"]
+  - id: "lab-seed"
+    label: "ByteDance Seed"
+    track: "vlm-infra"
+    note: "UI-TARS 在线 RL 与 verl 多模态训练框架"
+    aliases: ["bytedance", "seed", "verl-project"]
+  - id: "lab-inclusionai"
+    label: "蚂蚁 inclusionAI"
+    track: "gui-rl"
+    note: "UI-Venus 与 VenusBench-Mobile (ICML 2026 Oral)"
+    aliases: ["inclusionai", "ant group"]
+  - id: "lab-msra"
+    label: "Microsoft Research"
+    track: "gui-rl"
+    note: "UFO / WAA / GUI-Actor / OpenWebRL / CUA Verifiers"
+    aliases: ["microsoft research", "msra", "microsoft"]
+  - id: "lab-openai-deepmind"
+    label: "OpenAI / DeepMind"
+    track: "vlm-infra"
+    note: "Operator / CUA / Gemini Computer Use / Genie 4 / AndroidWorld"
+    aliases: ["openai", "google deepmind", "deepmind"]
+  - id: "lab-ai2-fair-deepseek"
+    label: "AllenAI / FAIR / DeepSeek"
+    track: "vlm-infra"
+    note: "MolmoWeb 全开源网页智能体、DINO/SAM 表征底座与 DeepSeek 后训练配方"
+    aliases: ["allen institute for ai", "allenai", "meta fair", "deepseek"]

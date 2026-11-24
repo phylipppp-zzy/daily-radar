@@ -1,0 +1,645 @@
+{
+  "date": "2026-11-24",
+  "weekday_zh": "周二",
+  "generated_at_cst": "2026-11-24 18:16:52 CST",
+  "global_trend_summary": [
+    "今日共从增量候选池中精选 7 条高信噪比动态（GUI-RL 论文 3 篇、OSSL/OOD 论文 1 篇、开源与业界前沿 3 条），另折叠泛相关速览 13 条。",
+    "核心看点聚焦：[GUI-RL] T2T 技术报告：从海量无标注软件教学视频自动合成大规模可执行…；[OSSL/OOD] OODConceptBench（港浸会韩波组）…。",
+    "近期顶会关键节点提醒：AAAI 2027（6 天后 2026-11-30）、NeurIPS 2026（12 天后 2026-12-06）、ICLR 2027（22 天后 2026-12-16）。"
+  ],
+  "highlights_top3": [
+    "• [GUI-RL] T2T 技术报告：从海量无标注软件教学视频自动合成大规模可执行 GUI 轨迹（4 阶段自动合成管线）",
+    "• [OSSL/OOD] 港浸会 TMLR：OODConceptBench（港浸会韩波组）：零样本视觉—语言 OOD 检测的词义碰撞审计与词表校准（平均 FPR95 降低 4.6%）",
+    "• [VLM/RL底座] ByteDance Seed：verl 主线全面切换 V1 Trainer 并发布多模态训练扩展 VeRL-Omni v0.3.0（Release v0.3.0-omni）"
+  ],
+  "special_conference_banner": null,
+  "source_health_alerts": [],
+  "llm_channel_used": "trial-verified-distiller",
+  "featured_items": [
+    {
+      "slug": "gui-rl-2611-18715",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-env"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "T2T 技术报告：从海量无标注软件教学视频自动合成大规模可执行 GUI 轨迹",
+      "title_en": "T2T Technical Report: Synthesizing GUI Agent Trajectories at Scale from Video Tutorials",
+      "one_line_pain": "针对人工录制桌面与手机操作轨迹成本高难扩规模的瓶颈，四阶段自动将公开教学视频转为可执行训练轨迹",
+      "metric_badges": [
+        {
+          "text": "4 阶段自动合成管线",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "横跨 4 大基准零人工标注涨点",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Qingsong Xie",
+        "Yanlin Fei",
+        "Nazhou Liu",
+        "Ritankar Das"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "url_primary": "https://arxiv.org/abs/2611.18715",
+      "url_pdf": "https://arxiv.org/pdf/2611.18715",
+      "url_arxiv_html": "https://arxiv.org/html/2611.18715",
+      "url_github": "https://github.com/t2t-gui/tutorial-to-trajectory",
+      "url_hf": "https://huggingface.co/t2t-gui/T2T-7B",
+      "arxiv_id": "2611.18715",
+      "doi": "",
+      "github_stars": 215,
+      "license_name": "",
+      "corroborating_sources": [
+        "Hugging Face Daily Papers"
+      ],
+      "abstract_en": "Training generalist GUI and computer-use agents requires massive interaction trajectories pairing screenshots with grounded UI actions, while manual human demonstrations are costly to scale. Public video tutorials contain rich operational workflows, yet continuous pixel streams lack discrete action boundaries and spatial coordinates. We present T2T (Tutorial-to-Trajectory), a 4-stage automated pipeline integrating active segment filtering, localized UI-change keyframe extraction, shortcut-free frame selection, and 2-stage action-space normalization across desktop, web, and mobile platforms. Fine-tuning Qwen2.5-VL-7B on T2T trajectories without target-domain human annotations yields consistent gains across OSWorld, ScreenSpot-Pro, AndroidControl, and AgentNetBench (4 benchmarks total). Project code and weights: https://github.com/t2t-gui/tutorial-to-trajectory and https://huggingface.co/t2t-gui/T2T-7B .\n[Comment: Technical Report, code and 7B checkpoint released]",
+      "four_elements": {
+        "pain_point": "训练通用 GUI 智能体极度依赖“截图—精确动作坐标”配对轨迹，人工逐条录制既贵又慢；网上虽有海量软件教学视频，但连续视频流没有离散动作边界、语义意图和精确点击坐标，直接喂给模型会学到大量无效帧捷径。",
+        "mechanism": "提出 4 阶段全自动管线 T2T（Tutorial-to-Trajectory）：① 活跃操作片段过滤剔除口播废片；② 基于局部界面像素变化提取关键帧；③ 防捷径观测帧筛选避免未来视觉泄露；④ 存在性感知定位与 2 阶段动作空间归一化，统一桌面、网页和移动端动作格式。",
+        "experiments_summary": "完全不使用目标域人工标注演示数据，用 T2T 合成轨迹微调 Qwen2.5-VL-7B 后，在 OSWorld、ScreenSpot-Pro、AndroidControl 与 AgentNetBench 共 4 个跨平台基准上均取得一致泛化提升。",
+        "repro_and_reference": "代码与 7B 权重均已公开（GitHub ★ 215，HF 91 upvotes），可直接作为 GUI 强化学习阶段的冷启动 SFT 基座或合成轨迹数据源。",
+        "experiment_rows": [],
+        "backbone_and_params": "Qwen2.5-VL-7B",
+        "gpu_and_duration": "原文摘要未单列训练卡数与耗时",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 15.8
+    },
+    {
+      "slug": "ossl-ood-2602-18094",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "subtopics": [
+        "open-world-vocab",
+        "ossl-ood-core"
+      ],
+      "lab_tags": [
+        "lab-hkbu-tmlr"
+      ],
+      "institution_tags": [
+        "港浸会 TMLR",
+        "Hong Kong Baptist University"
+      ],
+      "title_zh": "OODConceptBench（港浸会韩波组）：零样本视觉—语言 OOD 检测的词义碰撞审计与词表校准",
+      "title_en": "What Remains OOD? OODConceptBench and Lexical Calibration for Zero-Shot Vision-Language OOD Detection",
+      "one_line_pain": "针对静态 WordNet 负标签词表存在一词多义和近义词碰撞推高误报的问题，审计并剪枝歧义负词",
+      "metric_badges": [
+        {
+          "text": "平均 FPR95 降低 4.6%",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "AUROC 达 95.1%",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "原文标注：training-free single-GPU",
+      "authors": [
+        "Yichen Zhou",
+        "Bo Han"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "url_primary": "https://arxiv.org/abs/2602.18094",
+      "url_pdf": "https://arxiv.org/pdf/2602.18094",
+      "url_arxiv_html": "https://arxiv.org/html/2602.18094",
+      "url_github": "https://github.com/ood-concept/oodconceptbench",
+      "url_hf": "",
+      "arxiv_id": "2602.18094",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Negative-label zero-shot OOD detectors such as NegLabel mine large WordNet noun corpora with CLIP text-image similarity, yet static negative lexicons suffer from lexical polysemy and near-synonym collisions with ID classes, inflating FPR95 on fine-grained benchmarks. Using a training-free single-GPU evaluation pipeline on CLIP-ViT-B/16 across ImageNet-1K and 4 standard OOD datasets, OODConceptBench audits residual false positives and introduces lexical collision pruning, reducing average FPR95 by 4.6% and reaching 95.1% AUROC. Code and lexical lists at https://github.com/ood-concept/OODConceptBench .\n[Comment: Updated v2 with full WordNet collision audit]",
+      "four_elements": {
+        "pain_point": "以 NegLabel 为代表的零样本 VLM OOD 方法直接从 WordNet 拉取大规模名词做负标签，但自然语言词表存在严重的一词多义与细粒度近义词重叠，部分负标签与已知类（ID）语义撞车，导致细粒度样本被误判为未知类、推高 FPR95。",
+        "mechanism": "构建 OODConceptBench 系统审计静态负词表上的残余假阳性来源，提出免训练词义碰撞剪枝与校准策略，剔除与已知类视觉—文本分布发生局部重叠的歧义负概念。",
+        "experiments_summary": "基于 CLIP-ViT-B/16 单卡免训练管线，在 ImageNet-1K 与 4 个标准 OOD 测试集上将平均 FPR95 降低 4.6%，平均 AUROC 提升至 95.1%。",
+        "repro_and_reference": "出自双方向重点追踪的香港浸会大学韩波组，代码与清洗后词表已开源，单张常规 GPU 即可复现全部词表碰撞消融。",
+        "experiment_rows": [],
+        "backbone_and_params": "CLIP / CLIP-ViT-B/16",
+        "gpu_and_duration": "training-free single-GPU",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 14.8
+    },
+    {
+      "slug": "vlm-infra-verl-project-verl-verl-v1-trainer-mainline-ver",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "rl-framework",
+        "inference-engine"
+      ],
+      "lab_tags": [
+        "lab-seed"
+      ],
+      "institution_tags": [
+        "ByteDance Seed",
+        "verl-project"
+      ],
+      "title_zh": "verl 主线全面切换 V1 Trainer 并发布多模态训练扩展 VeRL-Omni v0.3.0",
+      "title_en": "verl-project/verl verl V1 Trainer Mainline & VeRL-Omni v0.3.0",
+      "one_line_pain": "针对异步多模态 RL 训练时训练卡空等采样导致利用率低的痛点，上线闲置训练卡动态借调与 V1 架构",
+      "metric_badges": [
+        {
+          "text": "Release v0.3.0-omni",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "300 步 FP8 rollout 对齐",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "verl-project"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "GitHub Release (v0.3.0-omni)",
+      "url_primary": "https://github.com/verl-project/verl/releases/tag/v0.3.0-omni",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "https://github.com/verl-project/verl",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "Apache-2.0 / MIT",
+      "corroborating_sources": [],
+      "abstract_en": "Mainline PPO and GRPO reinforcement learning workflows now run exclusively on the V1 Trainer (removing legacy V0). Introduces separate_async rollout scheduling (lending idle trainer GPUs to vLLM/SGLang generation pools via adaptive starvation thresholds), tighter dynamic micro-batch token length bounds, stable 300-step FP8 rollout alignment, and multimodal VLM post-training support via VeRL-Omni v0.3.0.",
+      "four_elements": {
+        "pain_point": "在长尾多轮智能体与多模态强化学习中，少数慢轨迹会拖慢整批同步等待，训练 GPU 长时间空转等 vLLM/SGLang 生成，且旧版 V0 与异步分支维护割裂。",
+        "mechanism": "主线 PPO/GRPO 彻底移除旧 V0 统一至 V1 Trainer；新增 `separate_async` 调度（基于饥饿阈值把空闲训练卡临时借给生成池扩容采样）、收紧动态 micro-batch 长度上界，并同步推出支持多模态后训练的 VeRL-Omni v0.3.0。",
+        "experiments_summary": "官方验证包含稳定的 300 步 FP8 rollout 精度对齐及多模态 VLM 后训练吞吐升级。",
+        "repro_and_reference": "字节 Seed 主导的 `verl` 是当前 GUI-RL 与多模态 GRPO 最核心的开源训练底座，后续新建实验分支应直接基于 V1 Trainer 接口编写。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列具体参数规模",
+        "gpu_and_duration": "原文摘要未单列训练卡数与耗时",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 14.8
+    },
+    {
+      "slug": "gui-rl-2611-04073",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-verifier",
+        "gui-env"
+      ],
+      "lab_tags": [
+        "lab-oregon-state"
+      ],
+      "institution_tags": [
+        "Oregon State",
+        "Oregon State University"
+      ],
+      "title_zh": "Oregon State 实证归因：提供教程时桌面智能体几乎无法从世界模型推演中获益",
+      "title_en": "Computer-Use Agents Gain Little Benefit from a World Model When Conditioned on Tutorials",
+      "one_line_pain": "针对教程检索、判分器与世界模型混用时增益归因不清的痛点，剥离验证三者在桌面任务中的真实贡献",
+      "metric_badges": [
+        {
+          "text": "构建 2 套教程基准",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "100% 真实未来帧仍无显著增益",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Anh Nguyen",
+        "Tianyi Xu",
+        "Phat Tran",
+        "Stefan Lee"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.AI",
+      "url_primary": "https://arxiv.org/abs/2611.04073",
+      "url_pdf": "https://arxiv.org/pdf/2611.04073",
+      "url_arxiv_html": "https://arxiv.org/html/2611.04073",
+      "url_github": "https://github.com/oregon-state-cua/osworld-tutorial",
+      "url_hf": "https://huggingface.co/papers/2611.04073",
+      "arxiv_id": "2611.04073",
+      "doi": "",
+      "github_stars": 142,
+      "license_name": "",
+      "corroborating_sources": [
+        "Hugging Face Daily Papers"
+      ],
+      "abstract_en": "Recent work has improved computer-use agents (CUAs) by combining retrieved task-relevant tutorials and look-ahead planning using world models with MLLM judges. However, the contribution of each component—tutorials, the judge, and the world model—to overall improvement has not been evaluated in isolation. To fill this gap, we first construct OSWorld-Tutorial and ScienceBoard-Tutorial: 2 datasets for CUAs with curated multimodal tutorials, covering everyday and scientific domains. We then propose RAG-PolicyJudge (RAG-PJ), a policy-judge framework for CUAs conditioned on task-specific tutorials: the policy proposes candidate actions, and the judge selects among them. Comparing RAG-PJ with zero-shot text next-state world models and an oracle visual future across 3 evaluation settings, we find RAG-PJ gains little benefit from predicted rollouts when tutorials are present, even with 100% ground-truth visual futures. Code and benchmarks at https://github.com/oregon-state-cua/osworld-tutorial .\n[Comment: 18 pages, 2 benchmarks (OSWorld-Tutorial and ScienceBoard-Tutorial)]",
+      "four_elements": {
+        "pain_point": "近期不少桌面智能体同时堆叠“检索操作教程 + 世界模型预测下一步画面 + 多模态判分器选动作”，算力开销翻倍，但没人拆开验证到底是教程起了作用，还是世界模型推演真的帮上了忙。",
+        "mechanism": "作者先构建带多模态图文教程的 OSWorld-Tutorial 与 ScienceBoard-Tutorial 两个数据集，再设计 RAG-PolicyJudge（策略提候选动作、判分器依据教程挑动作），在 3 种设置下严格对比“不加世界模型”“零样本文字预测下一状态”以及“直接给 100% 真实未来屏幕画面（Oracle）”的效果差异。",
+        "experiments_summary": "在 OSWorld-Tutorial 与 ScienceBoard-Tutorial 共 2 套基准、3 类对比设置下实测发现：一旦提供了任务相关教程，即便把世界模型换成 100% 准确的真实未来视觉帧，RAG-PJ 的成功率提升依然微乎其微；真正卡脖子的是判分器对未来状态及任务是否完成的推理判别能力。",
+        "repro_and_reference": "已开源代码与两套教程基准（GitHub ★ 142，HF Daily Papers 同步上榜）。结论对高校小算力团队极具启发：不必耗费巨资训练重型像素级世界模型，把精力放在强化多模态判分器（Judge/Verifier）的状态判别准确率上性价比高得多。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列具体参数规模",
+        "gpu_and_duration": "原文摘要未单列训练卡数与耗时",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 13.4
+    },
+    {
+      "slug": "gui-rl-2605-16883",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl"
+      ],
+      "lab_tags": [
+        "lab-sjtu"
+      ],
+      "institution_tags": [
+        "上海交大",
+        "Tianjin University",
+        "Shanghai Jiao Tong University"
+      ],
+      "title_zh": "SE-GA（天大 & 上海交大 ICML 2026）：4×A800 跑通 7B GUI 智能体记忆增强自进化 RL",
+      "title_en": "SE-GA: Memory-Augmented Self-Evolution for GUI Agents",
+      "one_line_pain": "针对高校 4 卡显存受限且多轮 RL 易遗忘历史成功技能的痛点，结合情景技能记忆与 LoRA 自进化训练",
+      "metric_badges": [
+        {
+          "text": "4×A800 跑通 7B RL",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "覆盖 3 大移动端与定位基准",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "原文标注：4 NVIDIA A800",
+      "authors": [
+        "Shilong Jin",
+        "Lanjun Wang",
+        "Zhuosheng Zhang"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "Accepted by ICML 2026 (camera-ready v2 update) (arXiv cs.CL)",
+      "url_primary": "https://arxiv.org/abs/2605.16883",
+      "url_pdf": "https://arxiv.org/pdf/2605.16883",
+      "url_arxiv_html": "https://arxiv.org/html/2605.16883",
+      "url_github": "https://github.com/tju-sjtu-gui/se-ga",
+      "url_hf": "",
+      "arxiv_id": "2605.16883",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Deploying 7B open-weight GUI agents under limited academic compute often suffers from catastrophic forgetting and low sample efficiency during multi-turn reinforcement learning. We introduce SE-GA, a memory-augmented 2-stage self-evolution framework for Qwen2.5-VL-7B. All experiments are conducted using 4 NVIDIA A800 GPUs, where Stage 2 reinforcement learning applies LoRA to reduce GPU memory footprint while maintaining an episodic skill memory across ScreenSpot, AndroidControl, and AndroidWorld (3 benchmarks). Code available at https://github.com/tju-sjtu-gui/SE-GA .\n[Comment: Accepted by ICML 2026 (camera-ready v2 update)]",
+      "four_elements": {
+        "pain_point": "高校常规 4 卡服务器做 7B 多模态模型全参数多轮强化学习极易显存爆满，且探索过程中偶发试对的高价值操作序列很快在后续策略更新中被遗忘，样本效率低。",
+        "mechanism": "围绕 Qwen2.5-VL-7B 设计 2 阶段记忆增强自进化框架（SE-GA）：外挂情景技能记忆库存储高回报子轨迹辅助规划，第二阶段自进化 RL 采用 LoRA 轻量参数更新大幅压缩显存占用。",
+        "experiments_summary": "全部实验仅使用 4 张 NVIDIA A800 GPU 完成，在 ScreenSpot、AndroidControl 与 AndroidWorld 共 3 个标准基准上验证了记忆回放加 LoRA RL 的持续自进化增益。",
+        "repro_and_reference": "天津大学与上海交大张倬胜老师合作（ICML 2026 主会 v2 更新），是已核实高校 GUI 强化学习论文中算力门槛最低（仅 4×A800）的 7B 训练范例，极适合对标复现。",
+        "experiment_rows": [],
+        "backbone_and_params": "Qwen2.5-VL-7B",
+        "gpu_and_duration": "4 NVIDIA A800",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 10.2
+    },
+    {
+      "slug": "gui-rl-xlang-ai-osworld-osworld-verified-scalable-comput",
+      "section": "opensource",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl"
+      ],
+      "lab_tags": [
+        "lab-hku-xlang"
+      ],
+      "institution_tags": [
+        "港大 XLANG",
+        "xlang-ai"
+      ],
+      "title_zh": "港大 XLANG OSWorld-Verified 登上 GitHub Python 日榜（单日新增 195 ★）",
+      "title_en": "xlang-ai/OSWorld: OSWorld-Verified: Scalable Computer-Use Agent RL Evaluation Environment Across Ubuntu, W",
+      "one_line_pain": "针对桌面智能体评测脚本环境偶发超时与判分漏判问题，持续维护跨三端操作系统可验证容器基准，给出GUI-RL实测参照。",
+      "metric_badges": [
+        {
+          "text": "GitHub ★ 4,820",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "今日新增 195 stars",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "xlang-ai"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "GitHub Trending",
+      "url_primary": "https://github.com/xlang-ai/OSWorld",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "https://github.com/xlang-ai/osworld",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": 4820,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "OSWorld-Verified: Scalable Computer-Use Agent RL Evaluation Environment Across Ubuntu, Windows, and macOS. (195 stars today)",
+      "four_elements": {
+        "pain_point": "跨平台桌面智能体在线强化学习与基准对比极易受容器死锁、界面加载抖动及旧版评估脚本假阴性影响，导致不同论文间指标口径失真。",
+        "mechanism": "港大 XLANG 团队围绕 Ubuntu、Windows 与 macOS 持续维护 OSWorld-Verified 容器化可执行环境与确定性状态检查器，今日登上 GitHub Trending Python 日榜。",
+        "experiments_summary": "仓库累计获得 4,820 GitHub Stars（当日新增 195 stars today），已成为桌面端 Computer-Use Agent 在线 RL rollout 与统一评测的事实标准环境。",
+        "repro_and_reference": "高校单机 Docker/KVM 环境即可拉起并行桌面评测实例，做 OSWorld 对比实验时务必核对使用 Verified 最新判分脚本版本。",
+        "experiment_rows": [],
+        "backbone_and_params": "跨平台桌面可验证 RL 评测环境",
+        "gpu_and_duration": "CPU/KVM 容器沙盒（与 VLM 推理卡解耦）",
+        "seeds_note": "评测基准环境仓库"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 9.7
+    },
+    {
+      "slug": "gui-rl-expanding-claude-computer-use-to-team-and-enterpr",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-security"
+      ],
+      "lab_tags": [
+        "lab-anthropic"
+      ],
+      "institution_tags": [
+        "Anthropic"
+      ],
+      "title_zh": "Anthropic 向企业与团队版开放 Claude Computer Use，内置默认关闭与提示注入遮罩",
+      "title_en": "Expanding Claude Computer Use to Team and Enterprise with Admin Isolation Controls",
+      "one_line_pain": "针对桌面操控智能体在办公环境易被外部网页恶意指令劫持的风险，引入组织级白名单与不可信内容遮罩",
+      "metric_badges": [
+        {
+          "text": "100% 外部浏览器视图注入遮罩",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Anthropic"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "Anthropic",
+      "url_primary": "https://www.anthropic.com/news/computer-use-enterprise-controls",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Anthropic rolls out Claude Computer Use in beta across Team and Enterprise plans. Claude captures desktop screens, navigates native applications, and executes click/type actions under strict organization-level admin controls (disabled by default, explicit allowlist per workspace, and untrusted screen prompt-injection masking across 100% of external browser views).",
+      "four_elements": {
+        "pain_point": "赋予大模型直接截屏并点击本地桌面软件的权限后，一旦浏览器打开含隐藏提示词注入的外部网页，极易触发越权操作或敏感数据外泄。",
+        "mechanism": "采用默认关闭（Opt-in）的组织级管理员白名单控制，并对 100% 外部浏览器渲染视图叠加不可信屏幕内容提示注入遮罩（Untrusted Content Masking）与动作审计。",
+        "experiments_summary": "官方工程博客披露 Team 与 Enterprise 版管控架构，重点覆盖跨原生桌面应用的视觉截屏点击闭环与外部网页注入隔离。",
+        "repro_and_reference": "代表工业界商用 Computer Use 安全边界的最新工程落地形态，对 GUI 提示注入防御研究提供了真实部署场景参照。",
+        "experiment_rows": [],
+        "backbone_and_params": "Claude ",
+        "gpu_and_duration": "原文摘要未单列训练卡数与耗时",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 8.6
+    }
+  ],
+  "folded_items": [
+    {
+      "slug": "fold-vlm-infra-qwen4-max-official-launch-2-4t-sparse-moe",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "阿里通义发布闭源旗舰 Qwen4-Max（2.4T 稀疏 MoE / 71B 激活 / 1M 上下文）",
+      "title_en": "Qwen4-Max Official Launch (2.4T Sparse MoE, 71B Active, 1M Context)",
+      "one_line_takeaway": "首发闭源 API 支持百万上下文原生音视频输入，后续可关注同代开源小尺寸 Qwen4-VL 权重",
+      "url": "https://qwen.ai/blog/qwen4-max",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-2611-19006",
+      "section": "papers",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "LoRA-Quant-KV：长上下文多模态对话助手的 4-bit KV 缓存量化探索",
+      "title_en": "LoRA-Quant-KV: 4-Bit Key-Value Cache Compression for Long-Context Multimodal Chat",
+      "one_line_takeaway": "聚焦通用 32K 聊天场景的 4-bit 键值缓存压缩，未涉及智能体交互 rollout",
+      "url": "https://arxiv.org/abs/2611.19006",
+      "published_date": "2026-11-24",
+      "venue_or_source": "HF Daily Papers",
+      "arxiv_id": "2611.19006"
+    },
+    {
+      "slug": "fold-vlm-infra-openrlhf-async-multi-turn-agent-buffer-pa",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "OpenRLHF v0.6.4 社区补丁：新增多轮智能体异步轨迹回放缓冲区",
+      "title_en": "OpenRLHF Async Multi-Turn Agent Buffer Patch",
+      "one_line_takeaway": "为多模态 PPO 采样补充异步多轮经验池支持，属常规小版本增量",
+      "url": "https://github.com/OpenRLHF/OpenRLHF/releases/tag/v0.6.4",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-2611-19002",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "ClickHeatmap-Mini：桌面智能体图标定位注意力漂移可视化分析",
+      "title_en": "ClickHeatmap-Mini: Visualizing Attention Drift in Desktop Agent Grounding",
+      "one_line_takeaway": "仅对比 2 种视觉编码器在 ScreenSpot 上的静态注意力热图，无策略训练",
+      "url": "https://arxiv.org/abs/2611.19002",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.HC",
+      "arxiv_id": "2611.19002"
+    },
+    {
+      "slug": "fold-gui-rl-2611-19003",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "VoiceToMobile：手机快捷指令的双语语音意图解析前端评测",
+      "title_en": "VoiceToMobile: Bilingual Speech Intent Parsing for Mobile Agent Shortcuts",
+      "one_line_takeaway": "在 150 条 AndroidControl 语音指令上测试语音转文本前端，属外围交互模块",
+      "url": "https://arxiv.org/abs/2611.19003",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.HC",
+      "arxiv_id": "2611.19003"
+    },
+    {
+      "slug": "fold-vlm-infra-vllm-cuda-13-0-nightly-wheel",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "vLLM v0.34.0rc1 Nightly：实验性 CUDA 13 构建与 LibTorch ABI 迁移",
+      "title_en": "vLLM CUDA 13.0 Nightly Wheel",
+      "one_line_takeaway": "面向新版 CUDA 的每日构建预览轮子，待正式版稳定后再评估升级",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.34.0rc1",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-sglang-torchtpu-backend",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "SGLang-TorchTPU：面向 MoE 低延迟推理的原生 TPU 后端插件更新",
+      "title_en": "SGLang TorchTPU Backend",
+      "one_line_takeaway": "针对 TPU 硬件后端适配，与常规 GPU 训练集群关联较低",
+      "url": "https://github.com/sgl-project/sglang/tree/main/python/sglang",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-trl-v0-16-minor-docs-update",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "HF TRL v0.16.1：GRPO 训练器日志参数常规文档清理",
+      "title_en": "TRL v0.16 Minor Docs Update",
+      "one_line_takeaway": "纯文档与日志参数整理，无算法或吞吐改动",
+      "url": "https://github.com/huggingface/trl/releases/tag/v0.16.1",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-molmoweb-trajectory-viewer",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "AllenAI MolmoWeb Viewer：浏览器点击失败轨迹可视化回放小工具",
+      "title_en": "MolmoWeb Trajectory Viewer",
+      "one_line_takeaway": "便于排查网页智能体单步点击偏离的轻量调试前端",
+      "url": "https://allenai.org/blog/molmoweb-viewer",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-ossl-ood-2611-19005",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "SemiCluster-Med：视网膜 OCT 医学影像上的广义类别发现聚类应用",
+      "title_en": "SemiCluster-Med: Generalized Category Discovery on 2D Retinal OCT Scans",
+      "one_line_takeaway": "将既有 GCD 聚类损失直接迁移至眼科专科影像队列，非通用视觉方法创新",
+      "url": "https://arxiv.org/abs/2611.19005",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.19005"
+    },
+    {
+      "slug": "fold-gui-rl-osu-nlp-group-gui-agents-paper-list-curated",
+      "section": "opensource",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "OSU-NLP-Group/GUI-Agents-Paper-List：GUI 智能体论文索引列表登上 GitHub 日榜",
+      "title_en": "OSU-NLP-Group/GUI-Agents-Paper-List: Curated paper index for multimodal GUI agents, screen grounding, online RL, and computer",
+      "one_line_takeaway": "俄亥俄州立大学维护的领域文献汇总仓库日常收录更新（累计 2,310 ★）",
+      "url": "https://github.com/OSU-NLP-Group/GUI-Agents-Paper-List",
+      "published_date": "2026-11-24",
+      "venue_or_source": "GitHub Trending",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-2611-19001",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "HTML-Pruner：面向 WebArena 网页浏览的轻量 DOM 树剪枝工具",
+      "title_en": "HTML-Pruner: Lightweight DOM Token Compression for WebArena Browsing",
+      "one_line_takeaway": "在购物网页上启发式压缩 38% HTML 上下文长度，未涉及强化学习训练",
+      "url": "https://arxiv.org/abs/2611.19001",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CL",
+      "arxiv_id": "2611.19001"
+    },
+    {
+      "slug": "fold-ossl-ood-2611-19004",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "BatchNorm-OOD：CIFAR-100 小规模划分上的后处理特征范数重标定",
+      "title_en": "BatchNorm-OOD: Post-hoc Feature Norm Rescaling on CIFAR-100 Out-of-Distribution Splits",
+      "one_line_takeaway": "仅在 CIFAR 小尺寸图像上做常规特征范数基线验证，未涉及开放词表或 VLM",
+      "url": "https://arxiv.org/abs/2611.19004",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.19004"
+    }
+  ]
+}

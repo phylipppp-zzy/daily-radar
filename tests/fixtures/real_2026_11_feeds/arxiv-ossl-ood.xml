@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <entry>
+    <id>http://arxiv.org/abs/2602.18094v2</id>
+    <published>2026-11-24T02:05:00Z</published>
+    <updated>2026-11-24T02:05:00Z</updated>
+    <title>What Remains OOD? OODConceptBench and Lexical Calibration for Zero-Shot Vision-Language OOD Detection</title>
+    <summary>Negative-label zero-shot OOD detectors such as NegLabel mine large WordNet noun corpora with CLIP text-image similarity, yet static negative lexicons suffer from lexical polysemy and near-synonym collisions with ID classes, inflating FPR95 on fine-grained benchmarks. Using a training-free single-GPU evaluation pipeline on CLIP-ViT-B/16 across ImageNet-1K and 4 standard OOD datasets, OODConceptBench audits residual false positives and introduces lexical collision pruning, reducing average FPR95 by 4.6% and reaching 95.1% AUROC. Code and lexical lists at https://github.com/ood-concept/OODConceptBench .</summary>
+    <author>
+      <name>Yichen Zhou</name>
+      <arxiv:affiliation>Hong Kong Baptist University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Bo Han</name>
+      <arxiv:affiliation>Hong Kong Baptist University</arxiv:affiliation>
+    </author>
+    <arxiv:primary_category term="cs.CV"/>
+    <arxiv:comment>Updated v2 with full WordNet collision audit</arxiv:comment>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/2611.19004v1</id>
+    <published>2026-11-24T00:50:00Z</published>
+    <updated>2026-11-24T00:50:00Z</updated>
+    <title>BatchNorm-OOD: Post-hoc Feature Norm Rescaling on CIFAR-100 Out-of-Distribution Splits</title>
+    <summary>A lightweight post-hoc feature norm rescaling baseline tested on small-scale CIFAR out-of-distribution detection splits.</summary>
+    <author><name>Marco Rossi</name></author>
+    <arxiv:primary_category term="cs.CV"/>
+  </entry>
+
+  <entry>
+    <id>http://arxiv.org/abs/2611.19005v1</id>
+    <published>2026-11-24T00:45:00Z</published>
+    <updated>2026-11-24T00:45:00Z</updated>
+    <title>SemiCluster-Med: Generalized Category Discovery on 2D Retinal OCT Scans</title>
+    <summary>Applies generalized category discovery clustering losses to retinal OCT medical imaging cohorts.</summary>
+    <author><name>Priya Nair</name></author>
+    <arxiv:primary_category term="cs.CV"/>
+  </entry>
+</feed>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Latent Space</title>
+    <link>https://www.latent.space</link>
+    <item>
+      <title>[AINews] November 24, 2026: Qwen4-Max MoE, OpenRLHF Async Rollouts, and TRL Updates</title>
+      <link>https://www.latent.space/p/ainews-2026-11-24</link>
+      <pubDate>Tue, 24 Nov 2026 00:35:00 GMT</pubDate>
+      <content:encoded><![CDATA[
+        <ul>
+          <li><strong>Qwen4-Max Official Launch (2.4T Sparse MoE, 71B Active, 1M Context)</strong>: Alibaba Tongyi debuted <a href="https://qwen.ai/blog/qwen4-max">Qwen4-Max</a> featuring a 2.4T total parameter sparse MoE architecture with 71B active parameters, native image/video multimodal perception, and a 1M-token context window while developer tracking focuses on upcoming dense open-weight Qwen4 variants.</li>
+          <li><strong>OpenRLHF Async Multi-Turn Agent Buffer Patch</strong>: Community update in <a href="https://github.com/OpenRLHF/OpenRLHF/releases/tag/v0.6.4">OpenRLHF v0.6.4</a> adds asynchronous multi-turn trajectory replay buffers for VLM PPO rollouts.</li>
+          <li><strong>TRL v0.16 Minor Docs Update</strong>: Routine documentation cleanup in <a href="https://github.com/huggingface/trl/releases/tag/v0.16.1">huggingface/trl</a> for GRPO trainer logging flags.</li>
+          <li><strong>vLLM CUDA 13.0 Nightly Wheel</strong>: Experimental nightly wheels in <a href="https://github.com/vllm-project/vllm/releases/tag/v0.34.0rc1">vLLM CUDA 13</a> with LibTorch Stable ABI migration.</li>
+          <li><strong>MolmoWeb Trajectory Viewer</strong>: AllenAI pushed a lightweight trajectory replay inspector in <a href="https://allenai.org/blog/molmoweb-viewer">MolmoWeb Viewer</a> for debugging browser click failures.</li>
+          <li><strong>SGLang TorchTPU Backend</strong>: PyTorch-native plugin update in <a href="https://github.com/sgl-project/sglang/tree/main/python/sglang">SGLang-TorchTPU</a> for low-latency MoE serving.</li>
+        </ul>
+      ]]></content:encoded>
+    </item>
+  </channel>
+</rss>

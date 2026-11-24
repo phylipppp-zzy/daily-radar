@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Anthropic Research &amp; Engineering</title>
+    <link>https://www.anthropic.com</link>
+    <item>
+      <title>Expanding Claude Computer Use to Team and Enterprise with Admin Isolation Controls</title>
+      <link>https://www.anthropic.com/news/computer-use-enterprise-controls</link>
+      <pubDate>Tue, 24 Nov 2026 00:10:00 GMT</pubDate>
+      <description><![CDATA[<p>Anthropic rolls out Claude Computer Use in beta across Team and Enterprise plans. Claude captures desktop screens, navigates native applications, and executes click/type actions under strict organization-level admin controls (disabled by default, explicit allowlist per workspace, and untrusted screen prompt-injection masking across 100% of external browser views).</p>]]></description>
+    </item>
+  </channel>
+</rss>

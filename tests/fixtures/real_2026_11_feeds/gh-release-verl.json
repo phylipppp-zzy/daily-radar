@@ -1,0 +1,11 @@
+[
+  {
+    "tag_name": "v0.3.0-omni",
+    "name": "verl V1 Trainer Mainline & VeRL-Omni v0.3.0",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-24T00:20:00Z",
+    "html_url": "https://github.com/verl-project/verl/releases/tag/v0.3.0-omni",
+    "body": "Mainline PPO and GRPO reinforcement learning workflows now run exclusively on the V1 Trainer (removing legacy V0). Introduces separate_async rollout scheduling (lending idle trainer GPUs to vLLM/SGLang generation pools via adaptive starvation thresholds), tighter dynamic micro-batch token length bounds, stable 300-step FP8 rollout alignment, and multimodal VLM post-training support via VeRL-Omni v0.3.0."
+  }
+]

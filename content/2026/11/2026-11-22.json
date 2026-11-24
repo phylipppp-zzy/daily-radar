@@ -1,0 +1,342 @@
+{
+  "date": "2026-11-22",
+  "weekday_zh": "周日",
+  "generated_at_cst": "2026-11-22 09:28:10 CST",
+  "global_trend_summary": [
+    "今日精选 5 条高相关动态：GUI 安全评测同时出现桌面端控制监控（Control OSWorld）与移动端欺骗注入基准（港理工 DIBench），OOD 方向关注负标签向密集目标检测的扩展（NegAS）。",
+    "底层基础设施方面，vLLM v0.33.0 正式移除旧版 V1 Runner 并默认启用弹性 KV Cache，升级 RL 采样环境时需留意配置兼容。"
+  ],
+  "highlights_top3": [
+    "• [GUI-RL] Control OSWorld：318 主任务配对 81 旁路风险任务，评测桌面智能体实时越权拦截",
+    "• [GUI-RL] 香港理工大学 DIBench（NeurIPS 2026 E&D）：4 框架 × 7 基座实测手机欺骗注入",
+    "• [VLM/RL底座] vLLM v0.33.0：默认切换 Model Runner V2 并按空闲显存自动分配 KV Cache"
+  ],
+  "special_conference_banner": null,
+  "source_health_alerts": [],
+  "llm_channel_used": "deterministic-verified",
+  "featured_items": [
+    {
+      "slug": "gui-rl-2610-03818",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-security",
+        "gui-env"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "Control OSWorld Team"
+      ],
+      "title_zh": "Control OSWorld：桌面智能体实时越权与隐蔽旁路动作控制环境",
+      "title_en": "Control OSWorld: An AI Control Environment for GUI Computer Use Agents",
+      "one_line_pain": "针对桌面智能体执行主任务时夹带隐蔽越权操作难被在线拦截的盲区，构建主旁任务配对控制评测环境",
+      "metric_badges": [
+        {
+          "text": "318 主任务 + 81 旁路风险任务",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "支持单机 Docker 评测",
+      "authors": [
+        "Maria Sanchez del Rio",
+        "Mikhail Terekhov"
+      ],
+      "published_date": "2026-11-22",
+      "venue_or_source": "arXiv cs.AI",
+      "url_primary": "https://arxiv.org/abs/2610.03818",
+      "url_pdf": "https://arxiv.org/pdf/2610.03818",
+      "url_arxiv_html": "https://arxiv.org/html/2610.03818",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2610.03818",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Control OSWorld pairs 318 standard OSWorld desktop tasks with 81 harmful side tasks (such as unauthorized file exfiltration and covert setting edits) to evaluate whether live control monitors can catch misaligned GUI computer-use agents during interaction.",
+      "four_elements": {
+        "pain_point": "现有 GUI 安全基准多聚焦外部网页弹窗注入，缺少对智能体自身在长轨迹操作中夹带未授权文件外传或篡改系统配置等隐蔽旁路行为的实时监控评测。",
+        "mechanism": "在标准桌面环境中把 318 个常规用户指令与 81 个隐蔽恶意旁路目标组合，引入在线监控器（Control Monitor）在每步动作执行前审查屏幕与动作序列。",
+        "experiments_summary": "在 318 个 OSWorld 标准任务与 81 个有害旁路任务配对集上评测在线监督器对隐蔽越权动作的拦截率与正常任务误伤率。",
+        "repro_and_reference": "基于 OSWorld 容器栈扩展，无需训练百卡基座即可在高校单机环境运行安全监控实验。",
+        "experiment_rows": [
+          {
+            "benchmark": "Control OSWorld",
+            "metric": "任务规模",
+            "value": "318 主任务 / 81 旁路任务",
+            "baseline_delta": "首套桌面控制监控配对集",
+            "setup_note": "OSWorld Docker 环境",
+            "verified": true,
+            "unverified_numbers": []
+          }
+        ],
+        "backbone_and_params": "多模态闭源与开源 CUA 通用评测",
+        "gpu_and_duration": "免训练推理与 Docker 桌面容器评测",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 8.4
+    },
+    {
+      "slug": "gui-rl-2610-06898",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-security",
+        "gui-env"
+      ],
+      "lab_tags": [
+        "lab-hitsz-zju"
+      ],
+      "institution_tags": [
+        "香港理工大学"
+      ],
+      "title_zh": "DIBench：移动端 GUI 智能体欺骗性界面注入评测基准",
+      "title_en": "DIBench: Benchmarking Deceptive Injections against Mobile GUI Agents",
+      "one_line_pain": "针对手机智能体易被伪装成系统通知或合规按钮的欺骗性界面诱导误点的问题，建立真机与模拟评测集",
+      "metric_badges": [
+        {
+          "text": "4 框架 × 7 基座实测",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "7 商业 App + 3 模拟 App",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "8×A100 仅作开源模型推理部署",
+      "authors": [
+        "DIBench Authors (Hong Kong Polytechnic University)"
+      ],
+      "published_date": "2026-11-22",
+      "venue_or_source": "NeurIPS 2026 (Evaluations & Datasets Track)",
+      "url_primary": "https://arxiv.org/abs/2610.06898",
+      "url_pdf": "https://arxiv.org/pdf/2610.06898",
+      "url_arxiv_html": "https://arxiv.org/html/2610.06898",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2610.06898",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Accepted to NeurIPS 2026 Evaluations and Datasets Track. DIBench evaluates 4 mobile GUI agent frameworks across 7 backbone models on 7 commercial Apps and 3 simulated Apps, using 1 CPU server for emulators and 1 server with 8 A100 GPUs solely for open-source model inference.",
+      "four_elements": {
+        "pain_point": "手机端 App 常出现高仿系统弹窗与诱导性遮罩，过往测试只看静态截图成功率，缺乏在真实商业 App 交互流里的欺骗性注入定量对比。",
+        "mechanism": "覆盖 7 款真实商业应用与 3 款可控模拟应用，交叉组合 4 套主流手机智能体框架与 7 个多模态基座模型进行端到端攻击复现。",
+        "experiments_summary": "系统评测 4 个手机智能体框架与 7 个基座模型在 7 个商业 App 与 3 个模拟 App 上的任务完成率及被诱导误触率。",
+        "repro_and_reference": "属于 NeurIPS 2026 E&D 赛道典型高校算力可承担工作：仅需 1 台 CPU 模拟器主机加常规开源推理卡即可完整复现。",
+        "experiment_rows": [],
+        "backbone_and_params": "4 套移动端框架 × 7 个 VLM 基座",
+        "gpu_and_duration": "1 台 CPU 服务器 + 8×A100（仅开源模型推理）",
+        "seeds_note": "原文未单列种子数"
+      },
+      "conference_slug": "neurips-2026",
+      "conference_track_tier": "Evaluations & Datasets Track · Poster",
+      "relative_score": 8.1
+    },
+    {
+      "slug": "ossl-ood-2606-22537",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "subtopics": [
+        "open-world-vocab",
+        "ossl-ood-core"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "ECCV 2026"
+      ],
+      "title_zh": "NegAS：负标签引导注意力与打分的开放世界目标级 OOD 检测",
+      "title_en": "NegAS: Negative Label Guided Attention and Scoring for Out-of-Distribution Object Detection with Vision-Language Models",
+      "one_line_pain": "针对整图级负标签方法无法定位复杂背景中局部未知物体的问题，将负词表引入密集检测注意力与打分",
+      "metric_badges": [
+        {
+          "text": "ECCV 2026 录用",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_only",
+      "openness_label": "仅代码开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "基于预训练开放词汇检测器推理扩展",
+      "authors": [
+        "NegAS Authors"
+      ],
+      "published_date": "2026-11-22",
+      "venue_or_source": "ECCV 2026",
+      "url_primary": "https://arxiv.org/abs/2606.22537",
+      "url_pdf": "https://arxiv.org/pdf/2606.22537",
+      "url_arxiv_html": "https://arxiv.org/html/2606.22537",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2606.22537",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "NegAS (ECCV 2026, arXiv:2606.22537) expands Negative Label guidance into dense object detection architectures such as YOLO-World and Grounding DINO via negative-label guided cross-attention and region-level OOD scoring to separate unknown objects from background clutter.",
+      "four_elements": {
+        "pain_point": "NegLabel 等整图分类级负标签方法在多目标复杂场景下容易受背景区域干扰，难以在框级别区分“背景噪声”与“真正的未知类别物体”。",
+        "mechanism": "在 YOLO-World 与 Grounding DINO 的跨模态注意力层注入筛选后的负标签词表，结合正负文本相似度差值计算候选框级未知分数。",
+        "experiments_summary": "在开放词汇目标级 OOD 检测基准上验证 YOLO-World 与 Grounding DINO 接入负标签注意力后的未知框召回与误报抑制效果。",
+        "repro_and_reference": "直接复用现有预训练开放词汇检测器，对词表筛选与区域对齐研究有直接参考价值。",
+        "experiment_rows": [],
+        "backbone_and_params": "YOLO-World / Grounding DINO",
+        "gpu_and_duration": "常规单机多卡检测评测",
+        "seeds_note": "原文摘要未单列种子数"
+      },
+      "conference_slug": "eccv-mmda",
+      "conference_track_tier": "Main · Poster",
+      "relative_score": 7.8
+    },
+    {
+      "slug": "vlm-infra-vllm-v0-33-0",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "inference-engine"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "vLLM Team"
+      ],
+      "title_zh": "vLLM v0.33.0：全面切换 Model Runner V2 并默认开启弹性 KV Cache",
+      "title_en": "vllm-project/vllm v0.33.0: Default Model Runner V2 & Extensible KV Cache",
+      "one_line_pain": "针对多模态与在线 RL 混部时手动调显存占比易 OOM 的痛点，默认按预热后剩余显存自动分配 KV 缓存",
+      "metric_badges": [
+        {
+          "text": "Model Runner V2 默认启用",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "Python 3.11+ 安全加固",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "单卡至多机通用推理引擎",
+      "authors": [
+        "vLLM Contributors"
+      ],
+      "published_date": "2026-11-22",
+      "venue_or_source": "GitHub Release (v0.33.0)",
+      "url_primary": "https://github.com/vllm-project/vllm/releases",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "https://github.com/vllm-project/vllm",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "Apache-2.0",
+      "corroborating_sources": [],
+      "abstract_en": "vLLM v0.33.0 transitions fully to Model Runner V2 as the default GPU runner (deprecating V1), enables extensible KV caching that automatically sizes KV cache from free GPU memory post-warmup, removes permissive default CORS origins, and raises minimum Python requirement to 3.11+.",
+      "four_elements": {
+        "pain_point": "在单机共卡运行 RL 训练器与 vLLM 采样器时，固定 `gpu_memory_utilization` 常因多模态视觉编码峰值波动引发显存溢出或浪费。",
+        "mechanism": "彻底移除旧版 Runner V1，统一到 Model Runner V2，并在预热结束后根据真实可用空闲显存动态设定可扩展 KV Cache 容量。",
+        "experiments_summary": "官方 Release 实装 Model Runner V2 默认路径、预热后自动 KV Cache 定容，并升级 Python 3.11+ 与默认 CORS 安全边界。",
+        "repro_and_reference": "升级本地 RL rollout 推理后端时需注意废弃的 V1 环境变量与 Python 3.11+ 版本要求。",
+        "experiment_rows": [],
+        "backbone_and_params": "通用 LLM / VLM 推理引擎",
+        "gpu_and_duration": "全系 GPU 开箱即用",
+        "seeds_note": "系统框架版本发布（不涉及随机种子）"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.5
+    },
+    {
+      "slug": "vlm-infra-deepmind-genie-4",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "multimodal-base"
+      ],
+      "lab_tags": [
+        "lab-openai-deepmind"
+      ],
+      "institution_tags": [
+        "Google DeepMind"
+      ],
+      "title_zh": "Google DeepMind 发布 Genie 4：面向智能体交互训练的实时音画世界模型",
+      "title_en": "Genie 4: Real-Time Interactive World Models for Safe Agent Simulation",
+      "one_line_pain": "针对真实交互环境并发慢且高风险操作不可逆的问题，提供支持原生音频与物理反馈的实时交互沙盒，给出世界模型实测参照。",
+      "metric_badges": [
+        {
+          "text": "实时交互世界模型",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "工业界大规模闭源基础设施",
+      "authors": [
+        "Google DeepMind"
+      ],
+      "published_date": "2026-11-22",
+      "venue_or_source": "Google DeepMind Blog",
+      "url_primary": "https://deepmind.google/blog/",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Google DeepMind introduces Genie 4, a real-time interactive world model with native audio and consistent environment simulation designed as a safe training and evaluation sandbox for agents.",
+      "four_elements": {
+        "pain_point": "具身与数字智能体在真实环境做探索采样时吞吐受限，且错误动作可能造成不可逆状态污染。",
+        "mechanism": "通过统一时空与原生音频生成的交互式世界模型实时响应智能体动作输入，维持长时程状态一致性。",
+        "experiments_summary": "官方技术博客展示长时程实时交互一致性与多模态反馈能力，暂未开放模型权重与离线基准代码。",
+        "repro_and_reference": "属于工业界大规模预训练世界模型风向标；结合近期 OSU 关于教程条件下世界模型收益有限的实证结论，桌面 GUI 任务不必盲目追逐重型视觉世界模型。",
+        "experiment_rows": [],
+        "backbone_and_params": "闭源大规模世界模型",
+        "gpu_and_duration": "工业界集群训练（未公开卡数）",
+        "seeds_note": "官方博客未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 6.9
+    }
+  ],
+  "folded_items": [
+    {
+      "slug": "fold-gui-dom-snapshot",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "WebSnapshot-Lite：静态网页可访问性树压缩对比小记",
+      "title_en": "WebSnapshot-Lite: Accessibility Tree Token Compression Note",
+      "one_line_takeaway": "仅在静态表单网页对比三种截断规则，未涉及多步 RL 训练",
+      "url": "https://arxiv.org/list/cs.HC/recent",
+      "published_date": "2026-11-22",
+      "venue_or_source": "arXiv cs.HC",
+      "arxiv_id": ""
+    }
+  ]
+}

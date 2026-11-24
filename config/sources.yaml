@@ -1,0 +1,202 @@
+# Declarative upstream sources for Daily Research Radar.
+# Note: Broken Reddit RSS and unstable third-party WeChat forwarders are intentionally excluded.
+
+rate_limits:
+  default_per_host_interval_sec: 1.5
+  arxiv_interval_sec: 3.1
+  github_interval_sec: 1.2
+  consecutive_failure_alert_days: 3
+  max_age_days: 5
+
+sources:
+  # 1. Academic daily increments
+  - id: "arxiv-gui-cua"
+    name: "arXiv Daily (GUI Agent / Computer Use / RL)"
+    kind: "arxiv_api"
+    section: "papers"
+    enabled: true
+    url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.CL+OR+cat:cs.LG+OR+cat:cs.AI+OR+cat:cs.HC)+AND+(all:%22GUI+agent%22+OR+all:%22computer+use%22+OR+all:%22computer-use%22+OR+all:%22OSWorld%22+OR+all:%22AndroidWorld%22+OR+all:%22WebArena%22)&sortBy=submittedDate&sortOrder=descending&max_results=40"
+
+  - id: "arxiv-ossl-ood"
+    name: "arXiv Daily (Open-Set SSL / VLM OOD / GCD)"
+    kind: "arxiv_api"
+    section: "papers"
+    enabled: true
+    url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.LG)+AND+(all:%22open-set+semi-supervised%22+OR+all:%22out-of-distribution+detection%22+OR+all:%22generalized+category+discovery%22+OR+all:%22negative+label%22)&sortBy=submittedDate&sortOrder=descending&max_results=35"
+
+  - id: "hf-daily-papers"
+    name: "Hugging Face Daily Papers"
+    kind: "hf_daily_papers"
+    section: "papers"
+    enabled: true
+    url: "https://huggingface.co/api/daily_papers"
+
+  # 2. Open-source weights, GitHub Trending & core RL/inference framework releases
+  - id: "gh-trending-python"
+    name: "GitHub Trending (Python Daily)"
+    kind: "github_trending"
+    section: "opensource"
+    enabled: true
+    url: "https://github.com/trending/python?since=daily"
+
+  - id: "gh-release-verl"
+    name: "GitHub Releases: verl-project/verl"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "verl-project/verl"
+    enabled: true
+    url: "https://api.github.com/repos/verl-project/verl/releases?per_page=5"
+
+  - id: "gh-release-openrlhf"
+    name: "GitHub Releases: OpenRLHF/OpenRLHF"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "OpenRLHF/OpenRLHF"
+    enabled: true
+    url: "https://api.github.com/repos/OpenRLHF/OpenRLHF/releases?per_page=5"
+
+  - id: "gh-release-vllm"
+    name: "GitHub Releases: vllm-project/vllm"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "vllm-project/vllm"
+    enabled: true
+    url: "https://api.github.com/repos/vllm-project/vllm/releases?per_page=5"
+
+  - id: "gh-release-sglang"
+    name: "GitHub Releases: sgl-project/sglang"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "sgl-project/sglang"
+    enabled: true
+    url: "https://api.github.com/repos/sgl-project/sglang/releases?per_page=5"
+
+  - id: "gh-release-trl"
+    name: "GitHub Releases: huggingface/trl"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "huggingface/trl"
+    enabled: true
+    url: "https://api.github.com/repos/huggingface/trl/releases?per_page=5"
+
+  - id: "gh-release-osworld"
+    name: "GitHub Releases: xlang-ai/OSWorld"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "xlang-ai/OSWorld"
+    enabled: true
+    url: "https://api.github.com/repos/xlang-ai/OSWorld/releases?per_page=5"
+
+  # 3. Official industry lab blogs & high-signal researcher newsletters
+  - id: "blog-anthropic"
+    name: "Anthropic Research & Engineering"
+    kind: "rss"
+    section: "industry"
+    org: "Anthropic"
+    enabled: true
+    url: "https://www.anthropic.com/rss.xml"
+
+  - id: "blog-openai"
+    name: "OpenAI News & Research"
+    kind: "rss"
+    section: "industry"
+    org: "OpenAI"
+    enabled: true
+    url: "https://openai.com/news/rss.xml"
+
+  - id: "blog-deepmind"
+    name: "Google DeepMind Blog"
+    kind: "rss"
+    section: "industry"
+    org: "Google DeepMind"
+    enabled: true
+    url: "https://deepmind.google/blog/rss.xml"
+
+  - id: "blog-qwen"
+    name: "Qwen Official Blog"
+    kind: "rss"
+    section: "industry"
+    org: "阿里通义 Qwen"
+    enabled: true
+    url: "https://qwenlm.github.io/feed.xml"
+
+  - id: "blog-microsoft-research"
+    name: "Microsoft Research Blog"
+    kind: "rss"
+    section: "industry"
+    org: "Microsoft Research"
+    enabled: true
+    url: "https://www.microsoft.com/en-us/research/feed/"
+
+  - id: "blog-huggingface"
+    name: "Hugging Face Official Blog (Open Weights & TRL/RL)"
+    kind: "rss"
+    section: "industry"
+    org: "Hugging Face"
+    enabled: true
+    url: "https://huggingface.co/blog/feed.xml"
+
+  - id: "blog-karpathy"
+    name: "Andrej Karpathy Blog"
+    kind: "rss"
+    section: "industry"
+    org: "Andrej Karpathy"
+    enabled: true
+    url: "https://karpathy.github.io/feed.xml"
+
+  - id: "blog-epoch-ai"
+    name: "Epoch AI Research & Compute Trends"
+    kind: "rss"
+    section: "industry"
+    org: "Epoch AI"
+    enabled: true
+    url: "https://epoch.ai/atom.xml"
+
+  - id: "blog-metr"
+    name: "METR Autonomous Agent Evaluations"
+    kind: "rss"
+    section: "industry"
+    org: "METR"
+    enabled: true
+    url: "https://metr.org/feed.xml"
+
+  - id: "blog-lilian-weng"
+    name: "Lilian Weng (Lil'Log)"
+    kind: "rss"
+    section: "industry"
+    org: "Lilian Weng"
+    enabled: true
+    url: "https://lilianweng.github.io/index.xml"
+
+  - id: "blog-raschka"
+    name: "Sebastian Raschka (Ahead of AI)"
+    kind: "rss"
+    section: "industry"
+    org: "Ahead of AI"
+    enabled: true
+    url: "https://magazine.sebastianraschka.com/feed"
+
+  - id: "blog-simon-willison"
+    name: "Simon Willison's Weblog"
+    kind: "rss"
+    section: "industry"
+    org: "Simon Willison"
+    enabled: true
+    url: "https://simonwillison.net/atom/everything/"
+
+  - id: "blog-interconnects"
+    name: "Interconnects (Nathan Lambert)"
+    kind: "rss"
+    section: "industry"
+    org: "Interconnects"
+    enabled: true
+    url: "https://www.interconnects.ai/feed"
+
+  - id: "blog-latent-space"
+    name: "Latent Space ([AINews] auto-split)"
+    kind: "rss"
+    section: "industry"
+    org: "Latent Space"
+    split_ainews: true
+    enabled: true
+    url: "https://www.latent.space/feed"

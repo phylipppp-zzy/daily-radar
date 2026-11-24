@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daily-radar"
+version = "0.1.0"
+description = "Daily Research & Industry Radar: multi-source ingestion, dual-track filtering, number verification, secret scanning, 3-tier static GitHub Pages generator, and Feishu 10:00 webhook briefing."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "phylipppp-zzy" }]
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.scripts]
+daily-radar = "daily_radar.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["daily_radar*"]

@@ -1,0 +1,139 @@
+{
+  "ccf_edition_note": "依据 CCF 第七版目录（2026-03-31 正式发布）：ICLR 新升人工智能 A 类，IJCAI 调整为 B 类，COLM 暂未列入目录；主会、Findings、NeurIPS E&D 赛道与专题 Workshop 在卡片中显式区分标注。",
+  "special_issue_window_days": 7,
+  "conferences": [
+    {
+      "slug": "aaai-2027",
+      "name": "AAAI 2027",
+      "ccf_grade": "A",
+      "tracks": ["Main Technical Track"],
+      "focus": "小模型 GUI grounding 与单点轻量 RL（如 GUI-G²、UI-R1 类工作）",
+      "submission_deadline": "2026-07-28",
+      "notification_date": "2026-11-30",
+      "conference_dates": "2027-02-16 ~ 2027-02-23",
+      "official_source": "https://aaai.org/conference/aaai/aaai-27/"
+    },
+    {
+      "slug": "neurips-2026",
+      "name": "NeurIPS 2026",
+      "ccf_grade": "A",
+      "tracks": ["Main Conference", "Evaluations & Datasets (E&D) Track"],
+      "focus": "在线 RL、奖励模型、环境合成与安全防御；E&D 赛道对高校 4–8 卡可执行环境与安全基准友好（已录用约 47 篇 GUI 论文）",
+      "submission_deadline": "2026-05-15",
+      "notification_date": "2026-09-24",
+      "conference_dates": "2026-12-06 ~ 2026-12-12",
+      "proceedings_trigger_date": "2026-12-06",
+      "official_source": "https://neurips.cc/Conferences/2026"
+    },
+    {
+      "slug": "iclr-2027",
+      "name": "ICLR 2027",
+      "ccf_grade": "A（七版新升）",
+      "tracks": ["Oral", "Spotlight", "Poster"],
+      "focus": "GUI 论文密度最高顶会：端到端动作模型、课程 RL、红队安全 Oral，以及 VLM OOD 检测（如 NegLabel 路线）",
+      "submission_deadline": "2026-09-25",
+      "notification_date": "2026-12-16",
+      "conference_dates": "2027-04-26 ~ 2027-04-30",
+      "official_source": "https://iclr.cc/Conferences/2027"
+    },
+    {
+      "slug": "chi-2027",
+      "name": "CHI 2027",
+      "ccf_grade": "A（人机交互）",
+      "tracks": ["Papers"],
+      "focus": "人机协同监督界面、智能体可解释性、操作隐私保护与无障碍交互",
+      "submission_deadline": "2026-09-10",
+      "notification_date": "2026-12-17",
+      "conference_dates": "2027-05-10 ~ 2027-05-14",
+      "official_source": "https://chi2027.acm.org/"
+    },
+    {
+      "slug": "cvpr-2027",
+      "name": "CVPR 2027",
+      "ccf_grade": "A",
+      "tracks": ["Main", "Findings"],
+      "focus": "开放集半监督 / VLM OOD 检测头号主场 + GUI 屏幕视觉感知、视觉提示攻击防御与视觉判分器",
+      "submission_deadline": "2026-11-16",
+      "notification_date": "2027-02-25",
+      "conference_dates": "2027-06-20 ~ 2027-06-25",
+      "official_source": "https://cvpr.thecvf.com/Conferences/2027"
+    },
+    {
+      "slug": "acl-2027",
+      "name": "ACL 2027",
+      "ccf_grade": "A",
+      "tracks": ["Main", "Findings"],
+      "focus": "GUI 论文绝对数量大户（年产超 60 篇）：多轮轨迹合成、移动端/中文 App 基准与综述",
+      "submission_deadline": "2027-01-04",
+      "notification_date": "2027-04-20",
+      "conference_dates": "2027-08-17 ~ 2027-08-22",
+      "official_source": "https://2027.aclweb.org/"
+    },
+    {
+      "slug": "icml-2027",
+      "name": "ICML 2027",
+      "ccf_grade": "A",
+      "tracks": ["Oral", "Spotlight", "Poster"],
+      "focus": "计算机控制 RL 理论与优势估计（如 GuAE）、自进化记忆（SE-GA）、开放世界聚类/半监督（TAC / DS3L）",
+      "submission_deadline": "2027-01-22",
+      "notification_date": "2027-05-03",
+      "conference_dates": "2027-07-31 ~ 2027-08-06",
+      "official_source": "https://icml.cc/Conferences/2027"
+    },
+    {
+      "slug": "iccv-2027",
+      "name": "ICCV 2027",
+      "ccf_grade": "A（奇数年）",
+      "tracks": ["Main"],
+      "focus": "OSSL / OOD 经典重镇（IOMatch、SSB、CLIPN 发表地）+ 跨平台视觉定位与屏幕理解",
+      "submission_deadline": "2027-03-08",
+      "notification_date": "2027-07-15",
+      "conference_dates": "2027-10-03 ~ 2027-10-07",
+      "official_source": "https://iccv.thecvf.com/"
+    },
+    {
+      "slug": "colm-2027",
+      "name": "COLM 2027 & Lifelong Agent Workshop",
+      "ccf_grade": "非目录",
+      "tracks": ["Main", "Lifelong Agent Workshop"],
+      "focus": "主会偏评测方法与判分器（Verifiers）；Lifelong Agent Workshop 专设 Computer-Use and Web Agents 方向",
+      "submission_deadline": "2027-03-28",
+      "notification_date": "2027-07-08",
+      "conference_dates": "2027-10-04 ~ 2027-10-08",
+      "official_source": "https://colm.cc/"
+    },
+    {
+      "slug": "uist-2027",
+      "name": "UIST 2027",
+      "ccf_grade": "A（人机交互）",
+      "tracks": ["Papers"],
+      "focus": "实时桌面/网页代理交互系统工程、人类接管与可视化调试工具",
+      "submission_deadline": "2027-04-07",
+      "notification_date": "2027-07-25",
+      "conference_dates": "2027-10-26 ~ 2027-10-29",
+      "official_source": "https://uist.acm.org/"
+    },
+    {
+      "slug": "emnlp-2027",
+      "name": "EMNLP 2027",
+      "ccf_grade": "B",
+      "tracks": ["Main", "Findings"],
+      "focus": "高产语言驱动 GUI 智能体评测、反思纠错与多轮强化学习",
+      "submission_deadline": "2027-05-25",
+      "notification_date": "2027-08-20",
+      "conference_dates": "2027-11-05 ~ 2027-11-10",
+      "official_source": "https://emnlp.org/"
+    },
+    {
+      "slug": "eccv-mmda",
+      "name": "ECCV + MMDA Workshop",
+      "ccf_grade": "B（偶数年）",
+      "tracks": ["Main", "MMDA Workshop"],
+      "focus": "首届 GUI 专属 Workshop MMDA（AI2 组织）举办地，主会收视觉评判器与 OSSL（SCOMatch）",
+      "submission_deadline": "2028-03-05",
+      "notification_date": "2028-07-01",
+      "conference_dates": "2026-09-08 ~ 2026-09-12（上届已开，论文集常驻）",
+      "official_source": "https://eccv.ecva.net/"
+    }
+  ]
+}

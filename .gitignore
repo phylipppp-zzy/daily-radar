@@ -1,0 +1,18 @@
+# Generated static site output (built dynamically in GitHub Actions or local preview)
+_site/
+dist/
+build/
+*.egg-info/
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local runtime state & credentials (NEVER commit secrets or local machine health logs)
+state/
+.env
+*.secret
+webhook.json
+llm.json
+sensitive_terms.txt

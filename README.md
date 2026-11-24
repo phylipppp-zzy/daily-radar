@@ -47,13 +47,25 @@ python3 -m daily_radar record-feedback "#雷达反馈 👍 2026-11-24/gui-rl-261
 python3 -m unittest discover -s tests -v
 ```
 
-## 启用用户级定时任务与 GitHub Pages 发布
+## 启用 GitHub Pages 独立仓库、专用飞书群与定时任务
 
-1. 在 GitHub 新建独立公开仓库 `phylipppp-zzy/daily-radar`，在仓库 `Settings -> Pages -> Build and deployment` 中将 `Source` 设为 **GitHub Actions**。
-2. 将本地仓库关联远端并推送 `main` 分支后，确认首次 Actions 部署成功访问 `https://phylipppp-zzy.github.io/daily-radar/`。
-3. 安装并启用用户级 `systemd` 定时器：
+1. **一键创建公开仓库并启用 GitHub Actions Pages**（`phylipppp-zzy/daily-radar` -> `https://phylipppp-zzy.github.io/daily-radar/`）：
 
 ```bash
-chmod +x systemd/install_units.sh
-./systemd/install_units.sh --enable
+bash scripts/bootstrap_github_pages.sh
+```
+
+2. **新建专用飞书群并接入自定义机器人 Webhook**（与日常 Agent 对话流物理隔离）：
+   - 在飞书客户端点击「新建群组」（例如命名为 `每日科研雷达`）→ 打开右上角「群设置 → 群机器人 → 添加机器人 → 自定义机器人」；
+   - 安全设置勾选 **「签名校验」**，复制生成的 **Webhook 地址** 与 **签名密钥（Secret）**；
+   - 在终端执行下列命令（输入全程隐藏，写入 `0600` 权限 `~/.config/daily-radar/webhook.json`，并立即向新群发送今日验证早报卡）：
+
+```bash
+python3 -m daily_radar configure-webhook --verify-send
+```
+
+3. **安装并启用用户级 `systemd` 定时器**（每日 `09:15 CST` 构建部署并轮询 Pages 就绪，`10:00 CST` 准点推送飞书早报卡）：
+
+```bash
+bash systemd/install_units.sh --enable
 ```

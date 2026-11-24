@@ -277,6 +277,39 @@ class PipelineAndLLMTest(unittest.TestCase):
                 base_f[0].raw_score,
             )
 
+    def test_agy_cli_gemini_primary_channel(self) -> None:
+        from unittest.mock import patch
+        import subprocess
+
+        fake_stdout = json.dumps(
+            {
+                "status": "SUCCESS",
+                "response": '```json\n{"title_zh": "Gemini 提炼测试", "one_line_pain": "测试"}\n```',
+            },
+            ensure_ascii=False,
+        )
+        client = DualChannelLLMClient(
+            {
+                "primary": {
+                    "name": "gemini-agy-primary",
+                    "provider": "agy_cli",
+                    "agy_bin": "/bin/echo",
+                    "screen_model": "gemini-4-hydrogen-medium",
+                    "distill_model": "gemini-4-neon-medium",
+                    "timeout_sec": 30,
+                }
+            }
+        )
+        with patch(
+            "daily_radar.pipeline.subprocess.run",
+            return_value=subprocess.CompletedProcess(args=["agy"], returncode=0, stdout=fake_stdout, stderr=""),
+        ) as mock_run:
+            out = client.complete_json([{"role": "user", "content": "hi"}], stage="distill")
+        self.assertEqual(out["title_zh"], "Gemini 提炼测试")
+        self.assertEqual(client.last_channel_used, "gemini-agy-primary")
+        called_cmd = mock_run.call_args[0][0]
+        self.assertIn("gemini-4-neon-medium", called_cmd)
+
 
 if __name__ == "__main__":
     unittest.main()

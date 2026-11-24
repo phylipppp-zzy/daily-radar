@@ -8,6 +8,8 @@ import json
 import math
 from pathlib import Path
 import re
+import shutil
+import subprocess
 from typing import Any
 import urllib.error
 import urllib.request
@@ -294,6 +296,16 @@ class DualChannelLLMClient:
         self.backup = llm_config.get("backup") or {}
         self.last_channel_used = "none"
 
+    @staticmethod
+    def _channel_configured(ch: dict[str, Any]) -> bool:
+        if not ch:
+            return False
+        provider = str(ch.get("provider") or "openai_compat").strip().lower()
+        if provider == "agy_cli":
+            agy_bin = str(ch.get("agy_bin") or "agy").strip()
+            return bool(agy_bin and (Path(agy_bin).is_file() or shutil.which(agy_bin)))
+        return bool(ch.get("base_url") and ch.get("api_key"))
+
     @classmethod
     def from_user_config(cls, config_home: Path | None = None) -> DualChannelLLMClient | None:
         cfg_dir = config_home or default_user_config_dir()
@@ -301,11 +313,72 @@ class DualChannelLLMClient:
         if not llm_file.is_file():
             return None
         raw = json.loads(ensure_mode_0600_read(llm_file))
-        primary_ok = bool((raw.get("primary") or {}).get("base_url") and (raw.get("primary") or {}).get("api_key"))
-        backup_ok = bool((raw.get("backup") or {}).get("base_url") and (raw.get("backup") or {}).get("api_key"))
+        primary_ok = cls._channel_configured(raw.get("primary") or {})
+        backup_ok = cls._channel_configured(raw.get("backup") or {})
         if not primary_ok and not backup_ok:
             return None
         return cls(raw)
+
+    @staticmethod
+    def _extract_json_object(raw_text: str) -> dict[str, Any]:
+        cleaned = raw_text.strip()
+        if cleaned.startswith("```"):
+            cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
+            cleaned = re.sub(r"\s*```$", "", cleaned)
+        try:
+            obj = json.loads(cleaned)
+        except json.JSONDecodeError:
+            start = cleaned.find("{")
+            end = cleaned.rfind("}")
+            if start == -1 or end <= start:
+                raise
+            obj = json.loads(cleaned[start : end + 1])
+        if not isinstance(obj, dict):
+            raise json.JSONDecodeError("Expected JSON object", cleaned, 0)
+        return obj
+
+    def _call_agy_cli_channel(
+        self,
+        channel: dict[str, Any],
+        messages: list[dict[str, str]],
+        *,
+        stage: str = "distill",
+    ) -> dict[str, Any]:
+        agy_bin = str(channel.get("agy_bin") or "agy").strip()
+        model = str(
+            channel.get("distill_model" if stage == "distill" else "screen_model")
+            or ("gemini-4-neon-medium" if stage == "distill" else "gemini-4-hydrogen-medium")
+        )
+        timeout_sec = float(channel.get("timeout_sec", 120))
+        prompt_parts = []
+        for msg in messages:
+            role = str(msg.get("role") or "user").upper()
+            content = str(msg.get("content") or "")
+            prompt_parts.append(f"[{role}]\n{content}")
+        prompt_parts.append("\nOutput ONLY one valid JSON object with no markdown commentary.")
+        full_prompt = "\n\n".join(prompt_parts)
+
+        proc = subprocess.run(
+            [
+                agy_bin,
+                "--output-format",
+                "json",
+                "--model",
+                model,
+                "--disable-slash-commands",
+                f"-p={full_prompt}",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=timeout_sec,
+            check=False,
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(f"agy CLI failed (rc={proc.returncode}): {(proc.stderr or proc.stdout).strip()[:200]}")
+        outer = json.loads(proc.stdout)
+        if outer.get("status") != "SUCCESS" or "response" not in outer:
+            raise RuntimeError(f"agy CLI returned non-success payload: {str(outer)[:200]}")
+        return self._extract_json_object(str(outer["response"]))
 
     def _call_single_channel(
         self,
@@ -314,6 +387,10 @@ class DualChannelLLMClient:
         *,
         stage: str = "distill",
     ) -> dict[str, Any]:
+        provider = str(channel.get("provider") or "openai_compat").strip().lower()
+        if provider == "agy_cli":
+            return self._call_agy_cli_channel(channel, messages, stage=stage)
+
         base_url = str(channel.get("base_url") or "").rstrip("/")
         api_key = str(channel.get("api_key") or "").strip()
         if not base_url or not api_key:
@@ -334,7 +411,7 @@ class DualChannelLLMClient:
             endpoint,
             data=body,
             headers={
-                "Content-Type": "application/json",
+                "Content-Type": "application/json; charset=utf-8",
                 "Authorization": f"Bearer {api_key}",
                 "User-Agent": "DailyResearchRadar/0.1",
             },
@@ -343,18 +420,27 @@ class DualChannelLLMClient:
         with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
             resp_json = json.loads(resp.read().decode("utf-8"))
         content = resp_json["choices"][0]["message"]["content"]
-        return json.loads(content)
+        return self._extract_json_object(content)
 
     def complete_json(self, messages: list[dict[str, str]], *, stage: str = "distill") -> dict[str, Any]:
         errors: list[str] = []
         for label, ch in (("primary", self.primary), ("backup", self.backup)):
-            if not ch.get("base_url") or not ch.get("api_key"):
+            if not self._channel_configured(ch):
                 continue
             try:
                 out = self._call_single_channel(ch, messages, stage=stage)
                 self.last_channel_used = str(ch.get("name") or label)
                 return out
-            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, KeyError, json.JSONDecodeError) as exc:
+            except (
+                urllib.error.HTTPError,
+                urllib.error.URLError,
+                TimeoutError,
+                subprocess.TimeoutExpired,
+                OSError,
+                RuntimeError,
+                KeyError,
+                json.JSONDecodeError,
+            ) as exc:
                 if isinstance(exc, urllib.error.HTTPError):
                     exc.close()
                 errors.append(f"{label}({type(exc).__name__}: {exc})")

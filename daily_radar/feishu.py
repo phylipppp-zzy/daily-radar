@@ -66,30 +66,59 @@ def build_feishu_morning_card(
 
     stats = issue.stats_by_track()
     stats_line = (
-        f"**GUI-RL 精选 {stats['gui-rl']} 篇** ｜ "
-        f"**OSSL/OOD 精选 {stats['ossl-ood']} 篇** ｜ "
-        f"**开源与业界 {stats['opensource_and_industry'] + stats['vlm-infra']} 条**"
-        f"（另折叠泛相关 {len(issue.folded_items)} 条）"
+        f"**今日精选 {len(issue.featured_items)} 条**："
+        f"GUI-RL `{stats['gui-rl']}` ｜ "
+        f"OSSL/OOD `{stats['ossl-ood']}` ｜ "
+        f"开源与业界 `{stats['opensource_and_industry'] + stats['vlm-infra']}`"
+        f"　·　折叠泛相关 `{len(issue.folded_items)}` 条"
     )
-
-    if issue.highlights_top3:
-        highlights_md = "\n".join(line[:110] for line in issue.highlights_top3[:3])
-    else:
-        highlights_md = "• 今日各监控信源无命中核心阈值的高优新增，总览页如实留空不凑数。"
 
     elements: list[dict[str, Any]] = []
     if pages_degraded_note:
         elements.append({"tag": "markdown", "content": f"⚠️ **{pages_degraded_note}**"})
     if issue.special_conference_banner:
-        elements.append({"tag": "markdown", "content": f"**{issue.special_conference_banner['headline']}**"})
+        elements.append({"tag": "markdown", "content": f"🎯 **{issue.special_conference_banner['headline']}**"})
 
     elements.append({"tag": "markdown", "content": stats_line})
-    elements.append({"tag": "markdown", "content": highlights_md})
+    if issue.global_trend_summary:
+        lead = issue.global_trend_summary[0].strip()
+        if lead:
+            elements.append({"tag": "markdown", "content": f"<font color='grey'>{lead}</font>"})
+
+    elements.append({"tag": "hr"})
+
+    if issue.featured_items:
+        item_blocks: list[str] = []
+        for idx, item in enumerate(issue.featured_items[:4], start=1):
+            item_url = f"{base}/daily/{issue.date}/item-{item.slug}.html"
+            badge_bits: list[str] = []
+            if item.metric_badges:
+                badge_bits.append(item.metric_badges[0].text)
+            if item.openness_label:
+                badge_bits.append(item.openness_label)
+            meta_suffix = f"　`{' · '.join(badge_bits)}`" if badge_bits else ""
+            pain = item.one_line_pain.strip()
+            item_blocks.append(
+                f"**{idx}. [{item.track_label}]** [{item.title_zh}]({item_url}){meta_suffix}\n"
+                f"<font color='grey'>{pain}</font>"
+            )
+        elements.append({"tag": "markdown", "content": "\n\n".join(item_blocks)})
+    elif issue.highlights_top3:
+        highlights_md = "\n".join(line for line in issue.highlights_top3[:3])
+        elements.append({"tag": "markdown", "content": highlights_md})
+    else:
+        elements.append(
+            {
+                "tag": "markdown",
+                "content": "今日各监控信源无命中核心阈值的高优新增，总览页如实留空不凑数。",
+            }
+        )
 
     if issue.source_health_alerts:
         alert_short = issue.source_health_alerts[0][:100]
         elements.append({"tag": "markdown", "content": f"⚠️ 信源健康提醒：{alert_short}"})
 
+    elements.append({"tag": "hr"})
     elements.append(
         {
             "tag": "column_set",
@@ -119,6 +148,10 @@ def build_feishu_morning_card(
         "header": {
             "template": header_template,
             "title": {"tag": "plain_text", "content": header_title},
+            "subtitle": {
+                "tag": "plain_text",
+                "content": f"点击任意条目标题直达四要素详情页 · 提炼引擎：{issue.llm_channel_used}",
+            },
         },
         "body": {"elements": elements},
     }

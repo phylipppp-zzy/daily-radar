@@ -160,6 +160,76 @@ def load_webhook_credentials(config_home: Path | None = None) -> tuple[str, str]
     return url, secret
 
 
+def _parse_env_file_0600(env_path: Path) -> dict[str, str]:
+    text = ensure_mode_0600_read(env_path)
+    out: dict[str, str] = {}
+    for line in text.splitlines():
+        s = line.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        k, v = s.split("=", 1)
+        out[k.strip()] = v.strip().strip("'\"")
+    return out
+
+
+def _send_via_feishu_app_api(
+    card: dict[str, Any],
+    cfg: dict[str, Any],
+    *,
+    timeout: float = 15.0,
+) -> dict[str, Any]:
+    """Send Card JSON 2.0 via Feishu Open API `im/v1/messages` using local 0600 app credentials."""
+    env_file_raw = str(cfg.get("env_file") or "").strip()
+    env_vars: dict[str, str] = {}
+    if env_file_raw:
+        env_vars = _parse_env_file_0600(Path(env_file_raw).expanduser())
+
+    app_id = str(cfg.get("app_id") or env_vars.get("FEISHU_APP_ID") or "").strip()
+    app_secret = str(cfg.get("app_secret") or env_vars.get("FEISHU_APP_SECRET") or "").strip()
+    receive_id_type = str(cfg.get("receive_id_type") or "open_id").strip()
+    receive_id = str(cfg.get("receive_id") or env_vars.get("FEISHU_OWNER_OPEN_ID") or "").strip()
+    api_base = str(cfg.get("api_base") or "https://open.feishu.cn").rstrip("/")
+
+    if not app_id or not app_secret or not receive_id:
+        raise ValueError("Feishu app_api mode requires app_id, app_secret, and receive_id (or env_file).")
+
+    tok_req = urllib.request.Request(
+        f"{api_base}/open-apis/auth/v3/tenant_access_token/internal",
+        data=json.dumps({"app_id": app_id, "app_secret": app_secret}).encode("utf-8"),
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        method="POST",
+    )
+    with urllib.request.urlopen(tok_req, timeout=timeout) as resp:
+        tok_data = json.loads(resp.read().decode("utf-8"))
+    if tok_data.get("code", -1) != 0 or not tok_data.get("tenant_access_token"):
+        raise RuntimeError(f"Feishu tenant_access_token failed: {tok_data}")
+    token = str(tok_data["tenant_access_token"])
+
+    msg_body = json.dumps(
+        {
+            "receive_id": receive_id,
+            "msg_type": "interactive",
+            "content": json.dumps(card, ensure_ascii=False),
+        },
+        ensure_ascii=False,
+    ).encode("utf-8")
+    msg_req = urllib.request.Request(
+        f"{api_base}/open-apis/im/v1/messages?receive_id_type={receive_id_type}",
+        data=msg_body,
+        headers={
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": f"Bearer {token}",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(msg_req, timeout=timeout) as resp:
+        resp_data = json.loads(resp.read().decode("utf-8"))
+    code = resp_data.get("code", -1)
+    if code != 0:
+        raise RuntimeError(f"Feishu Open API rejected card (code={code}): {resp_data}")
+    return resp_data
+
+
 def send_feishu_webhook(
     issue: DailyIssue,
     *,
@@ -170,17 +240,23 @@ def send_feishu_webhook(
     pages_degraded_note: str = "",
     timeout: float = 15.0,
 ) -> dict[str, Any]:
-    if webhook_url_override:
-        webhook_url = webhook_url_override
-        secret = secret_override
-    else:
-        webhook_url, secret = load_webhook_credentials(config_home)
-
     card = build_feishu_morning_card(
         issue,
         public_base_url=public_base_url,
         pages_degraded_note=pages_degraded_note,
     )
+
+    if not webhook_url_override:
+        cfg_dir = config_home or default_user_config_dir()
+        webhook_file = cfg_dir / "webhook.json"
+        raw_cfg = json.loads(ensure_mode_0600_read(webhook_file))
+        if str(raw_cfg.get("mode") or "").strip().lower() == "app_api":
+            return _send_via_feishu_app_api(card, raw_cfg, timeout=timeout)
+        webhook_url, secret = load_webhook_credentials(config_home)
+    else:
+        webhook_url = webhook_url_override
+        secret = secret_override
+
     payload = build_webhook_payload(card, secret=secret)
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     req = urllib.request.Request(

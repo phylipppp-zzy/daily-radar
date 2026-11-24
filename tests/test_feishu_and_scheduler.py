@@ -255,6 +255,76 @@ class FeishuAndSchedulerTest(unittest.TestCase):
             server.shutdown()
             server.server_close()
 
+    def test_feishu_app_api_mode_reads_0600_env_and_sends_card(self) -> None:
+        sent_msgs: list[dict] = []
+
+        class _AppAPIHandler(BaseHTTPRequestHandler):
+            def log_message(self, fmt, *args):
+                return
+
+            def do_POST(self):
+                length = int(self.headers.get("Content-Length", "0"))
+                body = json.loads(self.rfile.read(length).decode("utf-8"))
+                if self.path == "/open-apis/auth/v3/tenant_access_token/internal":
+                    assert body["app_id"] == "cli_test_app"
+                    assert body["app_secret"] == "sec_test_app"
+                    resp = {"code": 0, "tenant_access_token": "t-mock-token"}
+                elif self.path.startswith("/open-apis/im/v1/messages?receive_id_type=open_id"):
+                    assert self.headers.get("Authorization") == "Bearer t-mock-token"
+                    sent_msgs.append(body)
+                    resp = {"code": 0, "data": {"message_id": "om_mock_001"}}
+                else:
+                    self.send_response(404)
+                    self.end_headers()
+                    return
+                out = json.dumps(resp).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(out)))
+                self.end_headers()
+                self.wfile.write(out)
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), _AppAPIHandler)
+        port = server.server_address[1]
+        t = threading.Thread(target=server.serve_forever, daemon=True)
+        t.start()
+        try:
+            issue = DailyIssue.from_dict(
+                json.loads((REPO_ROOT / "content/2026/11/2026-11-24.json").read_text(encoding="utf-8"))
+            )
+            with tempfile.TemporaryDirectory() as td:
+                cfg_home = Path(td)
+                env_file = cfg_home / "bridge.env"
+                write_mode_0600_atomic(
+                    env_file,
+                    "FEISHU_APP_ID=cli_test_app\nFEISHU_APP_SECRET=sec_test_app\nFEISHU_OWNER_OPEN_ID=ou_test_owner\n",
+                )
+                write_mode_0600_atomic(
+                    cfg_home / "webhook.json",
+                    json.dumps(
+                        {
+                            "mode": "app_api",
+                            "env_file": str(env_file),
+                            "receive_id_type": "open_id",
+                            "api_base": f"http://127.0.0.1:{port}",
+                        }
+                    ),
+                )
+                resp = send_feishu_webhook(
+                    issue,
+                    public_base_url="https://phylipppp-zzy.github.io/daily-radar",
+                    config_home=cfg_home,
+                )
+                self.assertEqual(resp["code"], 0)
+                self.assertEqual(len(sent_msgs), 1)
+                self.assertEqual(sent_msgs[0]["receive_id"], "ou_test_owner")
+                self.assertEqual(sent_msgs[0]["msg_type"], "interactive")
+                card = json.loads(sent_msgs[0]["content"])
+                self.assertEqual(card["schema"], "2.0")
+        finally:
+            server.shutdown()
+            server.server_close()
+
 
 if __name__ == "__main__":
     unittest.main()

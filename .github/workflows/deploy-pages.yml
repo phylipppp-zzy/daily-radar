@@ -36,7 +36,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check PyYAML
 
       - name: Enforce zero-binary & secret/confidentiality guardrails
-        run: python -m daily_radar scan-secrets --repo-root .
+        run: python -m daily_radar scan-secrets --target . --include-tests
 
       - name: Build 3-tier static site
         run: python -m daily_radar build-site --content-dir content --config-dir config --out-dir _site

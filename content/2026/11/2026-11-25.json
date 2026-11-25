@@ -1,16 +1,16 @@
 {
   "date": "2026-11-25",
   "weekday_zh": "周三",
-  "generated_at_cst": "2026-11-25 09:20:54 CST",
+  "generated_at_cst": "2026-11-25 14:16:27 CST",
   "global_trend_summary": [
-    "今日共从增量候选池中精选 7 条高信噪比动态（GUI-RL 论文 5 篇、OSSL/OOD 论文 1 篇、开源与业界前沿 1 条），另折叠泛相关速览 20 条。",
-    "核心看点聚焦：[GUI-RL] ROSWORLD：当数字桌面任务能力撞上物理键鼠执行；[GUI-RL] PACT：保护正确规划并修复错误动作的GUI智能体计划-动作一致性…。",
+    "今日共从增量候选池中精选 10 条高信噪比动态（GUI-RL 论文 5 篇、OSSL/OOD 论文 0 篇、开源与业界前沿 5 条），另折叠泛相关速览 20 条。",
+    "核心看点聚焦：[GUI-RL] PACT：保留正确计划并修复错误动作的 GUI 智能体一致性训练；[GUI-RL] ROSWorld：当数字桌面任务能力遭遇物理键鼠执行。",
     "近期顶会关键节点提醒：AAAI 2027（5 天后 2026-11-30）、NeurIPS 2026（11 天后 2026-12-06）、ICLR 2027（21 天后 2026-12-16）。"
   ],
   "highlights_top3": [
-    "• [GUI-RL] ROSWORLD：当数字桌面任务能力撞上物理键鼠执行（40任务/10款应用 ⚠️ 原文待核）",
-    "• [GUI-RL] PACT：保护正确规划并修复错误动作的GUI智能体计划-动作一致性训练（AndroidWorld +8.63 pp (68.97%)）",
-    "• [GUI-RL] 面向计算机操作智能体的自演化评测环境 CUA-SEE（任务与校验器闭环协同演化）"
+    "• [GUI-RL] PACT：保留正确计划并修复错误动作的 GUI 智能体一致性训练（AndroidWorld 68.97% (+8.63 pp)）",
+    "• [GUI-RL] ROSWorld：当数字桌面任务能力遭遇物理键鼠执行（40项OSWorld共享任务）",
+    "• [GUI-RL] AdaptiveVPI：面向自适应视觉提示注入的网页智能体防御评测基准（360个隐蔽跳转网页）"
   ],
   "special_conference_banner": null,
   "source_health_alerts": [],
@@ -23,6 +23,109 @@
   },
   "featured_items": [
     {
+      "slug": "gui-rl-2611-22591",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl",
+        "gui-env"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "PACT：保留正确计划并修复错误动作的 GUI 智能体一致性训练",
+      "title_en": "PACT: Plan-Action Consistency Training by Preserving Correct Plans and Repairing Actions in GUI Agents",
+      "one_line_pain": "针对GUI智能体计划对但动作错导致强化学习误罚好计划的问题，用计划保护屏蔽负梯度并以偏好对修复错误动作",
+      "metric_badges": [
+        {
+          "text": "AndroidWorld 68.97% (+8.63 pp)",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "OSWorld 44.17% (+3.25 pp)",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Zhuohan Cai",
+        "Zhangxuan Gu",
+        "Runze Li",
+        "Beitong Zhou",
+        "Ming Wen",
+        "Hongbo Yu",
+        "Shuheng Shen",
+        "Changhua Meng"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "url_primary": "https://arxiv.org/abs/2611.22591",
+      "url_pdf": "https://arxiv.org/pdf/2611.22591",
+      "url_arxiv_html": "https://arxiv.org/html/2611.22591",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.22591",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "GUI agents can formulate a correct immediate plan in their reasoning yet emit an action that fails to execute it, creating an execution gap. This recurring mismatch undermines reliable task completion, as a single execution error can derail a multi-step workflow. In outcome-supervised reinforcement learning, broadcasting a negative response-level advantage across all generated tokens risks penalizing valid planning together with erroneous execution. To address this credit-assignment conflict, we introduce PACT (Plan-Action Consistency Training), a training framework that combines reference-aligned plan protection and plan-aligned action repair without altering the original scalar action reward. Using annotated reference actions to identify execution gaps, PACT protects the verified plan by masking negative policy-gradient contributions across its token span. Keeping the generated reasoning unchanged as context, it then favors the reference action over the emitted erroneous action through a preference surrogate with stop-gradient pair weights. Compared with the outcome-only baseline, PACT raises AndroidWorld task success from 60.34% to 68.97% (+8.63 pp), while improving rule-based plan-action consistency on AndroidControl High from 83.71% to 89.74% (+6.03 pp). Adapting PACT to desktop agents also improves task success from 40.92% to 44.17% (+3.25 pp) on the full 369-task OSWorld benchmark. Together, these results establish PACT as an effective credit-assignment framework for bridging execution gaps and improving task completion across mobile and desktop GUI environments.\n[Comment: 21 pages, 11 figures, including supplementary material. This version clarifies implementation details and evaluation protocols in the supplementary material]",
+      "four_elements": {
+        "pain_point": "① 真实痛点与翻车场景：图形界面（GUI）智能体在推理阶段常常已经想对了下一步要干什么（例如明确说要点击界面上的“+”按钮），但最终输出的执行指令却发成了打开某个应用，形成“执行鸿沟”。在常见的结果监督强化学习中，一旦最终动作判错，系统会把同一个负向优势信号广播给整条回复的所有词元，导致原本写对的计划片段跟着错误动作一起挨罚；而如果直接加一个标量级的“思考-动作一致性奖励”，又无法指定修改方向，模型可能反过来篡改正确计划去迁就错误动作，或把错误计划执行得很一致。",
+        "mechanism": "② 具体方法机制：PACT 在组相对策略优化（GRPO）流程内部改动训练时的信用分配，不改原有标量动作奖励，也不改变推理时的单次前向“推理-动作”接口。第一步，利用带像素坐标或文本参数的标注参考动作，通过一套保守的规则选择器筛出“推理中的计划片段受参考动作支持、但最终输出动作错误且不一致”的失败样本；第二步（参考对齐的计划保护），在反向传播时屏蔽掉该正确计划词元区间上的负策略梯度，仅保留对动作词元和其余推理词元的原有惩罚；第三步（计划对齐的动作修复），固定模型已生成的推理过程不变，将其作为上下文，把参考动作构造成正例后缀、把模型错发的动作作为负例后缀，在原 GRPO 采样组之外用带停止梯度（stop-gradient）样本对权重的偏好替代损失（类似直接偏好优化 DPO）拉高正确动作概率，每步最多保留 64 个修复对。",
+        "experiments_summary": "③ 实验基准数字与对比口径：移动端主实验基于 Qwen3.5-9B 视觉语言模型监督微调初始化，使用 10,000 条带像素坐标参考动作的数据，在 32 张加速器上以 FSDP2 训练 2 个 epoch 共 1,250 步（每步采样 16 个提示词，每批做 1 次 PPO 更新，每步最多 64 个修复对；卡型、耗时与种子数原文未单列）。相比纯结果监督 GRPO 基线，PACT 在 AndroidWorld（116 个交互任务）上将任务成功率从 60.34% 提升至 68.97%（+8.63 个百分点），在 AndroidControl High（1,543 条轨迹、8,444 个状态）上将基于规则的计划-动作一致性从 83.71% 提升至 89.74%（+6.03 个百分点）；迁移至桌面端后，在全量 369 题 OSWorld 基准上将任务成功率从 40.92% 提升至 44.17%（+3.25 个百分点）。文中另提及对 OA、OAR 修复基线、AndroidControl Low 与 ScreenSpot-v2 Mobile（501 例）的评测及机理诊断，但所给片段未列出具体数字。",
+        "repro_and_reference": "④ 公开技术参考与复现成本评估：所给元数据未提供 GitHub 代码库或 Hugging Face 模型链接，且所给正文片段中部分关键训练超参数（每提示词采样数、学习率、温度、KL 系数、修复权重等）及桌面端适配细节缺失或仅称在补充材料中，当前公开可复现度偏低。算力上，移动端主训练需 9B 视觉语言模型在 32 张加速器上运行 FSDP2 强化学习，并依赖 10,000 条带像素坐标参考标注与手工规则选择器，算力与工程门槛均属中高水平。",
+        "experiment_rows": [
+          {
+            "benchmark": "AndroidWorld",
+            "metric": "任务成功率",
+            "value": "68.97%",
+            "baseline_delta": "+8.63 pp (vs 60.34% outcome-only GRPO)",
+            "setup_note": "分母为116个交互任务；Qwen3.5-9B SFT，10,000样本，1,250步，32加速器，贪婪解码，种子数未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "AndroidControl High",
+            "metric": "基于规则的计划-动作一致性",
+            "value": "89.74%",
+            "baseline_delta": "+6.03 pp (vs 83.71% outcome-only GRPO)",
+            "setup_note": "分母为1,543条轨迹共8,444个离线状态（仅给任务目标，非首步用模型自生成历史）；Qwen3.5-9B SFT，贪婪解码，种子数未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "OSWorld (full)",
+            "metric": "任务成功率",
+            "value": "44.17%",
+            "baseline_delta": "+3.25 pp (vs 40.92% outcome-only GRPO)",
+            "setup_note": "分母为全量369个桌面任务，最大100步，贪婪解码，官方原生评测器；桌面端基座与训练预算所给片段未单列",
+            "verified": true,
+            "unverified_numbers": []
+          }
+        ],
+        "backbone_and_params": "移动端主实验为 Qwen3.5-9B 视觉语言模型（SFT 初始化，冻结副本作参考策略）；桌面端基座与参数量所给材料未单列（称见补充材料）。",
+        "gpu_and_duration": "移动端训练使用 32 张加速器（FSDP2，1,250 步）；具体显卡型号、训练耗时、桌面端算力及推理硬件与耗时所给材料未单列。",
+        "seeds_note": "所给材料未单列随机种子数及多次运行波动（仅说明移动端与 OSWorld 评测采用贪婪解码）。",
+        "verdict_label": "机制对症但关键对照待核",
+        "verdict_reason": "PACT 精准抓住 GUI 强化学习中“计划对、动作错却一起受罚”的信用分配冲突，在 AndroidWorld（+8.63 pp）和全量 OSWorld（+3.25 pp）上均给出相对纯结果基线的绝对提升；但所给材料缺少消融变体（OA/OAR）与多随机种子方差，且未对齐额外修复样本带来的计算预算，暂不足以完全区分信用分配新意与额外参考监督红利。",
+        "critique_points": [
+          "核心假设依赖“标注参考动作”和“保守规则选择器”来精确定位推理中的计划词元区间并核验其空间或文本参数；一旦遇到推理措辞变化、隐式规划不点名控件、或存在多条等价有效交互路径（标注动作仅覆盖其一）的分布偏移，规则选择器容易漏检或切错区间，且该方法对规划本身出错的场景无能为力。跨平台泛化虽报告了 OSWorld +3.25 pp，但桌面端数据、基座与规则适配细节在所给片段中均未给出；后续需通过向选择器注入边界噪声或在多等价路径任务上评测，检验计划保护是否会反过来固化次优计划。",
+          "移动端实验虽将 O、OA、OAR 与 PACT 统一到 Qwen3.5-9B、10,000 样本与 1,250 步，但 PACT 在原 GRPO 采样组之外每步额外加入最多 64 对离线偏好修复样本，实际前向/反向计算量与有效参考动作监督多于纯结果基线 O，若不对照同等算力或同等梯度更新量的 O 基线，难以排除算力与额外监督带来的比较偏差。同时，AndroidWorld 仅 116 个任务（+8.63 pp 约多成功 10 题），所给材料未提供多种子均值与波动范围，且 AndroidControl High 的一致性指标仍由规则评测器产出，需核查其与训练期规则选择器的同构偏差。",
+          "作者设计了 O、OA、OAR 对照以及固定计划续写、对齐状态留存与自由生成三类机理诊断，意在拆分计划保护与动作修复的独立贡献；但在所给摘要与正文片段中，OA、OAR 与 ScreenSpot-v2 Mobile 的具体数值均未呈现，只能看到完整 PACT 相对纯结果基线 O 的端到端差值。由于动作修复直接引入参考动作作正例构造偏好对，必须核查控制数据与基座后“仅做参考动作修复/微调而不做计划负梯度掩码”的精确消融分数，才能独立确认收益究竟来自计划保护这一信用分配新意，还是主要来自额外利用了参考动作的监督信号。"
+        ],
+        "evidence_boundary": "已结合 arXiv HTML 正文片段与摘要研判"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 9.9
+    },
+    {
       "slug": "gui-rl-2611-27467",
       "section": "papers",
       "track": "gui-rl",
@@ -32,19 +135,17 @@
       ],
       "lab_tags": [],
       "institution_tags": [],
-      "title_zh": "ROSWORLD：当数字桌面任务能力撞上物理键鼠执行",
+      "title_zh": "ROSWorld：当数字桌面任务能力遭遇物理键鼠执行",
       "title_en": "ROSWORLD: When Digital Task Competence Meets Physical Execution",
-      "one_line_pain": "针对前沿模型直连软件能做任务却常按偏按漏键鼠的痛点，将物理仿真机械臂工位接入OSWorld实现同题评测",
+      "one_line_pain": "针对智能体软件操作强但实体按键盘鼠标频频翻车的断层，用仿真机器人对接实时OSWorld桌面实现同题配对评测",
       "metric_badges": [
         {
-          "text": "40任务/10款应用",
-          "verified": false,
-          "unverified_numbers": [
-            "10"
-          ]
+          "text": "40项OSWorld共享任务",
+          "verified": true,
+          "unverified_numbers": []
         },
         {
-          "text": "桌面31-39题 vs 物理≤28题",
+          "text": "软件31–39 vs 探针≤23 / 灵巧手≤28",
           "verified": true,
           "unverified_numbers": []
         }
@@ -88,41 +189,84 @@
       "corroborating_sources": [],
       "abstract_en": "Computer-use agents now solve most desktop tasks through direct software input, but a robot using the same computer must turn GUI knowledge into physical contact with a keyboard and mouse. We introduce ROSWorld, a benchmark that couples a physically simulated robot workstation to a live OSWorld desktop, so that a robot and a desktop agent pursue the same goals under the same official evaluators. The evaluated model receives observations only from the workstation camera views and operates the peripherals through either a single-arm rigid probe or dual-arm dexterous hands. Across five frontier models and 40 tasks in ten applications, models that complete 31-39 tasks on the desktop complete at most 23 with the probe and 28 with the hands. Paired trajectory analysis shows that models adapt their interaction strategies toward keyboard input, yet physical execution frequently fails through missed presses, incorrect targets, and unintended contacts. ROSWorld makes the gap between knowing what to do on a computer and physically doing it measurable.\n[Comment: 13 pages, 9 figures, 4 tables]",
       "four_elements": {
-        "pain_point": "现有电脑操控智能体靠软件接口直接发指令，已经能搞定大部分桌面任务；可一旦换成机器人去操作同一台电脑，就得把屏幕界面理解落到物理按键盘和用鼠标上。真动手时很容易翻车，经常出现按键没按实（漏按）、按错目标键位、以及不该碰的地方误触等问题，导致“知道该怎么用电脑”和“物理上能按出来”之间脱节明显。",
-        "mechanism": "论文搭建了 ROSWorld 评测基准，分三步把数字任务与物理执行拉到同一把尺子下：第一步，把物理仿真的机器人工作台直接耦合到实时运行的 OSWorld 桌面系统里，让机器人和纯软件桌面智能体做完全一样的任务，并用同一套官方评测器判分；第二步，收紧感知入口，被测模型只能看工作台摄像头拍到的画面，不能靠软件底层拿状态；第三步，让模型通过单臂刚性探针或双臂灵巧手两种物理末端去操作真实对应的键鼠外设，并通过成对轨迹分析观察策略变化（如模型在物理操控下会明显倾向多用键盘输入）。",
-        "experiments_summary": "实验在 10 款应用的 40 个任务上测试了 5 个前沿模型，采用同一套官方评测器对比纯软件桌面与物理仿真两种形态：在桌面端能完成 31–39 个任务的模型，改用单臂刚性探针最多仅完成 23 个任务，改用双臂灵巧手最多也只完成 28 个任务。具体模型名称与参数量、算力卡数与耗时、以及随机种子数，原文摘要均未单列。（⚠️ 原文待核数字：10、5）",
-        "repro_and_reference": "当前元数据未提供 GitHub 代码仓库地址，代码、仿真场景与评测脚本的开源完整度暂无法确认。从系统构成看，复现需同时部署 OSWorld 实时桌面环境与支持接触力学及视觉渲染的机器人物理仿真工位（含单臂探针与双臂灵巧手），外加 5 个前沿模型的多步交互推理开销，环境耦合度与推理成本较高；具体本地硬件门槛原文摘要未单列。",
-        "experiment_rows": [],
-        "backbone_and_params": "5个前沿模型（具体模型名称与参数量原文摘要未单列）",
-        "gpu_and_duration": "原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
+        "pain_point": "现有桌面智能体通过底层软件接口直接发键鼠事件，已经能完成大多数办公与应用操作；但真让机器人去操作电脑时，模型必须看懂屏幕、把手或探针移到毫米级按键位置、控制按压深度与组合键协同，还要在按空、按错或机械臂其他部位误触外设后察觉界面变化并补救。以往具身基准多测孤立抓放动作，桌面基准又跳过物理接触，导致“知道怎么操作电脑”与“能用身体物理按出来”之间的真实落差一直缺乏同题可比的度量。",
+        "mechanism": "作者搭建了一套闭环耦合基准：1）环境耦合：将 Isaac Sim 物理仿真机器人工作站与运行真实应用状态的实时 OSWorld 虚拟机桌面相连，仿真里机器人触碰物理键盘和鼠标后直接生成真实输入设备事件驱动虚拟机，更新后的桌面画面再渲染回仿真工位的虚拟显示器；2）统一接口与双形态：待测模型无法调用软件 API，只能读取工位相机画面和机器人状态，输出有界运动序列，并在“单臂刚性探针”与“双臂灵巧手”两种具身形态下完成端到端控制；3）同题配对与轨迹归因：使用与软件桌面智能体完全相同的 40 个 OSWorld 任务和官方结果评测器判定成败，再将模型计划、物理接触、设备事件与软件状态变化逐段对齐，定位策略迁移（如把鼠标操作改成键盘操作、探针用单键替代组合键）与失败根因。",
+        "experiments_summary": "在 5 个前沿模型、10 类应用（片段列出 Chrome、GIMP、LibreOffice Calc/Impress/Writer、多应用等，每类 4 题共 40 个任务）上做配对评测，分母为 40 个任务、指标为通过官方结果评测器的完成任务数（绝对题数而非相对增幅）。原文摘要仅给出跨模型区间与上限：直接软件输入完成 31–39/40 题，单臂刚性探针至多完成 23/40 题，双臂灵巧手至多完成 28/40 题；未单列单个模型明细、均值与最佳种子差异。轨迹分析指出操作级失败主因是未触达按键、按错目标及机器人其他部位误触，任务级失败多表现为耗尽步数预算，少数主动放弃，极少数误报完成。模型具体名称与规模、GPU 卡数、运行耗时及随机种子数在所给材料中均未单列。（⚠️ 原文待核数字：5、10）",
+        "repro_and_reference": "所给元数据未附 GitHub 或 Hugging Face 仓库链接，无法核验代码、资产与虚拟机镜像的开源完整度。从架构看，复现需同时部署 NVIDIA Isaac Sim 物理仿真（通常要求较强桌面或数据中心级 NVIDIA GPU 以支撑实时渲染与接触仿真）和实时 OSWorld 虚拟机，并打通仿真外设事件到 VM 输入的同步闭环，工程集成与调试门槛偏高；此外还需支付闭源或大型多模态前沿模型的长程多步推理 API/算力开销。",
+        "experiment_rows": [
+          {
+            "benchmark": "OSWorld 共享子集（直接软件输入）",
+            "metric": "完成任务数",
+            "value": "31–39 / 40",
+            "baseline_delta": "",
+            "setup_note": "分母为 10 类应用各 4 题共 40 个任务；5 个前沿模型；官方结果评测器；未单列步数预算、单模型分数与种子数",
+            "verified": false,
+            "unverified_numbers": [
+              "10",
+              "5"
+            ]
+          },
+          {
+            "benchmark": "ROSWorld（单臂刚性探针）",
+            "metric": "完成任务数（5 模型最高值）",
+            "value": "至多 23 / 40",
+            "baseline_delta": "",
+            "setup_note": "分母为同一组 40 任务与官方评测器；输入为工位相机视角与机器人状态；5 个前沿模型；步数与种子数未单列",
+            "verified": false,
+            "unverified_numbers": [
+              "5"
+            ]
+          },
+          {
+            "benchmark": "ROSWorld（双臂灵巧手）",
+            "metric": "完成任务数（5 模型最高值）",
+            "value": "至多 28 / 40",
+            "baseline_delta": "",
+            "setup_note": "分母为同一组 40 任务与官方评测器；输入为工位相机视角与机器人状态；5 个前沿模型；步数与种子数未单列",
+            "verified": false,
+            "unverified_numbers": [
+              "5"
+            ]
+          }
+        ],
+        "backbone_and_params": "原文未单列（所给材料仅提及评测了 5 个前沿模型，未列出具体模型名称与参数量）",
+        "gpu_and_duration": "所给材料未单列",
+        "seeds_note": "所给材料未单列（未说明每题重复评测次数、随机种子数及方差，仅给出完成任务数的区间与上限）",
+        "verdict_label": "切入精准的具身配对基准",
+        "verdict_reason": "用同一套 40 个 OSWorld 任务和官方结果评测器直接量化了软件操作（31–39 题）到物理执行（探针至多 23 题、灵巧手至多 28 题）的真实落差，并给出可操作的轨迹归因；但所给材料缺少模型名单、步数预算、重复方差与开源链接，精读或复现前需核查全文实验细则与代码发布情况。",
+        "critique_points": [
+          "核心假设在于 Isaac Sim 中的相机读屏与刚体/灵巧手键鼠接触能代表真实物理计算机操作，但该设定在仿真到现实迁移（按键行程、接触摩擦、真实显示器反光与相机畸变）以及工位/外设布局变化下容易失效，且 40 题（10 类应用各 4 题）与两种固定形态的泛化覆盖有限；可通过引入视角与接触噪声扰动的对照实验，检验性能下降对仿真保真度的敏感性。",
+          "虽然软件与物理评测共享任务目标与官方评测器，但两者在输入清晰度（原生桌面 vs 相机拍虚拟屏）和动作步数消耗上天然不对称，且原文指出多数物理失败系耗尽步数预算；所给材料未单列步数上限、5 个模型的具体配置、提示词调优及多种子方差（仅报告区间与最高值），在长程任务中单次误触即可导致整题失败，随机波动与步数预算设定足以改变模型与形态间的优劣判断。",
+          "端到端联合评测虽贴近真实场景，但所给材料未呈现控制变量后的解耦消融（例如给具身控制器直接输入无损桌面截图以剥离相机读屏退化，或固定高层桌面规划器仅更换底层运动控制），因此 31–39 降至至多 23/28 的落差目前混合了视觉降质与物理操控两类因素；需补做分层消融才能独立确认瓶颈究竟来自感知、运动精度还是全身碰撞规划。"
+        ],
+        "evidence_boundary": "已结合 arXiv HTML 正文片段与摘要研判"
       },
       "conference_slug": "",
       "conference_track_tier": "",
-      "relative_score": 10.2
+      "relative_score": 9.7
     },
     {
-      "slug": "gui-rl-2611-22591",
+      "slug": "gui-rl-2611-29268",
       "section": "papers",
       "track": "gui-rl",
       "track_label": "GUI-RL",
       "subtopics": [
-        "gui-online-rl",
-        "gui-env"
+        "gui-env",
+        "gui-security"
       ],
       "lab_tags": [],
       "institution_tags": [],
-      "title_zh": "PACT：保护正确规划并修复错误动作的GUI智能体计划-动作一致性训练",
-      "title_en": "PACT: Plan-Action Consistency Training by Preserving Correct Plans and Repairing Actions in GUI Agents",
-      "one_line_pain": "针对GUI智能体想对做错且负奖励误伤正确规划的问题，掩码规划段负梯度并用偏好替代目标在原上下文中修复错误动作",
+      "title_zh": "AdaptiveVPI：面向自适应视觉提示注入的网页智能体防御评测基准",
+      "title_en": "Benchmarking Web Agent Defenses Against Adaptive Visual Prompt Injection",
+      "one_line_pain": "针对现有视觉提示注入评测依赖明文恶意指令且缺乏自适应攻击的失真问题，构建隐藏链接与反馈迭代评测基准",
       "metric_badges": [
         {
-          "text": "AndroidWorld +8.63 pp (68.97%)",
+          "text": "360个隐蔽跳转网页",
           "verified": true,
           "unverified_numbers": []
         },
         {
-          "text": "OSWorld 369任务 +3.25 pp",
+          "text": "CUA/BUA 攻破率91.87%/91.99%",
           "verified": true,
           "unverified_numbers": []
         }
@@ -132,41 +276,154 @@
       "small_compute_friendly": false,
       "small_compute_note": "4–8卡未显式单列",
       "authors": [
-        "Zhuohan Cai",
-        "Zhangxuan Gu",
-        "Runze Li",
-        "Beitong Zhou",
-        "Ming Wen",
-        "Hongbo Yu",
-        "Shuheng Shen",
-        "Changhua Meng"
+        "Haichuan Zhang",
+        "Zhiyuan Zhong",
+        "Shih-Chieh Dai",
+        "Xinyu Sun",
+        "Guanhong Tao"
       ],
-      "published_date": "2026-11-23",
-      "venue_or_source": "arXiv cs.AI",
-      "url_primary": "https://arxiv.org/abs/2611.22591",
-      "url_pdf": "https://arxiv.org/pdf/2611.22591",
-      "url_arxiv_html": "https://arxiv.org/html/2611.22591",
+      "published_date": "2026-11-22",
+      "venue_or_source": "arXiv cs.CR",
+      "url_primary": "https://arxiv.org/abs/2611.29268",
+      "url_pdf": "https://arxiv.org/pdf/2611.29268",
+      "url_arxiv_html": "https://arxiv.org/html/2611.29268",
       "url_github": "",
       "url_hf": "",
-      "arxiv_id": "2611.22591",
+      "arxiv_id": "2611.29268",
       "doi": "",
       "github_stars": null,
       "license_name": "",
       "corroborating_sources": [],
-      "abstract_en": "GUI agents can formulate a correct immediate plan in their reasoning yet emit an action that fails to execute it, creating an execution gap. This recurring mismatch undermines reliable task completion, as a single execution error can derail a multi-step workflow. In outcome-supervised reinforcement learning, broadcasting a negative response-level advantage across all generated tokens risks penalizing valid planning together with erroneous execution. To address this credit-assignment conflict, we introduce PACT (Plan-Action Consistency Training), a training framework that combines reference-aligned plan protection and plan-aligned action repair without altering the original scalar action reward. Using annotated reference actions to identify execution gaps, PACT protects the verified plan by masking negative policy-gradient contributions across its token span. Keeping the generated reasoning unchanged as context, it then favors the reference action over the emitted erroneous action through a preference surrogate with stop-gradient pair weights. Compared with the outcome-only baseline, PACT raises AndroidWorld task success from 60.34% to 68.97% (+8.63 pp), while improving rule-based plan-action consistency on AndroidControl High from 83.71% to 89.74% (+6.03 pp). Adapting PACT to desktop agents also improves task success from 40.92% to 44.17% (+3.25 pp) on the full 369-task OSWorld benchmark. Together, these results establish PACT as an effective credit-assignment framework for bridging execution gaps and improving task completion across mobile and desktop GUI environments.\n[Comment: 21 pages, 11 figures, including supplementary material. This version clarifies implementation details and evaluation protocols in the supplementary material]",
+      "abstract_en": "Multimodal web agents automate website interactions but remain vulnerable to visual prompt injection (VPI), where malicious webpage content manipulates their visual processing and induces unintended actions. Although several defenses focus on detecting injected instructions in screenshots, malicious destinations such as phishing URLs embedded in HTML can remain hidden yet accessible through agent interactions. Existing evaluations have also not sufficiently examined adaptive attackers who know the defense mechanisms. To address these limitations, we introduce AdaptiveVPI, the first benchmark for systematically evaluating adaptive VPI threats in web agents. Specifically, we present a dataset of 360 webpage instances spanning 6 distinct hijack strategies across 10 real-world websites, with malicious destinations not visible in screenshots. We design an adaptive attack framework that iteratively refines malicious instructions based on feedback from the defense mechanism being evaluated. We also introduce three metrics to measure the extent of agent hijacking at three different levels. Across 10 defense configurations for computer-use agents and 11 defense configurations for browser-use agents, our adaptive attacks achieve average success rates of 91.87% and 91.99%, respectively. These results reveal a gap between current VPI defenses and realistic threats and highlight the need for defenses designed with adaptive attackers in mind.",
       "four_elements": {
-        "pain_point": "① 图形界面（GUI）智能体在多步操作中经常出现“想对了但点错了”的执行落差：推理过程里的即时规划明明正确，最终输出的动作却没能落实该规划，而多步流程中只要错一步就容易全盘翻车。在基于结果监督的强化学习训练中，一旦动作错了，系统会把整条回复的负向优势信号一刀切地广播给所有生成词元，导致原本正确的规划段落跟着错误动作一起挨罚，造成信用分配冲突。",
-        "mechanism": "② 论文提出计划-动作一致性训练（PACT），在不改动原有标量动作奖励的前提下分三步解耦规划与执行：第一步，借助带标注的参考动作识别出“规划对、动作错”的执行落差样本；第二步（参考对齐的规划保护），在已核实正确的规划词元区间上掩码掉负向策略梯度贡献，避免好规划被负奖励连坐惩罚；第三步（规划对齐的动作修复），保持模型原生成的推理内容作为上下文不变，通过带有停止梯度（stop-gradient）成对权重的偏好替代目标，引导模型在相同规划上下文下更偏好参考动作而非此前输出的错误动作。",
-        "experiments_summary": "③ 对比仅用结果监督的基线方法，PACT在移动端基准 AndroidWorld 上将任务成功率从 60.34% 提升至 68.97%（+8.63 个百分点），在 AndroidControl High 上将基于规则的计划-动作一致性从 83.71% 提升至 89.74%（+6.03 个百分点）；迁移到桌面端后，在完整的 369 任务 OSWorld 基准上将任务成功率从 40.92% 提升至 44.17%（+3.25 个百分点）。原文摘要未单列基座模型规模、训练卡数与随机种子数。",
-        "repro_and_reference": "④ 元数据未提供开源 GitHub 代码库链接，论文正文及补充材料共 21 页、11 张图，并在补充材料中说明了实现细节与评测协议。方法依赖带标注参考动作的数据来识别执行落差与构建偏好对，同时涉及移动端（AndroidWorld/AndroidControl）与桌面端（OSWorld）多步交互环境评测与强化学习训练，在无官方代码的情况下，数据标注口径、负梯度掩码区间切分及环境评测管线的复现成本偏高，具体算力门槛因摘要未披露模型规模与卡数而无法直接核算。",
-        "experiment_rows": [],
-        "backbone_and_params": "原文未单列",
-        "gpu_and_duration": "原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
+        "pain_point": "① 现有网页智能体防视觉提示注入（VPI）的评测存在三重失真：一是攻击样本常把恶意意图明晃晃写在弹窗文字里，而真实钓鱼场景完全可以用“会话过期”“安全验证”等看似正常的提示诱导点击，把恶意跳转地址藏在网页 HTML 代码中，仅看截图的检测器根本看不到目标链接；二是现有防御多只测静态固定攻击，未考察攻击者获知防御机制后按反馈改写文案的自适应绕过；三是只用单一二值指标判成败，看不出智能体到底是被骗点了跳转、还是进一步交互、或是彻底泄密/下载了恶意文件。",
+        "mechanism": "② 论文提出 AdaptiveVPI 评测基准，分三环重构攻防评测：第一步，构建解耦视觉文案与恶意目标的攻击网页库（跨 10 个真实网站、6 种劫持策略、共 360 个页面实例），弹窗标题、正文和按钮均伪装成良性通知，恶意跳转链接仅嵌入 HTML 而不出现在截图中；第二步，设计自适应攻击框架，利用被测防御的反馈迭代改写注入指令，针对内容检测器、动作护栏和提示词防御三类机制分别定制绕过样本（所给正文片段在 5.1 节截断，具体反馈粒度、查询预算与优化方法未展示）；第三步，将劫持过程拆为三级指标——偏航（Diversion，跳转到攻击页）、交互（Engagement，在攻击页操作）与攻破（Compromise，完成提交敏感信息或下载恶意文件等目标），覆盖仅看截图预测点击坐标的计算机操控智能体（CUA）与同时读截图和 HTML 的浏览器智能体（BUA）。",
+        "experiments_summary": "③ 所给材料仅披露了总体汇总结果：在 10 种 CUA 防御配置下，自适应攻击平均攻破率（Compromise）达 91.87%；在 11 种 BUA 防御配置下，平均攻破率达 91.99%，并声称在源智能体上攻破成功的样本无需重新优化即可迁移至其他智能体。但所给材料未单列静态固定攻击基线的对照数字、三级指标（偏航/交互/攻破）的逐层漏斗数据、具体智能体与防御模型的规模、迭代查询预算、算力消耗及随机种子数；此外，91.87% 与 91.99% 的分母口径（是基于 360 页全量还是子集、按防御配置等权平均还是样本加权平均、是否多次运行取均值）在所给片段中未明确交代。",
+        "repro_and_reference": "④ 元数据中未提供 GitHub 代码库或 Hugging Face 数据集链接，且正文片段止于 5.1 节，缺少自适应优化器细节、360 个真实网站注入页面模板及 10/11 套防御配置超参，仅凭当前材料无法直接复现。若后续开源完整基准，复现门槛主要在于多模态智能体与防御模块在真实或镜像网页上的多轮闭环推理及自适应迭代查询开销，实际算力与 API 成本高度取决于单页最大迭代次数与被测基座选型。",
+        "experiment_rows": [
+          {
+            "benchmark": "AdaptiveVPI (10种CUA防御配置)",
+            "metric": "平均攻破率 (Compromise Rate)",
+            "value": "91.87%",
+            "baseline_delta": "",
+            "setup_note": "覆盖内容检测/动作护栏/提示词三类防御；数据集共360页（10站×6策略），但均值的具体分母口径、静态攻击对照值、迭代预算与种子数在所给材料中未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "AdaptiveVPI (11种BUA防御配置)",
+            "metric": "平均攻破率 (Compromise Rate)",
+            "value": "91.99%",
+            "baseline_delta": "",
+            "setup_note": "BUA虽同时接收截图与HTML，平均攻破率仍高达91.99%；均值的具体分母口径、静态攻击对照值、迭代预算与种子数在所给材料中未单列",
+            "verified": true,
+            "unverified_numbers": []
+          }
+        ],
+        "backbone_and_params": "原文所给材料未单列（未列出被测 CUA/BUA 基座模型、攻击生成模型及各防御组件的具体型号与参数量）。",
+        "gpu_and_duration": "所给材料未单列（未说明训练或推理所用 GPU 型号与数量、运行耗时及 API 调用开销，亦未给出单样本迭代查询上限）。",
+        "seeds_note": "所给材料未单列（未报告随机种子数、单页面重复尝试次数及攻破率的方差或置信区间）。",
+        "verdict_label": "痛点精准但实验细节待核",
+        "verdict_reason": "将“良性外观弹窗+隐藏 HTML 恶意链接”与“基于防御反馈的自适应迭代”结合，直击现有视觉提示注入防御依赖显式恶意文本的软肋，CUA/BUA 均超 91% 的平均攻破率具有强警示价值；但当前材料缺少静态攻击对照、反馈权限假设与查询预算，需精读原文 5.2 节与完整实验表后才能确认攻破率是否受过强威胁模型红利驱动。",
+        "critique_points": [
+          "核心假设的失效边界与泛化证据待验：该基准高度依赖“视觉文案看似良性、恶意目标藏于 HTML”来绕过截图检测，但若防御侧在执行动作前引入浏览器级 URL 信誉校验、跨域跳转拦截，或强制将目标元素的 DOM 链接与真实域名暴露给动作护栏，该隐蔽假设在多大程度上会失效？此外，所给材料虽宣称攻破样本可跨智能体迁移，但未给出迁移成功率数字及在未见网站、不同交互界面分布下的衰减表现，需核查正文实验的泛化覆盖范围。",
+          "自适应预算、评测口径与基线公平性无法核实：所给片段未说明自适应攻击获取的是防御方的二值拦截结果、置信度分数还是文本理由，也未限定单页最大查询与迭代预算——若攻击者享有高查询次数或细粒度反馈，91.87%/91.99% 的高攻破率可能源于不现实的攻防信息不对称；同时缺少静态固定攻击基线数字、攻破判定器的误差说明（例如是否依赖规则脚本或大模型裁判）及多随机种子方差，无法排除评测口径或随机波动对结论的影响。",
+          "控制数据与基座后的机制归因尚不清晰：目前报告的 91.87% 与 91.99% 是“隐藏链接良性弹窗（5.1 节）”与“自适应反馈优化（5.2 节）”叠加后的联合结果，所给材料未给出同基座、同 360 页数据下的消融对照——究竟仅靠良性伪装静态页面就能造成多高攻破率、自适应迭代又独立贡献了多少绝对百分点，以及三级指标（偏航→交互→攻破）在有/无自适应优化时的逐层变化，均需通过受控消融实验才能独立识别各自贡献。"
+        ],
+        "evidence_boundary": "已结合 arXiv HTML 正文片段与摘要研判"
       },
       "conference_slug": "",
       "conference_track_tier": "",
-      "relative_score": 10.2
+      "relative_score": 9.1
+    },
+    {
+      "slug": "vlm-infra-inference-engines-are-becoming-too-fragmented",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "inference-engine",
+        "multimodal-base"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "Latent Space"
+      ],
+      "title_zh": "本地大模型推理引擎日益碎片化：社区选型痛点与引擎分层讨论",
+      "title_en": "Inference engines are becoming too fragmented",
+      "one_line_pain": "针对本地推理引擎碎片化与分支泛滥痛点，本文梳理社区吞吐实测与安全隐忧，归纳主流与专用引擎选型分层",
+      "metric_badges": [
+        {
+          "text": "Strata ~2500 pp (200k+ KV)",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "Basalt 60 vs 28 tok/s",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Latent Space [AINews]"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "url_primary": "https://www.reddit.com/r/LocalLLaMA/comments/1y30a6x/inference_engines_are_becoming_too_fragmented/",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Inference engines are becoming too fragmented. There are just too many choices and specialist engines. (Activity: 644): The post argues that local LLM inference has fragmented beyond the “Swiss army knife” role of llama.cpp , with users now choosing between model-/GPU-/architecture-specific engines and forks for features like KV-cache quantization, KV streaming, MoE support, and newer model architectures. The author reports large engine-dependent throughput differences: Qwen FN at and ~300 pp on llama.cpp versus ~180 tok/s and ~2500 pp with 200k+ KV on Strata, and Inkling-2-Mini at 28 tok/s on a llama.cpp fork versus 60 tok/s on Basalt; they currently rotate between beelama, an adaptive KV-streaming llama.cpp fork, Strata, Basalt, and upstream llama.cpp . They also note production-oriented alternatives like vLLM and SGLang , but complain that Linux requirements, fork proliferation, slow upstream model support, and optimization PR rejections make engine selection increasingly costly. Top commenters mostly frame the fragmentation as optional: llama.cpp remains a reliable baseline, and chasing maximum per-model throughput is a user choice rather than a requirement. One substantive concern raised is supply-chain/security risk: trying many young engines, forks, binaries, and dependencies increases exposure to malware or infostealers, so users should prefer mature, widely tested projects. \n A practical engine taxonomy emerged: llama.cpp is described as the default for most local inference, LiteRT for mobile, vLLM/SGLang for professional or advanced serving setups, and newer specialized engines like Basalt or Radiance for specific model/GPU combinations such as NVIDIA 50-series or Radeon R9700 Pro. One commenter notes that llama.cpp has recently closed gaps with vLLM by adding features like tensor parallelism, MTP support, and partial RAM offloading, making it a more viable general-purpose baseline despite specialized engines chasing peak tok/s.",
+      "four_elements": {
+        "pain_point": "① 过去本地部署大模型几乎只需用 llama.cpp 一把“瑞士军刀”，但如今为了适配新架构、混合专家模型（MoE）、键值缓存量化（KV-cache quantization）或流式键值缓存（KV streaming），用户不得不在上游主线、各类魔改分支和专用引擎之间反复横跳。作者抱怨生产级引擎（如 vLLM、SGLang）依赖 Linux 环境，而 llama.cpp 上游对新模型支持偏慢且部分优化 PR 被拒，导致分支泛滥、选型与维护成本陡增；此外，评论区还指出盲目尝鲜早期引擎和第三方二进制文件会放大恶意软件与信息窃取等供应链安全风险。",
+        "mechanism": "② 本条目并非提出新算法的学术论文，而是源自 Latent Space [AINews] 整理的社区高热度讨论与实践分类总结。讨论首先剖析了碎片化的成因：不同模型架构、显卡硬件（如 NVIDIA 50 系列与 Radeon R9700 Pro）和长上下文缓存特性催生了专用引擎与分支（如作者在 beelama、自适应流式键值缓存的 llama.cpp 分支、Strata、Basalt 与上游 llama.cpp 之间轮换）。随后，社区归纳出一套务实的引擎分层：通用本地默认用 llama.cpp，移动端用 LiteRT，专业或高并发服务用 vLLM/SGLang，特定模型与显卡组合再考虑 Basalt、Radiance 等专用引擎；同时指出 llama.cpp 近期通过补齐张量并行（tensor parallelism）、多令牌预测（MTP）与部分内存卸载（partial RAM offloading），正在缩小与 vLLM 的功能差距。",
+        "experiments_summary": "③ 原文仅包含发帖者提供的两组非受控社区实测吞吐对比，而非系统基准评测：其一在 Qwen FN 上，Strata 在 200k+ KV 缓存条件下录得约 180 tok/s（生成速度）与约 2500 pp（提示词处理速度），对比 llama.cpp 约 300 pp（原文中 llama.cpp 对应的 tok/s 数值缺失）；其二在 Inkling-2-Mini 上，Basalt 达到 60 tok/s，对比某一 llama.cpp 分支的 28 tok/s。上述对比的模型参数量、量化位宽、提示词长度、批次大小、测试显卡型号与卡数、运行次数及随机种子均未单列。",
+        "repro_and_reference": "④ 元数据与正文未提供代码仓库、评测脚本、配置文件或复现指南，仅提及 llama.cpp、Strata、Basalt、beelama、Radiance、LiteRT、vLLM 与 SGLang 等项目名称。由于测试硬件和量化参数缺失，无法直接评估复现所需算力门槛；若研究者欲自行复现，需自行搭建统一硬件环境并固定量化与上下文口径，同时需防范从非成熟第三方分支直接下载预编译二进制文件带来的供应链安全风险。",
+        "experiment_rows": [
+          {
+            "benchmark": "社区自测（Qwen FN 推理）",
+            "metric": "生成速度 / 提示词处理速度",
+            "value": "Strata: ~180 tok/s, ~2500 pp",
+            "baseline_delta": "",
+            "setup_note": "对照 llama.cpp ~300 pp（原文漏写 llama.cpp 的 tok/s 数值）；Strata 含 200k+ KV 缓存；单次或多次均值、硬件、量化与批次大小均未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "社区自测（Inkling-2-Mini 推理）",
+            "metric": "生成速度",
+            "value": "Basalt: 60 tok/s",
+            "baseline_delta": "",
+            "setup_note": "对照未具名 llama.cpp 分支 28 tok/s；未单列分支版本、硬件型号、上下文长度、量化方式及重复次数",
+            "verified": true,
+            "unverified_numbers": []
+          }
+        ],
+        "backbone_and_params": "提及 Qwen FN 与 Inkling-2-Mini 两个模型名称，具体参数量与量化格式原文未单列。",
+        "gpu_and_duration": "非训练类工作；推理实测所用具体显卡型号、卡数及耗时所给材料未单列（评论区仅在生态举例中提及 NVIDIA 50-series 与 Radeon R9700 Pro）。",
+        "seeds_note": "所给材料未单列（未报告重复测试次数、均值或方差）。",
+        "verdict_label": "缺乏受控基准的生态讨论",
+        "verdict_reason": "该条目真实反映了本地推理用户在吞吐追逐与维护安全之间的两难，但所引用的 Strata/Basalt 速度优势缺少硬件、量化与版本控制，仅具生态风向参考价值，不足以作为引擎选型的严谨实证依据。",
+        "critique_points": [
+          "核心主张认为“专用引擎与分支带来显著吞吐优势、碎片化不可避免”，但该结论高度依赖特定模型（如 Qwen FN、Inkling-2-Mini）与长上下文/特定硬件场景；一旦切换到常规短上下文、通用消费级显卡或 llama.cpp 持续合入张量并行、MTP 与部分内存卸载等上游特性后，专用引擎的领先幅度可能迅速收窄，且原文未提供跨模型、跨显卡与跨负载分布的泛化证据。",
+          "对比基线明显不公平且口径残缺：Qwen FN 对比中直接缺失 llama.cpp 的生成速度（tok/s），且未说明 llama.cpp 是否启用了同等的 KV 量化或流式缓存策略；Inkling-2-Mini 仅与未指明版本的 llama.cpp 分支比较。同时缺乏硬件型号、量化精度、上下文长度及多次采样方差，任何一项配置差异都足以扭转 28 vs 60 tok/s 或 300 vs 2500 pp 的结论。",
+          "在未控制相同权重文件、量化方案、输出数值一致性和显卡预算的前提下，无法区分 Strata/Basalt 的提速究竟来自底层算子与架构创新，还是激进的精度损失、缓存近似或仅针对单一硬件的硬编码优化；可通过同机同量化权重、固定提示词长度并同步核验困惑度（PPL）与任务准确率的对照实验来独立剥离真实收益。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 9.0
     },
     {
       "slug": "gui-rl-2611-30962",
@@ -180,17 +437,17 @@
       ],
       "lab_tags": [],
       "institution_tags": [],
-      "title_zh": "面向计算机操作智能体的自演化评测环境 CUA-SEE",
+      "title_zh": "面向电脑操作智能体的自演化评测环境 CUA-SEE",
       "title_en": "Self-Evolving Evaluation Environments for Computer-Use Agents",
-      "one_line_pain": "针对静态评测难度封顶、覆盖受限且粗分难辨优劣的问题，CUA-SEE根据交互轨迹闭环协同演化任务与可执行校验器",
+      "one_line_pain": "针对电脑操作智能体静态基准易饱和、功能覆盖不足20%且评测脚本僵化的问题，提出任务与可执行校验器协同闭环演化框架",
       "metric_badges": [
         {
-          "text": "任务与校验器闭环协同演化",
+          "text": "4轮宏均分60.6→47.5",
           "verified": true,
           "unverified_numbers": []
         },
         {
-          "text": "状态锚定校验点与对抗验证",
+          "text": "OSWorld覆盖率<20%",
           "verified": true,
           "unverified_numbers": []
         }
@@ -223,43 +480,74 @@
       "corroborating_sources": [],
       "abstract_en": "Computer-use agents (CUAs) are rapidly improving, yet their evaluation remains largely static. Existing benchmarks provide a strong foundation, but fixed difficulty ceilings, limited feature coverage, and coarse aggregate scores progressively weaken their discriminative and diagnostic value. We introduce CUA-SEE, a closed-loop evaluation environment that co-evolves tasks and executable verifiers from rollout evidence. It disentangles three objectives: benchmark evolution expands evaluation scope through cohort-calibrated difficulty and coverage growth; diagnostic evolution increases resolution through agent-conditional capability-boundary probes; and verifier evolution improves precision by translating changing requirements into state-grounded checkpoints with adversarial validation. Across multiple agents, applications, and rounds, CUA-SEE generates challenging, measurable tasks while preserving process-level evidence. Our results position adaptive evaluation as a scalable counterpart to self-evolving agents, continuously tracking what agents can do, where their boundaries lie, and how reliably progress is measured.",
       "four_elements": {
-        "pain_point": "① 现有计算机操作智能体（CUA）能力迭代很快，但主流评测基准基本是静态题库。随着模型变强，固定题库的难度上限容易被刷穿，对软件功能的覆盖面也有限，再加上只看粗粒度的总体汇总分数，导致基准越来越难拉开模型差距，也无法诊断智能体究竟在哪些具体操作上翻车。",
-        "mechanism": "② CUA-SEE 构建了一个基于智能体交互轨迹证据、协同演化测试任务与可执行校验器的闭环评测环境，并将演化过程拆解为三个独立目标：一是基准演化，通过多智能体群组校准逐步扩展任务难度上限与功能覆盖面；二是诊断演化，针对特定智能体的表现定向生成能力边界探针，提升问题定位的细粒度；三是校验器演化，将随之变化的任务需求转化为锚定系统实际状态的检查点，并配合对抗验证来提升评分精度，同时完整保留过程级证据。",
-        "experiments_summary": "③ 原文摘要提及已在多个计算机操作智能体、多种应用程序以及多轮迭代上验证了 CUA-SEE 能够持续生成有挑战性且可量化的任务并保留过程级证据，但未给出具体通过率、任务数量、轮次等基准指标，所测模型规模、算力卡数与随机种子数原文摘要均未单列。",
-        "repro_and_reference": "④ 当前元数据未提供 GitHub 开源仓库链接，代码与环境构建脚本的完整度尚无法核实。从机制上看，闭环自演化需在多款桌面或系统应用环境中反复收集多轮智能体交互轨迹，并同步生成新任务与运行对抗式校验验证，复现的沙箱维护复杂度与多轮推理调用开销预计较高，具体算力门槛原文摘要未单列。",
-        "experiment_rows": [],
-        "backbone_and_params": "原文摘要未单列",
-        "gpu_and_duration": "原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
+        "pain_point": "① 现有电脑操作智能体（CUA）基准如 OSWorld 依赖人工一次性编写任务与校验脚本，随着模型能力提升迅速出现三类翻车场景：一是难度天花板固定，高分饱和后无法区分强模型差异；二是软件功能覆盖极窄，作者审计 OSWorld 核心应用发现既有任务覆盖不足 20% 的软件功能分类；三是静态评测缺乏动态探测能力，无法追踪移动的能力边界，也难以主动暴露捷径行为和泛化缺口。",
+        "mechanism": "② CUA-SEE 将评测重构为“智能体轨迹回放—状态更新—任务与校验器协同演化”的闭环，把三个常被混为一谈的目标拆解为独立模块：第一，基准任务演化（拓宽范围），汇集异构智能体群体的对齐轨迹，保留全部重复执行记录并区分“执行有效”与“任务成功”，依据群体一致/分歧将源任务标定为已掌握、具区分度、不稳定或受混淆四类，再以“推进可测难度前沿”和“填补软件功能-操作及能力强度网格”为目标生成保留语义血统、带独立可观测义务的后代任务，并用轮次注册表协调跨任务覆盖。第二，诊断任务演化（提高分辨率），面向单个目标智能体，由批次规划器汇总纵向证据并按七个标定维度（如精细控制、状态依赖推理）派发单主维度、受控强度的自然任务；采用自适应夹逼而非单调加难——干净成功向上探、干净失败向下探、部分完成或截断运行则触发去混淆。第三，校验器演化（保障精度），通过任务无关的软件适配器探测原生状态导出接口并归一化为统一规范状态（CanonicalState），在此之上由信息隔离的校验器智能体生成原子级需求检查点，同时由通关智能体独立构造合法完成状态，二者对抗交叉审查以提升检查点完备性与初始态/通关态（PRE/PASS）区分度。",
+        "experiments_summary": "③ 所给材料仅保留至引言末尾并发生截断，仅披露两项量化事实：一是对 OSWorld 核心应用的审计显示现有任务覆盖不足 20% 的软件功能分类；二是在 5 个 SOTA 智能体上经 4 轮演化，宏平均智能体得分从 60.6 降至 47.5（绝对下降 13.1 分，正文在“while trajectory”处截断）。被测智能体名单、演化器/校验器/通关智能体所用基座模型与参数量、每轮任务数与轨迹分母、重复次数（replicates）、GPU 卡数、API 费用与随机种子数在所给材料中均未单列。（⚠️ 原文待核数字：13.1）",
+        "repro_and_reference": "④ 原文未提供 GitHub 代码仓库与 Hugging Face 链接，复现完全依赖自行实现。技术门槛集中在两处：一是为各类桌面软件编写可稳定导出原生状态的适配器并维护 CanonicalState 模式，工程维护成本高；二是闭环演化需在多轮中同时驱动多智能体群体轨迹采集、任务演化器以及“校验器-通关智能体”对抗生成，推理与沙盒交互开销随轮次和重复次数线性放大。在未公开代码、适配器实现与实测成本前，复现成本偏高且完整度无法核验。",
+        "experiment_rows": [
+          {
+            "benchmark": "OSWorld 核心应用审计",
+            "metric": "软件功能分类覆盖率",
+            "value": "<20%",
+            "baseline_delta": "",
+            "setup_note": "作者对 OSWorld 核心应用既有任务的审计结果；所给材料未单列涉及应用数量与任务分母",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "CUA-SEE（4轮演化）",
+            "metric": "宏平均智能体得分（macro-average agent score）",
+            "value": "60.6 → 47.5",
+            "baseline_delta": "-13.1（绝对分值下降）",
+            "setup_note": "5个SOTA智能体跨4轮演化；正文在此处截断，未单列每轮任务数、轨迹数、重复次数（replicates）及具体智能体名单",
+            "verified": false,
+            "unverified_numbers": [
+              "13.1"
+            ]
+          }
+        ],
+        "backbone_and_params": "原文未单列（所给材料仅提及在5个SOTA智能体上实验，未列出被测智能体及内部演化器、校验器、通关智能体的具体基座模型与参数量）",
+        "gpu_and_duration": "所给材料未单列（未披露沙盒环境规模、GPU型号、API调用量及单轮演化耗时）",
+        "seeds_note": "所给材料未单列（文中提到保留全部重复执行记录 replicates 并区分执行有效性，但未给出每任务重复次数、随机种子数及方差区间）",
+        "verdict_label": "方向切中要害但证据不足",
+        "verdict_reason": "将静态 CUA 基准拆解为范围、分辨率与校验精度三条协同演化路径的架构设计直击真实痛点，但所给材料在实验结果首句即截断，既缺少任务有效率与校验器人工核验精度，也缺少与静态/简单加难基线的对照，需拿到完整正文与实验表格后再决定是否精读复现。",
+        "critique_points": [
+          "核心假设失效条件与泛化边界：校验器演化依赖“软件适配器导出原生状态并归一化为 CanonicalState”以及“通关智能体与校验器对抗交叉审查”。当面对缺乏干净状态导出接口的闭源/强渲染型软件（如画布编辑器、动态网页前端）时，状态抽象本身会丢失关键视觉或交互语义；此外，若通关智能体与校验器同源或共享系统盲区，二者可能达成虚假一致（即共同通过有漏洞的检查点）。需通过对照实验验证：在不同应用类型上，人工盲审自动生成校验器的假阳性率（漏判失败）与假阴性率（误杀合法解）分别是多少，且跨 4 轮演化后误差是否累积放大。",
+          "评测公平性、分母口径与方差风险：目前唯一可见的结果是 4 轮演化后 5 个 SOTA 智能体宏均分从 60.6 降至 47.5，但分数下降本身并不等价于“区分度提升”——若任务变难的同时引入不可解任务、环境执行抖动或过度严苛的检查点，分数同样会下跌。由于所给片段未列明宏均分的分母（按任务、按轨迹还是按软件加权）、重复次数方差、执行失败过滤比例以及演化器/校验器所用模型是否与被测智能体存在家族重合，需核查：控制总评测预算（轨迹数与 token 成本）一致时，CUA-SEE 相比“静态基准扩展”或“单次 LLM 改写加难”在智能体排序稳定性与能力区分度上是否显著占优，且更换校验器基座是否会改变智能体排名。",
+          "机制新意识别与消融必要性：框架同时耦合了异构群体标定、注册表覆盖调度、自适应夹逼探测与对抗式校验器演化多个组件，且多轮交互本身伴随持续增长的推理算力投入。为排除“单纯靠更强底层模型或更多采样预算堆出难题”的解释，必须检验控制底层生成模型与总采样预算后的细粒度消融：分别去掉对抗交叉审查、去掉异构群体标定（改为单模型或随机挑选源任务）、去掉自适应夹逼（改为单调加难）后，任务可解率、校验器准确率及能力边界定位精度各自退化多少。"
+        ],
+        "evidence_boundary": "已结合 arXiv HTML 正文片段与摘要研判"
       },
       "conference_slug": "",
       "conference_track_tier": "",
-      "relative_score": 9.0
+      "relative_score": 8.5
     },
     {
-      "slug": "vlm-infra-inference-engines-are-becoming-too-fragmented",
+      "slug": "vlm-infra-release-v0-28-4",
       "section": "industry",
       "track": "vlm-infra",
       "track_label": "VLM/RL底座",
       "subtopics": [
-        "inference-engine",
+        "rl-framework",
         "multimodal-base"
       ],
-      "lab_tags": [],
-      "institution_tags": [
-        "Latent Space"
+      "lab_tags": [
+        "lab-qwen"
       ],
-      "title_zh": "本地大模型推理引擎过度碎片化：实测吞吐分化与社区分层选型共识",
-      "title_en": "Inference engines are becoming too fragmented",
-      "one_line_pain": "针对本地推理引擎碎片化与选型维护成本飙升的痛点，社区梳理了按场景分层的引擎选型图谱并警示小众分支的供应链安全风险",
+      "institution_tags": [
+        "阿里通义 Qwen"
+      ],
+      "title_zh": "阿里通义 Qwen 代码代理工具 v0.28.4 版本更新日志",
+      "title_en": "Release v0.28.4",
+      "one_line_pain": "针对托管代理会话空占资源、多渠道重放乱序及前端卡顿，引入会话挂起保活、账本身份绑定与分块按需加载",
       "metric_badges": [
         {
-          "text": "Strata 200k+ KV 达 ~180 tok/s",
+          "text": "工作区就绪中位降41.16%",
           "verified": true,
           "unverified_numbers": []
         },
         {
-          "text": "Basalt 60 vs 28 tok/s",
+          "text": "回放输入延迟降1706ms",
           "verified": true,
           "unverified_numbers": []
         }
@@ -269,11 +557,11 @@
       "small_compute_friendly": false,
       "small_compute_note": "4–8卡未显式单列",
       "authors": [
-        "Latent Space [AINews]"
+        "阿里通义 Qwen"
       ],
-      "published_date": "2026-11-24",
-      "venue_or_source": "Latent Space [AINews]",
-      "url_primary": "https://www.reddit.com/r/LocalLLaMA/comments/1y30a6x/inference_engines_are_becoming_too_fragmented/",
+      "published_date": "2026-11-22",
+      "venue_or_source": "阿里通义 Qwen",
+      "url_primary": "https://github.com/QwenLM/qwen-code/releases/tag/v0.28.4",
       "url_pdf": "",
       "url_arxiv_html": "",
       "url_github": "",
@@ -283,84 +571,263 @@
       "github_stars": null,
       "license_name": "",
       "corroborating_sources": [],
-      "abstract_en": "Inference engines are becoming too fragmented. There are just too many choices and specialist engines. (Activity: 644): The post argues that local LLM inference has fragmented beyond the “Swiss army knife” role of llama.cpp , with users now choosing between model-/GPU-/architecture-specific engines and forks for features like KV-cache quantization, KV streaming, MoE support, and newer model architectures. The author reports large engine-dependent throughput differences: Qwen FN at and ~300 pp on llama.cpp versus ~180 tok/s and ~2500 pp with 200k+ KV on Strata, and Inkling-2-Mini at 28 tok/s on a llama.cpp fork versus 60 tok/s on Basalt; they currently rotate between beelama, an adaptive KV-streaming llama.cpp fork, Strata, Basalt, and upstream llama.cpp . They also note production-oriented alternatives like vLLM and SGLang , but complain that Linux requirements, fork proliferation, slow upstream model support, and optimization PR rejections make engine selection increasingly costly. Top commenters mostly frame the fragmentation as optional: llama.cpp remains a reliable baseline, and chasing maximum per-model throughput is a user choice rather than a requirement. One substantive concern raised is supply-chain/security risk: trying many young engines, forks, binaries, and dependencies increases exposure to malware or infostealers, so users should prefer mature, widely tested projects. \n A practical engine taxonomy emerged: llama.cpp is described as the default for most local inference, LiteRT for mobile, vLLM/SGLang for professional or advanced serving setups, and newer specialized engines like Basalt or Radiance for specific model/GPU combinations such as NVIDIA 50-series or Radeon R9700 Pro. One commenter notes that llama.cpp has recently closed gaps with vLLM by adding features like tensor parallelism, MTP support, and partial RAM offloading, making it a more viable general-purpose baseline despite specialized engines chasing peak tok/s.",
+      "abstract_en": "Highlights\n See the complete change list below. \n Breaking Changes\nNo known breaking changes.\n Complete Change List\n Features\n feat(web-shell): explain background tasks from the composer chips ( #17398 ) by @wenshao \n Adds the backend-neutral unified chat surface contract and capability guards for Web Shell, with no user-visible behavior change yet. ( #17520 ) by @wenshao \n feat(channels): add GitHub as the third managed channel adapter ( #17511 ) by @wenshao \n Lets Generated UI cards preserve view state across page reloads, reopened conversations, and forks. ( #17522 ) by @qqqys \n feat(web-shell): send to another session with /send ( #17539 ) by @qqqys \n Removes daemon dependencies from shared approval and composer components so the managed chat kernel can use them without loading daemon code. ( #17661 ) by @wenshao \n Adds a send-only Generic Webhook Channel that posts notification, prompt, and scheduled-task results as JSON to a configured HTTPS endpoint, with optional Bearer authentication. ( #17610 ) by @jkxiao \n Managed agents now notify owners when attachments are retired and classify suspension age-out waits with control-plane wait codes. ( #17681 ) by @doudouOUC \n Adds Generic Webhook destinations in the Web Shell Channel editor, with endpoint URL, optional Bearer token, and local/private receiver options. ( #17405 ) by @jkxiao \n Session switching now shows the artifact count immediately from session metadata, before full loading completes. ( #17518 ) by @wenshao \n Enables Mods in ACP sessions for qwen --acp, Zed, and the VS Code companion when experimental.mods is enabled. ( #17693 ) by @qqqys \n Applies the --max-sse-connections admission budget to all daemon stream surfaces, with shared occupancy accounting and logged refusal when the limit is exceeded. ( #17662 ) by @wenshao \n Adds an experimental WeCom managed-channel adapter that routes private-chat messages into bound Managed Agent Sessions and returns replies over the authenticated WebSocket. ( #17441 ) by @wenshao \n Installs and pins default Workspace Skills from an optional catalog when a Workspace Session is created without caller-provided Skills or an explicit pin list. ( #17703 ) by @doudouOUC \n Adds a status-tinted Goal marker to Web Shell sidebar session rows so sessions with active Goals are recognizable and can be opened from the marker. ( #17515 ) by @wenshao \n Adds a Traditional Chinese UI locale to Web Shell and VS Code companion chrome, with zh-TW, zh-HK, zh-MO, and zh-Hant resolving to 繁體中文 [zh-TW]. ( #17421 ) by @callmeYe \n Marks shortened inbound messages from WeCom, DingTalk, and GitHub managed adapters with a truncation notice while keeping them within character and byte limits. ( #17726 ) by @wenshao \n Hosted Harness now suspends idle managed-agent sessions after active work drains and cold-opens them on the next request. ( #17690 ) by @doudouOUC \n Adds an opt-in setting that skips models exhausted by capacity errors for the rest of the turn and re-probes them on the next turn. ( #17377 ) by @wenshao \n Binds DingTalk persisted ledger to registration identity so pending messages are not replayed under a different registration of the same robot app. ( #17742 ) by @wenshao \n Adds an inject channel dispatchMode that delivers incoming messages to the running turn so the agent can read them at the next tool-batch boundary. ( #15634 ) by @Eric-GoodBoy-Tech \n Adds a workspace artifact library to the Managed Agent Web UI for browsing, previewing, and downloading artifacts across sessions. ( #17728 ) by @wenshao \n Adds opt-in native screen-reader presentation for the CLI with keyboard navigation, stable completed-reply announcements, and semantic history while Ink remains default. ( #17500 ) by @chiga0 \n Moves the Artifacts (N) header entry to the right panel so clicking it toggles a dedicated session-scoped Artifacts list tab. ( #17689 ) by @wenshao \n Adds the daemon chat intent lifecycle core so submit, cancel, approval, and question states are settled from authoritative evidence rather than transport responses alone. ( #17709 ) by @wenshao \n Wakes the Managed Session bound to a watched pull request with private prompts when CI fails, conflicts appear, or the head changes, without posting publicly. ( #17665 ) by @wenshao \n Adds an opt-in setting, qwen.managed-agent.runtime-broker.mcp-parking.enabled, to keep idle MCP connections across suspension so reopened sessions reuse them. ( #17749 ) by @doudouOUC \n Shows a workflow's declared meta.phases as Not started lanes before they begin, then replaces each lane when the script reaches that phase. ( #17782 ) by @qqqys \n Adds managed-agent support for external Shell workers to publish control-plane events. ( #17478 ) by @yiliang114 \n Adds an off-by-default QQ bot option exposing tools for agents to send local files, images, videos, and voice messages. ( #15450 ) by @Eric-GoodBoy-Tech \n Adds a Microsoft Teams channel extension with personal chats, group mentions, thread isolation, and createTeamsIngress host webhook setup. ( #15620 ) by @XIQIXIQIXIQI \n feat(telemetry): record OpenRouter routing backend and generation id ( #16495 ) by @2SinceJuly \n WebShell transcripts expose an optional overscan prop so hosts can tune or disable the offscreen row buffer for virtualized message lists. ( #17807 ) by @callmeYe \n DingTalk managed-agent replies now render as a single editable native card that updates as more reply segments arrive, instead of plain text messages. ( #17748 ) by @wenshao \n feat(core): name the output budget when truncation rejects a write ( #16632 ) by @xxwtiancai \n feat(web-shell): let hosts disable the composer glow ( #17814 ) by @callmeYe \n feat(core): run ACP sessions on the shared agent loop by default ( #17744 ) by @qqqys \n feat(cli): run background workflows in headless mode ( #17809 ) by @qqqys \n Shows Mod-rewritten assistant reply rows in the Web Shell while preserving original text for history, copy, search, and branching. ( #17718 ) by @qqqys \n Adds a --timeout option to /model --vision for setting visionBridgeTimeoutMs, accepting seconds or ms-style values and applying immediately. ( #17830 ) by @qqqys \n Adds the daemon chat controller so incoming daemon events are bound to the correct attempt before settling, preventing late events from affecting finished chat attempts. ( #17794 ) by @wenshao \n Binds the managed GitHub adapter ledger to its registration identity so pending comments are not replayed under a different registration. ( #17775 ) by @wenshao \n feat(managed-agent): clarify Web UI parity and wire local terminal ( #17795 ) by @wenshao \n feat(managed-agent): stamp clean suspensions for wake dispatch ( #17908 ) by @doudouOUC \n feat(core): run OpenTUI on the shared agent loop by default ( #17745 ) by @qqqys \n feat(acp): end a tool-calling turn when queued input is sent now ( #17825 ) by @qqqys \n feat(serve): add daemon restart recovery inbox ( #17677 ) by @wenshao \n feat(web-shell): worktree carry metadata + snapshot-then-delete cleanup ( #17237 , P6 partial) ( #17533 ) by @wenshao \n feat(acp): deliver pending async hook output on the default legacy round ( #17890 ) by @wenshao \n feat(web-shell): bind the daemon chat controller to the session provider ( #17895 ) by @wenshao \n feat(managed-agent): degrade process components per package in content-only extension runtimes ( #17944 ) by @doudouOUC \n feat(channels): bind the email ledger to its registration identity ( #17925 ) by @wenshao \n Bug Fixes\n fix(verify-pr): harden the watch-state shape guard, container nonce, and VM prose ( #17440 ) by @wenshao \n fix(external-context): deflake cumulative-deadline deletion timing ( #17342 ) by @qwen-code-dev-bot \n fix(serve): reserve listener headroom from SSE and reap stalled writers by default ( #17502 ) by @wenshao \n fix(triage): fail closed when QWEN_TRIAGE_DRAFT_DIR is unset in CI ( #17549 ) by @yiliang114 \n fix(managed-agent): recover vanished Harness admissions safely ( #17521 ) by @doudouOUC \n Fixes Web Shell so PR watch deep links can be served before authentication, improving direct link access. ( #17119 ) by @Afloat16 \n Updates the Read unchanged-file message to tell users to re-read with a different offset or limit when earlier content is unavailable or out-of-band changes are suspected. ( #17465 ) by @callmeYe \n On touch devices and narrow viewports, the composer model picker now opens as a bottom sheet with model search and reasoning controls, while desktop behavior stays unchanged. ( #17401 ) by @callmeYe \n Limits Grep fallback searches to tracked and non-ignored untracked files so results match git-grep and avoid excluded build output. ( #17530 ) by @callmeYe \n Recovers resubmitted managed-agent turns that are already accepted and, when the parked execution is ready, drives its continuation instead of leaving it stalled. ( #17680 ) by @doudouOUC \n Managed Web Shell now shows request, session, and recovery errors as normal conversation messages, with retry via message link or Ctrl+Y and fewer separate recovery panels. ( #17557 ) by @yiliang114 \n Keeps managed DingTalk replies sent in multiple chunks from being truncated and documents why no aggregate send limit is applied. ( #17529 ) by @wenshao \n Cold worktree restoration now delays automatic work until ownership validation and working-directory restore finish, preventing blocked restores and preserving pending questions. ( #17654 ) by @doudouOUC \n Web Shell now removes the extra gap under /send records and keeps each reply visible beside its Cross-session message card when turns are collapsed. ( #17686 ) by @qqqys \n /verify-pr --watch now registers its watch round before prepare, and --start no longer requires --artifact-dir, improving liveness without breaking existing callers. ( #17550 ) by @wenshao \n Long-running processes now release idle JSONL append locks after successful or failed writes settle, reducing lock accumulation. ( #17577 ) by @Afloat16 \n Web Shell Memory panel now has a Refresh control that reloads the file list and retries the selected file without closing the panel, restoring editing when reads succeed. ( #17108 ) by @Afloat16 \n SDK header merging now treats HTTP header names case-insensitively, so caller headers override transport defaults instead of creating duplicate values. ( #17579 ) by @Afloat16 \n CLI exit cleanup now preserves pending cleanup work when handlers unregister, preventing skipped or repeated cleanup during shutdown. ( #17572 ) by @Afloat16 \n Stops delivering buffered SSE events after a stream is cancelled, preventing stale session updates. ( #17569 ) by @Afloat16 \n Cancels heartbeats for sessions removed or replaced during heartbeat registration, preventing leaked timers. ( #17117 ) by @Afloat16 \n Custom commands now preserve argument text literally during prompt expansion, so $$ and $& are not reinterpreted. ( #17367 ) by @Afloat16 \n Keeps Python SDK initialization running when one waiting control call is cancelled, allowing other calls and prompt input to continue. ( #17499 ) by @Afloat16 \n Shows an amber busy marker in Web Shell sidebar session rows when background work is running and aligns row actions with that state. ( #17676 ) by @wenshao \n Delivers completed background async hook output to the model on the next turn instead of silently dropping it. ( #17477 ) by @wenshao \n Labels shell tool results as Output (stdout and stderr combined) and Execution Error, while keeping compatibility with earlier labels. ( #17685 ) by @qqqys \n CLI and Web Shell copy extraction now keeps fence-like lines inside copied code and does not extract math from code blocks, reducing truncated copies. ( #17578 ) by @Afloat16 \n ACP Java SDK now returns selected file lines joined by normal newlines instead of path separators, preventing corrupted file content shown to the agent. ( #17688 ) by @Afloat16 \n The SDK now clears permission callback deadlines after failures, preventing stray timeout rejections, crashes, or leftover timers after a denial. ( #17581 ) by @Afloat16 \n Web Shell change overview now limits its commit fallback to the current session's own commits and hides it when no reliable session start exists. ( #17514 ) by @wenshao \n Raises the document export renderer JavaScript size budget so newly added Web Shell transcript copy does not fail the build. ( #17746 ) by @wenshao \n SDK now rejects oversized peer frames before dispatch, even when completed in one chunk, and stops overflowing batches while preserving valid separate frames. ( #17576 ) by @Afloat16 \n Managed DingTalk streams now centralize reconnection so a single drop starts at most one reconnect chain, and concurrent connect calls join the in-progress attempt. ( #17691 ) by @wenshao \n Cancelling a composer image batch now stops queued image reads that have not started, preventing unnecessary reads and base64 allocation after cancellation. ( #17705 ) by @cactuser-Lu \n Restores managed-agent class-size and facade-population gate checks without changing runtime behavior, fixing deterministic gate failures left on main. ( #17753 ) by @doudouOUC \n SDK now waits for actual child termination, classifies intentional shutdown, preserves failures, and tears down transport before rejecting pending Query and MCP requests. ( #17580 ) by @Afloat16 \n Fixes QQ bot direct chats so voice attachments from qqbot.ugcimg.cn are downloaded and delivered as audio instead of empty turns. ( #15339 ) by @mvanhorn \n Shows the managed composer attachment entry for unbound active Sessions when their Harness supports input attachments. ( #17722 ) by @wenshao \n Stabilizes the composer toolbar near width thresholds so approval and model labels no longer shift or disappear when the chat-width toggle appears. ( #17729 ) by @callmeYe \n Fixes qwen-managed-agent-server tool-result publication failures when embedded with json-schema-validator 2.x. ( #17752 ) by @yiliang114 \n The delete dialog now blocks deleting any session with running background work and shows the reason, while the current session remains deletable once no work is running. ( #17713 ) by @wenshao \n Time to first token for streamed requests now starts when the request is dispatched, making TTFT and related timing metrics more accurate. ( #17790 ) by @qqqys \n Sessions that contain only side records now show their artifact count on first open, and remaining artifact-summary display issues are fixed. ( #17711 ) by @wenshao \n fix(web-shell): Group approval scopes in a dropdown ( #17801 ) by @callmeYe \n fix(ci): raise the CodeQL JavaScript cap to 180m after the nightly overran 90m ( #17808 ) by @yiliang114 \n fix(serve): pin remote-access admission and non-REST shutdown drain ( #17712 ) ( #17737 ) by @wenshao \n Completes Russian UI coverage in Desktop and CLI and keeps long account-menu labels on one line. ( #17719 ) by @callmeYe \n Fixes permission rules so Windows drive-letter and UNC absolute paths match correctly, including Always Allow entries. ( #17810 ) by @yiliang114 \n Allows LocalDirectory writes of valid text beginning with a UTF-8 BOM while still rejecting invalid unpaired surrogates. ( #17820 ) by @yiliang114 \n fix(web-shell): evict aborted mention cache lookups ( #17826 ) by @yiliang114 \n Ensures JSONL logs remain readable after an interrupted append by adding a leading newline before the next record when the previous record is unterminated. ( #17771 ) by @wenshao \n Adds missing Russian translations for experimental.mods, visionBridgeTimeoutMs, and /model --vision --timeout CLI messages. ( #17858 ) by @wenshao \n Compression now reduces or refuses summarization requests that cannot fit the model window and recovers once from context-length rejections. ( #15936 ) by @yanyukang2003-ux \n Web Shell markdown images that point to local paths or fail to load now render as selectable text chips instead of broken placeholders. ( #17866 ) by @doudouOUC \n Caps the joined async hook context block sent to the model at 10,000 characters to prevent oversized requests. ( #17736 ) by @wenshao \n Preserves MCP tool-reported failure diagnostics in failed tool responses so CLI and ACP replay the exact tool error content. ( #17803 ) by @callmeYe \n Fixes six deferred managed /loop issues, improving behavior and related test coverage. ( #17594 ) by @wenshao \n Allows editing a draft in Web Shell while a saved session loads, while sending remains disabled until the session is ready. ( #17842 ) by @callmeYe \n fix(managed-agent): settle recovery from durable native terminals ( #17886 ) by @doudouOUC \n fix(web-shell): decouple first prompt from automatic title writes ( #17843 ) by @callmeYe \n fix(core): bound JSONL tail diagnostic recovery and cache churn ( #17901 ) by @wenshao \n fix(managed-agent-server): keep journal blob reclamation moving past sealed heads ( #17907 ) by @doudouOUC \n fix(memory): rebuild extraction indexes in the runtime ( #17785 ) by @callmeYe \n fix(daemon): include memory metrics in detailed status JSON ( #17906 ) by @callmeYe \n fix(agents): reject incompatible Host replacements ( #17702 ) by @water-in-stone \n fix(i18n): unify ru timeout spelling and vision-bridge term ( #17867 ) by @wenshao \n fix(web-shell): keep the model sheet's rows and search field touch-sized ( #17892 ) by @wenshao \n fix(managed-agent): settle a parked turn whose runtime is terminally lost ( #17932 ) by @doudouOUC \n fix(ci): route autofix reviews through live bot ( #17881 ) by @yiliang114 \n fix(core): resolve dotted DeepSeek catalog limits ( #17876 ) by @yiliang114 \n fix(channels): address Aone channel deferred review findings ( #17517 ) ( #17519 ) by @wenshao \n fix(channels): own DingTalk endpoint discovery so a hung connect stops muting the process ( #17773 ) by @wenshao \n fix(cli): attribute daemon log lines and bind late channel restores to the boot conflict decline ( #17904 ) by @wenshao \n fix(web-templates): re-track renderer byte budget ( #17940 ) by @wenshao \n fix(managed-agent): create the ephemeral Runtime state directory before spawning ( #17949 ) by @yiliang114 \n fix(models): support Gemini proxy streaming and model refresh ( #17947 ) by @wenshao \n fix(managed-agent): load transport wakes through the passive verb ( #17955 ) by @doudouOUC \n fix(core): tie async hook output consumption to the accepted turn ( #17930 ) by @wenshao \n Performance\n Speeds up follow-up suggestions by limiting context to a compact 4,000-character projection when cache sharing is unavailable or a different model is used. ( #17532 ) by @callmeYe \n Improves session catalog performance by loading sidecar data only for returned rows instead of all sessions. ( #17738 ) by @callmeYe \n Indexes bundled startup chunks to speed up packaged serve and ACP startup, cutting median workspace-ready time by 41.16% in one measured sandbox. ( #17720 ) by @callmeYe \n Improves Web Shell theme switching performance by reducing repeated style recalculations. ( #17786 ) by @callmeYe \n Reduces Web Shell input lag during history replay, with a recorded case improving key-to-editor delay by up to 1,706 ms. ( #17788 ) by @callmeYe \n Improves web-shell typing performance by preventing composer input from triggering unnecessary transcript relayouts. ( #17821 ) by @callmeYe \n Web Shell loads Simplified Chinese, Traditional Chinese, and Russian language catalogs on demand to reduce startup JavaScript while keeping English fallback. ( #17833 ) by @callmeYe \n Improves managed-agent-server responsiveness by limiting database scans and round trips that grew with unrelated history. ( #17856 ) by @doudouOUC \n perf(web-shell): load xterm on demand ( #17840 ) by @callmeYe \n fix(acp-bridge): merge background-turn live text chunks ( #17862 ) by @wenshao \n perf(web-shell): render large workspace PDFs on demand ( #17899 ) by @callmeYe \n perf(web-shell): gzip serve responses for large transcript loads ( #6181 ) ( #11220 ) by @now-ing \n Documentation\n docs(design): propose idle Session suspension toward a stateless Hosted Harness ( #17527 ) by @doudouOUC \n docs(design): drop the 20-run parity requirement from the loop rollout steps ( #17535 ) by @qqqys \n Updates managed-agent documentation and regression tests to match current read-retry and probe-removal behavior. ( #17082 ) by @wenshao \n Clarifies that /btw is the recommended side-question syntax for Ink and OpenTUI and explains how ?btw behaves in each. ( #17759 ) by @Barzabel \n Adds tests and design documentation for Web Shell sidebar goal marker double-click protection and clearing transitions. ( #17733 ) by @wenshao \n Updates English and Chinese design documentation to mark the PR-watch bound-session feature as merged and record its follow-up tracking details. ( #17793 ) by @wenshao \n Updates docs to say new sessions start in Auto Mode and how to start Ask Permissions Mode via setting or --approval-mode default. ( #17799 ) by @qqqys \n docs(security): add GitHub private vulnerability reporting to SECURITY.md ( #17806 ) by @yiliang114 \n feat(serve): let create_sub_session reach any session, skip its workspace prompt in YOLO, and drop the thread glyph ( #17818 ) by @qqqys \n Adds bilingual documentation for Phase 3 control-plane wake scheduling and Runtime-owned background observation in the Hosted Harness roadmap. ( #17805 ) by @doudouOUC \n Adds a verification guide for Web Shell changes, covering daemon capability fallback, partial settings writes, channel session startup, and model turn evidence. ( #17762 ) by @Barzabel \n Updates the H5e card-surfaces design status to record the merged DingTalk interactive-card private-chat vertical, its verification ledger, and deferred follow-ups. ( #17815 ) by @wenshao \n Adds documentation for the Phase 3 seal-time wake stamp addendum that replaces the earlier wake-scheduling mechanism. ( #17869 ) by @doudouOUC \n docs(web-shell): link the deferred background-work reporting gap to its issue ( #17850 ) by @wenshao \n Adds English and Simplified Chinese verification documentation for legacy JSONL append isolation behavior and follow-up gaps. ( #17853 ) by @wenshao \n docs(managed-agent): mark the deferred loop pins design merged with its verification ledger ( #17905 ) by @wenshao \n docs(core): mark JSONL tail diagnostics design as merged ( #17913 ) by @wenshao \n docs(managed-agent): design Runtime-owned background observation (Phase 3b) ( #17912 ) by @doudouOUC \n docs(managed-agent): record the workspace artifact library's merged status ( #17779 ) by @wenshao \n docs(worktree): record merged delivery and verification ( #17928 ) by @wenshao \n docs(managed-agent): record web UI parity delivery ( #17915 ) by @wenshao \n docs(design): record background-turn live replay landing ( #17916 ) by @wenshao \n docs(design): record recovery merge and fix workflow test isolation ( #17941 ) by @wenshao \n Internal Changes\n test(managed-agent): observe a real scheduled /loop fire in the full-stack E2E ( #17506 ) by @wenshao \n Raises the timeout for a DingTalk webhook-cache test to reduce flaky CI failures without changing product behavior. ( #17615 ) by @qwen-code-dev-bot \n Refactors the Web Shell composer status stack into a shared component with no user-visible behavior change. ( #17684 ) by @wenshao \n Adds a 120-second per-test budget for Web Shell browser smoke tests that boot the app twice, covering setup and test body. ( #17487 ) by @qwen-code-dev-bot \n Adds tests for disabling a Skill by workspace-qualified name when the workspace catalog is empty, including settings write failure handling. ( #17766 ) by @Barzabel \n Stabilizes the CLI SSE pairing-listener clamp test by shutting down the daemon before deleting its temporary log directory. ( #17764 ) by @qwen-code-dev-bot \n Improves end-to-end test isolation by cloning gitRemotes fixtures and correcting the fixture-ownership comment, with no user-facing behavior change. ( #17800 ) by @wenshao \n Adds a CI meta-test ensuring scheduled workflows keep non-empty cron triggers. ( #17829 ) by @yiliang114 \n Internal test changes improve coverage for listener stream limits and socket pruning without changing user-visible behavior. ( #17841 ) by @yiliang114 \n Adds a test verifying that the Web Shell mobile composer retains editor focus when switching between simple and advanced modes. ( #17828 ) by @Barzabel \n Strengthens e2e fixture-ownership tests to pin cloned fixture values and content, helping catch regressions that could leak shared test data. ( #17824 ) by @wenshao \n Managed-agent file sessions now use the unified lifecycle v2 close path and related preflight checks. ( #17871 ) by @doudouOUC \n Removes pre-production rolling-upgrade version machinery and unifies managed-agent version-shaped formats. ( #17864 ) by @doudouOUC \n test(managed-agent): re-home publication lifecycle IT v1 witness to external-files ( #17909 ) by @doudouOUC \n test(integration): deflake the export document budget on all CI runners ( #17884 ) ( #17887 ) by @qwen-code-dev-bot \n test(managed-agent): scope the workspace artifact index assertion to its own database ( #17893 ) by @wenshao \n refactor(managed-agent): key tenant guard on readable VARCHAR scope (identity de-hash increment 1) ( #17927 ) by @doudouOUC \n test(managed-agent): run the wake stamp suites on MySQL and pin each suspension gate clause ( #17954 ) by @doudouOUC \n refactor(managed-agent): drop redundant storage keys ( #17958 ) by @doudouOUC \n refactor(managed-agent): drop redundant in-process locks and the archived legacy Session guard stub ( #17959 ) by @doudouOUC \n test(managed-agent): use canonical schema initializer ( #17921 ) by @wenshao \n New Contributors\n @Barzabel made their first contribution in #17766 \n Full Changelog : v0.28.0...v0.28.3",
       "four_elements": {
-        "pain_point": "① 过去靠 llama.cpp 一个“瑞士军刀”就能跑通多数本地大模型，如今为了拿到 KV 缓存量化、流式 KV 缓存、混合专家模型（MoE）及新架构支持，用户被迫在大量针对特定模型或特定显卡的专用引擎和第三方分支间来回切换（发帖者同时轮换使用 beelama、自适应流式 KV 的 llama.cpp 分支、Strata、Basalt 与上游 llama.cpp）。另一方面，vLLM 和 SGLang 等生产级方案有 Linux 环境门槛，上游新模型适配偏慢且性能优化 PR 常遭拒，加上盲目试用年轻分支与二进制包还会带来恶意软件和窃密木马等供应链安全风险。",
-        "mechanism": "② 本文为社区讨论汇总而非单一算法论文，核心产出是一套按使用场景分层的本地推理引擎选型框架：1）通用默认层：以成熟且经广泛测试的 llama.cpp 作为绝大多数本地推理的基线，其近期新增了张量并行、多词元预测（MTP）与部分内存卸载功能，正缩小与 vLLM 的差距；2）移动端层：采用 LiteRT；3）专业服务部署层：采用 vLLM 或 SGLang；4）极限吞吐专用层：仅在明确需要针对特定显卡（如 NVIDIA 50 系列或 Radeon R9700 Pro）与特定模型压榨峰值速度时，按需选用 Basalt、Radiance 或 Strata 等专用引擎，并优先规避未经充分审计的小众二进制包。",
-        "experiments_summary": "③ 原文为社区用户自报的本地推理吞吐对比，非严格控制变量的学术评测：在 Qwen FN 上，llama.cpp 提示词处理速度约 ~300 pp（原文未给出对应生成速率），而 Strata 在 200k+ KV 缓存下达到 ~180 tok/s 与 ~2500 pp；在 Inkling-2-Mini 上，某 llama.cpp 分支为 28 tok/s，Basalt 为 60 tok/s。模型具体参数量、硬件卡数、测试批次与随机种子数原文均未单列。",
-        "repro_and_reference": "④ 原文为 Latent Space [AINews] 整理的社区讨论帖（互动热度 Activity: 644），未附统一代码仓库或基准复现脚本。提及的 llama.cpp、vLLM、SGLang、LiteRT 等属于公开成熟生态，而 Strata、Basalt、Radiance、beelama 及各类 llama.cpp 分支分散在不同项目与特定硬件（如 NVIDIA 50 系列、Radeon R9700 Pro）下，复现需自行配置对应硬件与环境并注意第三方二进制的供应链安全。",
-        "experiment_rows": [],
-        "backbone_and_params": "涉及 Qwen FN、Inkling-2-Mini 等测试模型；具体参数量原文未单列",
-        "gpu_and_duration": "原文为推理引擎讨论，提及 NVIDIA 50 系列、Radeon R9700 Pro 等显卡；训练算力卡数与耗时原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
+        "pain_point": "① 这是一份代理客户端与托管运行时工程发版日志，而非算法论文。旧版本在长周期运行与多端接入时存在四类典型翻车场景：一是托管会话空闲时持续占用运行时资源，或冷恢复工作树时过早触发自动任务导致阻塞与待确认问题丢失；二是钉钉、GitHub、邮件等外部渠道重新注册后会错误重放历史待处理消息，且守护进程迟到的事件流会污染已结束的对话回合；三是服务器推送事件（SSE）连接缺乏统一准入配额、写入停滞不回收，上下文超长或异步钩子输出过大时直接触发请求失败；四是网页端（Web Shell）打包体积大、历史回放时输入触发整表重排，导致启动慢与打字明显卡顿。",
+        "mechanism": "② 改动集中在四条工程链路而非模型算法本身：第一，会话生命周期与容错控制，托管运行框架（Hosted Harness）在活跃任务排空后挂起空闲会话并在下次请求时冷启（#17690），可选启用模型上下文协议（MCP）连接挂起保活避免重连（#17749），并引入守护进程意图生命周期核心与回合绑定控制器，按权威状态证据结算提交、取消与审批，阻断迟到事件影响已完成回合（#17709、#17794）；第二，多渠道扩展与一致性防护，新增 GitHub、企业微信、通用 Webhook、Microsoft Teams 渠道适配器，将钉钉/GitHub/邮件持久化账本绑定到注册身份防止跨注册重放（#17742、#17775、#17925），并支持运行中注入消息（#15634）；第三，运行时配额与降级，统一代理通信协议（ACP）与 OpenTUI 到共享代理循环（#17744、#17745），对所有守护进程流施加 --max-sse-connections 准入上限并回收停滞写入（#17662、#17502），对容量报错模型单轮跳过下轮重探（#17377），上下文压缩支持超窗降载与单次恢复（#15936），异步钩子输出截断至 10,000 字符（#17736）；第四，前端与打包优化，为打包启动分块建索引（#17720），避免输入触发对话列表重排（#17821），后续建议上下文压缩至 4,000 字符（#17532），并按需加载语言包、终端组件 xterm 与大 PDF 及开启响应 gzip 压缩。",
+        "experiments_summary": "③ 全文未包含模型能力基准测试或学术对照实验，仅在性能优化条目中出现两处零散实测数字：一是通过打包启动分块索引，在单个实测沙箱中将打包版 serve 与代理通信协议（ACP）的 workspace-ready 中位耗时降低 41.16%（#17720），但未给出优化前后的绝对毫秒值、样本运行次数、冷热缓存状态及机器配置；二是在网页端历史回放输入优化中，单个记录案例的按键到编辑器延迟（key-to-editor delay）最高降低 1,706 ms（#17788），同样未说明对话历史条数、浏览器环境与分位数统计。模型规模、GPU 卡数与随机种子数原文均未单列。",
+        "repro_and_reference": "④ 属于可直接部署使用的工程发布版本（所给材料未附仓库 URL，但末尾提及对比范围 v0.28.0...v0.28.3），不涉及模型训练算力门槛，本地常规开发机即可运行客户端与守护进程。但就文中两项性能声称而言，由于未公开压测脚本、测试工作区规模与历史回放数据集，研究者无法仅凭发版日志独立复现 41.16% 与 1,706 ms 的具体降幅；此外，部分托管运行时与外部渠道功能依赖企业微信、钉钉、MySQL 及后端托管环境，完整端到端验证存在外部基础设施门槛。",
+        "experiment_rows": [
+          {
+            "benchmark": "打包版 serve 与 ACP 启动（#17720）",
+            "metric": "workspace-ready 中位耗时",
+            "value": "原文未单列绝对值",
+            "baseline_delta": "-41.16%",
+            "setup_note": "分母与运行次数未写，仅标明单次实测沙箱（one measured sandbox），缺冷热启动与硬件规格",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "Web Shell 历史回放输入（#17788）",
+            "metric": "按键到编辑器延迟（key-to-editor delay）",
+            "value": "原文未单列绝对值",
+            "baseline_delta": "最高降低 1,706 ms",
+            "setup_note": "分母为单个记录案例（a recorded case）的极值而非多样本均值，缺历史消息长度与设备规格",
+            "verified": true,
+            "unverified_numbers": []
+          }
+        ],
+        "backbone_and_params": "原文未单列（为多模型代理客户端/运行时发布，日志仅提及支持 DeepSeek 目录配置与 Gemini 代理流式等适配，未绑定单一基座模型与参数量）",
+        "gpu_and_duration": "所给材料未单列",
+        "seeds_note": "所给材料未单列",
+        "verdict_label": "纯工程迭代缺严谨评测",
+        "verdict_reason": "该条目是面向代理客户端与托管运行时的常规版本更新日志，核心价值在于会话挂起、账本防重放与流控等工程稳定性修复，而非可复现的科研方法创新；仅有的两项性能数字均为单环境/单案例报告且缺少绝对基线与统计分布，对学术研究无需精读，仅建议工程使用者按需查阅变更项。",
+        "critique_points": [
+          "核心工程假设在边界分布下存在明确失效风险：例如会话挂起与 MCP 连接保活（#17690、#17749）假设长连接在网络抖动或上游服务重启后仍可安全复用，若外部工具服务静默断连或状态漂移，冷恢复可能产生隐性状态不一致；此外，异步钩子输出硬截断至 10,000 字符（#17736）和后续建议裁剪至 4,000 字符（#17532）在长日志排障或深上下文任务中可能丢弃关键信息，日志未提供此类截断对代理任务完成率影响的泛化证据。",
+          "仅有的两项性能对比口径不完整，不足以支撑普适加速结论：#17720 仅报告单沙箱相对降幅 41.16% 而未给绝对耗时（若基线本身很短，绝对收益有限），#17788 报告单案例“最高降低 1,706 ms”属于极值口径而非跨场景 P50/P95 分布；需要通过固定工作区大小、消息条数、冷热缓存及多轮重复测量的对照实验，才能确认收益是否受单次环境噪声主导。",
+          "该版本一次性合入上百项提交（且文档中提到取消了 loop 发布的 20 次一致性检查要求 #17535），性能与稳定性条目之间未做逐项消融：例如网页端体感流畅度同时涉及输入防重排（#17821）、回放优化（#17788）、语言包/xterm/PDF 按需加载（#17833、#17840、#17899）与 gzip 压缩（#6181），在缺少控制变量拆解的情况下，无法区分各单项改动对端到端延迟的独立贡献，也不能将其归因为底层模型或推理算法的改进。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
       },
       "conference_slug": "",
       "conference_track_tier": "",
-      "relative_score": 9.0
+      "relative_score": 7.6
     },
     {
-      "slug": "gui-rl-2611-29268",
-      "section": "papers",
-      "track": "gui-rl",
-      "track_label": "GUI-RL",
+      "slug": "vlm-infra-qwen-code-desktop-v0-28-4",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
       "subtopics": [
-        "gui-env",
-        "gui-security"
+        "rl-framework",
+        "multimodal-base"
       ],
-      "lab_tags": [],
-      "institution_tags": [],
-      "title_zh": "AdaptiveVPI：面向自适应视觉提示注入的网页智能体防御评测基准",
-      "title_en": "Benchmarking Web Agent Defenses Against Adaptive Visual Prompt Injection",
-      "one_line_pain": "针对现有视觉提示注入防御只查截图且忽略自适应攻击的盲区，构建360个隐蔽HTML网页基准并按防御反馈迭代攻击",
+      "lab_tags": [
+        "lab-qwen"
+      ],
+      "institution_tags": [
+        "阿里通义 Qwen"
+      ],
+      "title_zh": "Qwen Code Desktop v0.28.4：无状态会话休眠与多渠道代理引擎更新",
+      "title_en": "Qwen Code Desktop v0.28.4",
+      "one_line_pain": "针对长驻编码代理的会话挂起丢失、多端接入割裂与大历史卡顿，引入无状态休眠唤醒、统一循环及多渠道适配器",
       "metric_badges": [
         {
-          "text": "360个隐蔽HTML劫持网页",
+          "text": "无状态会话休眠 Phase 1",
           "verified": true,
           "unverified_numbers": []
         },
         {
-          "text": "自适应攻击成功率91.87%/91.99%",
+          "text": "统一共享 Agent Loop",
           "verified": true,
           "unverified_numbers": []
         }
       ],
-      "openness": "paper_only",
-      "openness_label": "仅论文",
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
       "small_compute_friendly": false,
       "small_compute_note": "4–8卡未显式单列",
       "authors": [
-        "Haichuan Zhang",
-        "Zhiyuan Zhong",
-        "Shih-Chieh Dai",
-        "Xinyu Sun",
-        "Guanhong Tao"
+        "阿里通义 Qwen"
       ],
       "published_date": "2026-11-22",
-      "venue_or_source": "arXiv cs.CR",
-      "url_primary": "https://arxiv.org/abs/2611.29268",
-      "url_pdf": "https://arxiv.org/pdf/2611.29268",
-      "url_arxiv_html": "https://arxiv.org/html/2611.29268",
+      "venue_or_source": "阿里通义 Qwen",
+      "url_primary": "https://github.com/QwenLM/qwen-code/releases/tag/desktop-v0.28.4",
+      "url_pdf": "",
+      "url_arxiv_html": "",
       "url_github": "",
       "url_hf": "",
-      "arxiv_id": "2611.29268",
+      "arxiv_id": "",
       "doi": "",
       "github_stars": null,
       "license_name": "",
       "corroborating_sources": [],
-      "abstract_en": "Multimodal web agents automate website interactions but remain vulnerable to visual prompt injection (VPI), where malicious webpage content manipulates their visual processing and induces unintended actions. Although several defenses focus on detecting injected instructions in screenshots, malicious destinations such as phishing URLs embedded in HTML can remain hidden yet accessible through agent interactions. Existing evaluations have also not sufficiently examined adaptive attackers who know the defense mechanisms. To address these limitations, we introduce AdaptiveVPI, the first benchmark for systematically evaluating adaptive VPI threats in web agents. Specifically, we present a dataset of 360 webpage instances spanning 6 distinct hijack strategies across 10 real-world websites, with malicious destinations not visible in screenshots. We design an adaptive attack framework that iteratively refines malicious instructions based on feedback from the defense mechanism being evaluated. We also introduce three metrics to measure the extent of agent hijacking at three different levels. Across 10 defense configurations for computer-use agents and 11 defense configurations for browser-use agents, our adaptive attacks achieve average success rates of 91.87% and 91.99%, respectively. These results reveal a gap between current VPI defenses and realistic threats and highlight the need for defenses designed with adaptive attackers in mind.",
+      "abstract_en": "What's Changed\n test(managed-agent): observe a real scheduled /loop fire in the full-stack E2E by @wenshao in #17506 \n fix(verify-pr): harden the watch-state shape guard, container nonce, and VM prose by @wenshao in #17440 \n fix(external-context): deflake cumulative-deadline deletion timing by @qwen-code-dev-bot in #17342 \n docs(design): propose idle Session suspension toward a stateless Hosted Harness by @doudouOUC in #17527 \n docs(design): drop the 20-run parity requirement from the loop rollout steps by @qqqys in #17535 \n fix(serve): reserve listener headroom from SSE and reap stalled writers by default by @wenshao in #17502 \n feat(web-shell): explain background tasks from the composer chips by @wenshao in #17398 \n fix(triage): fail closed when QWEN_TRIAGE_DRAFT_DIR is unset in CI by @yiliang114 in #17549 \n test(channels): deflake the DingTalk webhook-cache recency case by @qwen-code-dev-bot in #17615 \n fix(managed-agent): recover vanished Harness admissions safely by @doudouOUC in #17521 \n feat(web-shell): add the unified chat surface contract and capability guards by @wenshao in #17520 \n feat(channels): add GitHub as the third managed channel adapter by @wenshao in #17511 \n perf(core): bound follow-up suggestion context by @callmeYe in #17532 \n feat(generated-ui): let cards save view state through the host by @qqqys in #17522 \n feat(web-shell): send to another session with /send by @qqqys in #17539 \n fix(web-shell): serve PR watch deep links before authentication by @Afloat16 in #17119 \n feat(web-shell): decouple the shared composer from daemon value imports by @wenshao in #17661 \n fix(core): converge Read unchanged-dedup with the preview lineage by @callmeYe in #17465 \n fix(web-shell): bottom-sheet model picker on touch screens by @callmeYe in #17401 \n feat(channels): add generic outbound webhook delivery by @jkxiao in #17610 \n fix(core): scope Grep fallback strategies to the git-aware corpus by @callmeYe in #17530 \n fix(managed-agent): drive continuation-ready parks in the epoch-less resubmission arm by @doudouOUC in #17680 \n fix(web-shell): align managed errors with DAC and stabilize recovery by @yiliang114 in #17557 \n fix(channels): keep DingTalk multi-chunk sends untruncated; the ledger converges by @wenshao in #17529 \n feat(managed-agent): notify attachment retirement and age out suspension waits by @doudouOUC in #17681 \n fix(serve): Prevent automatic work from blocking worktree restore by @doudouOUC in #17654 \n fix(web-shell): keep each /send reply in view and drop the gap under send records by @qqqys in #17686 \n fix(verify-pr): register the watch round ahead of prepare (R17-2 liveness) by @wenshao in #17550 \n fix(core): release idle JSONL append locks by @Afloat16 in #17577 \n fix(web-shell): retry memory content after refresh by @Afloat16 in #17108 \n fix(sdk): apply caller headers without case-sensitive duplicates by @Afloat16 in #17579 \n fix(cli): preserve pending cleanup when handlers unregister by @Afloat16 in #17572 \n fix(sdk): stop buffered SSE delivery after cancellation by @Afloat16 in #17569 \n fix(java): cancel heartbeats removed during registration by @Afloat16 in #17117 \n fix(cli): preserve literal custom command arguments by @Afloat16 in #17367 \n feat(web): configure generic webhook destinations by @jkxiao in #17405 \n feat(web-shell): show the session artifact count at click time from list metadata by @wenshao in #17518 \n feat(acp): run Mods in ACP sessions by @qqqys in #17693 \n refactor(web-shell): extract the shared composer status stack component by @wenshao in #17684 \n fix(sdk-python): isolate initialization from caller cancellation by @Afloat16 in #17499 \n feat(serve): unify SSE admission and occupancy across every stream surface by @wenshao in #17662 \n feat(channels): add WeCom adapter to the managed channel path by @wenshao in #17441 \n fix(web-shell): make background work visible on sidebar session rows by @wenshao in #17676 \n test(managed-agent): align read-retry versioning count with the probe removal by @wenshao in #17082 \n feat(managed-agent): Discover and pin default workspace Skills by @doudouOUC in #17703 \n fix(core): deliver background async hook output to the model by @wenshao in #17477 \n fix(core): label shell output as combined streams apart from execution errors by @qqqys in #17685 \n feat(web-shell): mark sessions carrying a Goal in the sidebar by @wenshao in #17515 \n feat(web-shell): add Traditional Chinese UI locale by @callmeYe in #17421 \n feat(channels): mark inbound truncation across the managed adapters by @wenshao in #17726 \n fix(copy): preserve fence-like content in code and math extraction by @Afloat16 in #17578 \n fix(java): return newlines in file content responses by @Afloat16 in #17688 \n fix(sdk): clear permission deadlines on callback failure by @Afloat16 in #17581 \n fix(web-shell): scope the change overview commit fallback to the session start commit by @wenshao in #17514 \n fix(web-templates): raise document renderer budget for recent transcript copy by @wenshao in #17746 \n feat(managed-agent): implement stateless Hosted Harness phase 1 idle suspension by @doudouOUC in #17690 \n fix(sdk): enforce the peer frame limit before dispatch by @Afloat16 in #17576 \n fix(channels): centralize DingTalk reconnect so one drop arms one chain by @wenshao in #17691 \n fix(web-shell): stop queued image reads after a batch is cancelled by @cactuser-Lu in #17705 \n fix(managed-agent): restore the class-size and facade-population gates by @doudouOUC in #17753 \n test(web-shell): restore the shadow overview focus test budget by @qwen-code-dev-bot in #17487 \n test(serve): cover workspace skill settings by name by @Barzabel in #17766 \n test(cli): deflake the SSE pairing-listener clamp teardown ( #17761 ) by @qwen-code-dev-bot in #17764 \n fix(sdk): wait for actual child termination by @Afloat16 in #17580 \n feat(core): track model availability for the fallback chain (Qoder port) by @wenshao in #17377 \n feat(channels): bind the DingTalk ledger to its registration identity by @wenshao in #17742 \n fix(qqbot): accept QQ voice attachments from the voice CDN by @mvanhorn in #15339 \n feat(channels): deliver injected messages into the running turn by @Eric-GoodBoy-Tech in #15634 \n perf(daemon): Load session sidecars after catalog pagination by @callmeYe in #17738 \n fix(managed-agent): advertise input attachments on unbound Sessions by @wenshao in #17722 \n feat(managed-agent): add the workspace artifact library to the Web UI by @wenshao in #17728 \n docs(cli): clarify side question syntax in Ink and OpenTUI by @Barzabel in #17759 \n fix(web-shell): stabilize composer toolbar near width thresholds by @callmeYe in #17729 \n feat(cli): add native screen-reader presentation by @chiga0 in #17500 \n feat(web-shell): open the session artifacts list in the right panel from the header entry by @wenshao in #17689 \n feat(web-shell): add the daemon chat intent lifecycle core by @wenshao in #17709 \n feat(managed-agent): add PR-watch bound-session private injection by @wenshao in #17665 \n perf(serve): Index bundled startup chunks by @callmeYe in #17720 \n feat(managed-agent): keep idle MCP connections across suspension by @doudouOUC in #17749 \n feat(web-shell): show a workflow's declared phases before it reaches them by @qqqys in #17782 \n perf(web-shell): Batch portal theme variable reads and writes by @callmeYe in #17786 \n fix(managed-agent-server): adapt ToolPublicationContract to networknt json-schema-validator 2.x by @yiliang114 in #17752 \n test(web-shell): pin the goal marker double-click guard and refresh its design record by @wenshao in #17733 \n feat(managed-agent): add external Shell worker profile and publication producer [17357 A/2] by @yiliang114 in #17478 \n perf(web-shell): reduce input lag during history replay by @callmeYe in #17788 \n feat(qqbot): let the agent send a local file to the chat by @Eric-GoodBoy-Tech in #15450 \n feat(channels): add Microsoft Teams extension and host ingress by @XIQIXIQIXIQI in #15620 \n feat(telemetry): record OpenRouter routing backend and generation id by @2SinceJuly in #16495 \n fix(web-shell): refuse background-work deletion in the dialog for any row by @wenshao in #17713 \n fix(core): time TTFT from the request dispatch by @qqqys in #17790 \n fix(core): seed side-records-only sessions and close the artifact-summary residuals by @wenshao in #17711 \n feat(web-shell): allow hosts to configure transcript overscan by @callmeYe in #17807 \n feat(managed-agent): render DingTalk managed replies as editable cards by @wenshao in #17748 \n docs(design): mark PR-watch bound-session design merged ( #17665 ) by @wenshao in #17793 \n docs(approval-mode): say new sessions start in Auto Mode by @qqqys in #17799 \n test(web-shell): clone gitRemotes in the e2e scenario factory and correct the ownership set by @wenshao in #17800 \n feat(core): name the output budget when truncation rejects a write by @xxwtiancai in #16632 \n fix(web-shell): Group approval scopes in a dropdown by @callmeYe in #17801 \n fix(ci): raise the CodeQL JavaScript cap to 180m after the nightly overran 90m by @yiliang114 in #17808 \n docs(security): add GitHub private vulnerability reporting to SECURITY.md by @yiliang114 in #17806 \n feat(web-shell): let hosts disable the composer glow by @callmeYe in #17814 \n feat(core): run ACP sessions on the shared agent loop by default by @qqqys in #17744 \n feat(cli): run background workflows in headless mode by @qqqys in #17809 \n fix(serve): pin remote-access admission and non-REST shutdown drain ( #17712 ) by @wenshao in #17737 \n fix(i18n): Fill remaining Russian UI strings and keep the account menu on one line by @callmeYe in #17719 \n perf(web-shell): isolate composer layout from transcript relayouts by @callmeYe in #17821 \n feat(serve): let create_sub_session reach any session, skip its workspace prompt in YOLO, and drop the thread glyph by @qqqys in #17818 \n feat(serve,web-shell): draw Mod rewrites of reply rows by @qqqys in #17718 \n fix(core): match Windows drive-letter paths in permission rules by @yiliang114 in #17810 \n fix(web-shell): keep a leading BOM in LocalDirectory write validation by @yiliang114 in #17820 \n fix(web-shell): evict aborted mention cache lookups by @yiliang114 in #17826 \n test(ci): assert scheduled workflows retain cron triggers by @yiliang114 in #17829 \n perf(web-shell): load language catalogs on demand by @callmeYe in #17833 \n docs(managed-agent): add Phase 3 control-plane wake design by @doudouOUC in #17805 \n test(serve): share clamp fixture and pin socket pruning by @yiliang114 in #17841 \n fix(core): delimit JSONL records after interrupted appends by @wenshao in #17771 \n feat(cli): set the vision bridge timeout with /model --vision --timeout by @qqqys in #17830 \n test(web-shell): cover focus after mobile composer mode switches by @Barzabel in #17828 \n docs(verify-pr): add Web Shell verification recipes by @Barzabel in #17762 \n docs(managed-agent): mark the H5e card design merged with its verification ledger by @wenshao in #17815 \n fix(i18n): complete missing Russian coverage for mods and vision bridge timeout by @wenshao in #17858 \n perf(managed-agent-server): bound hot-path SQL scans and round-trips by @doudouOUC in #17856 \n docs(managed-agent): add Phase 3 seal-time wake stamp addendum by @doudouOUC in #17869 \n fix(core): reduce or refuse a compression request that cannot fit its window by @yanyukang2003-ux in #15936 \n fix(web-shell): render local-path and failed markdown images as text chips by @doudouOUC in #17866 \n fix(core): bound the joined async hook context block by @wenshao in #17736 \n docs(web-shell): link the deferred background-work reporting gap to its issue by @wenshao in #17850 \n docs(core): record JSONL append verification by @wenshao in #17853 \n feat(web-shell): assemble the daemon chat controller with attempt-bound settlement by @wenshao in #17794 \n test(web-shell): pin value and content in the e2e fixture-ownership cases by @wenshao in #17824 \n fix(core): preserve tool-reported failure content by @callmeYe in #17803 \n fix(managed-agent): close six deferred loop review pins by @wenshao in #17594 \n fix(web-shell): allow drafting while session history loads by @callmeYe in #17842 \n refactor(managed-agent): files-on-v2 lifecycle and public child relaxation (D3/D5') by @doudouOUC in #17871 \n feat(channels): bind the GitHub ledger to its registration identity by @wenshao in #17775 \n refactor(managed-agent): converge pre-production version machinery by @doudouOUC in #17864 \n docs(managed-agent): mark the deferred loop pins design merged with its verification ledger by @wenshao in #17905 \n feat(managed-agent): clarify Web UI parity and wire local terminal by @wenshao in #17795 \n fix(managed-agent): settle recovery from durable native terminals by @doudouOUC in #17886 \n perf(web-shell): load xterm on demand by @callmeYe in #17840 \n test(managed-agent): re-home publication lifecycle IT v1 witness to external-files by @doudouOUC in #17909 \n fix(acp-bridge): merge background-turn live text chunks by @wenshao in #17862 \n fix(web-shell): decouple first prompt from automatic title writes by @callmeYe in #17843 \n fix(core): bound JSONL tail diagnostic recovery and cache churn by @wenshao in #17901 \n fix(managed-agent-server): keep journal blob reclamation moving past sealed heads by @doudouOUC in #17907 \n fix(memory): rebuild extraction indexes in the runtime by @callmeYe in #17785 \n feat(managed-agent): stamp clean suspensions for wake dispatch by @doudouOUC in #17908 \n perf(web-shell): render large workspace PDFs on demand by @callmeYe in #17899 \n feat(core): run OpenTUI on the shared agent loop by default by @qqqys in #17745 \n fix(daemon): include memory metrics in detailed status JSON by @callmeYe in #17906 \n fix(agents): reject incompatible Host replacements by @water-in-stone in #17702 \n fix(i18n): unify ru timeout spelling and vision-bridge term by @wenshao in #17867 \n feat(acp): end a tool-calling turn when queued input is sent now by @qqqys in #17825 \n docs(core): mark JSONL tail diagnostics design as merged by @wenshao in #17913 \n feat(serve): add daemon restart recovery inbox by @wenshao in #17677 \n feat(web-shell): worktree carry metadata + snapshot-then-delete cleanup ( #17237 , P6 partial) by @wenshao in #17533 \n feat(acp): deliver pending async hook output on the default legacy round by @wenshao in #17890 \n docs(managed-agent): design Runtime-owned background observation (Phase 3b) by @doudouOUC in #17912 \n fix(web-shell): keep the model sheet's rows and search field touch-sized by @wenshao in #17892 \n perf(web-shell): gzip serve responses for large transcript loads ( #6181 ) by @now-ing in #11220 \n docs(managed-agent): record the workspace artifact library's merged status by @wenshao in #17779 \n fix(managed-agent): settle a parked turn whose runtime is terminally lost by @doudouOUC in #17932 \n fix(ci): route autofix reviews through live bot by @yiliang114 in #17881 \n fix(core): resolve dotted DeepSeek catalog limits by @yiliang114 in #17876 \n test(integration): deflake the export document budget on all CI runners ( #17884 ) by @qwen-code-dev-bot in #17887 \n docs(worktree): record merged delivery and verification by @wenshao in #17928 \n fix(channels): address Aone channel deferred review findings ( #17517 ) by @wenshao in #17519 \n fix(channels): own DingTalk endpoint discovery so a hung connect stops muting the process by @wenshao in #17773 \n docs(managed-agent): record web UI parity delivery by @wenshao in #17915 \n fix(cli): attribute daemon log lines and bind late channel restores to the boot conflict decline by @wenshao in #17904 \n fix(web-templates): re-track renderer byte budget by @wenshao in #17940 \n feat(web-shell): bind the daemon chat controller to the session provider by @wenshao in #17895 \n fix(managed-agent): create the ephemeral Runtime state directory before spawning by @yiliang114 in #17949 \n test(managed-agent): scope the workspace artifact index assertion to its own database by @wenshao in #17893 \n fix(models): support Gemini proxy streaming and model refresh by @wenshao in #17947 \n feat(managed-agent): degrade process components per package in content-only extension runtimes by @doudouOUC in #17944 \n fix(managed-agent): load transport wakes through the passive verb by @doudouOUC in #17955 \n refactor(managed-agent): key tenant guard on readable VARCHAR scope (identity de-hash increment 1) by @doudouOUC in #17927 \n test(managed-agent): run the wake stamp suites on MySQL and pin each suspension gate clause by @doudouOUC in #17954 \n refactor(managed-agent): drop redundant storage keys by @doudouOUC in #17958 \n refactor(managed-agent): drop redundant in-process locks and the archived legacy Session guard stub by @doudouOUC in #17959 \n feat(channels): bind the email ledger to its registration identity by @wenshao in #17925 \n docs(design): record background-turn live replay landing by @wenshao in #17916 \n test(managed-agent): use canonical schema initializer by @wenshao in #17921 \n fix(core): tie async hook output consumption to the accepted turn by @wenshao in #17930 \n docs(design): record recovery merge and fix workflow test isolation by @wenshao in #17941 \n fix(ci): use live review bot for manual re-review by @yiliang114 in #17848 \n ci(managed-agent): stabilize required gate name by @yiliang114 in #17865 \n refactor(managed-agent-server): retire the receipt-catalog SpotBugs exclusion with an analyzer-visible assertion by @wenshao in #17919 \n fix(managed-agent): hand the Hosted Harness client over under one lock by @doudouOUC in #17961 \n docs(managed-agent): correct identity budgets and record duplicate-key survey in de-hash design by @doudouOUC in #17960 \n test(ci): wait for RocketMQ listeners to clear after stop by @yiliang114 in #17967 \n fix(cli): preserve command migration destinations by @yiliang114 in #17873 \n fix(managed-agent): create the ephemeral Runtime state directory at spawn, not at provider creation by @wenshao in #17964 \n fix(release): resume a partial release instead of refusing its retry by @yiliang114 in #17951 \n refactor(managed-agent): drop redundant same-row identity hash keys by @doudouOUC in #18019 \n fix(managed-agent): treat blank workspace-cwd as unconfigured and align preflight docs by @yiliang114 in #17965 \n test(managed-agent): harden durable preflight fixtures by @wenshao in #18020 \n feat(serve,web-shell): draw Mod rewrites of thinking rows by @qqqys in #17920 \n docs(mcp): drop outdated restart instructions after mcpServers hot-reload by @Barzabel in #17743 \n fix(ci): isolate verify scratch in runner temp by @yiliang114 in #17879 \n feat(serve): refine create_sub_session workspace approvals by @wenshao in #17863 \n feat(web-shell): deliver per-turn assistant feedback to telemetry by @wenshao in #18021 \n feat(web-shell): update sidebar logo for dark theme by @wenshao in #17935 \n fix(extensions): load extension manifests saved with a UTF-8 BOM by @jaeminbird in #15786 \n fix(core): protect persisted tool-output recovery by @yiliang114 in #17875 \n feat(core): add built-in Gemini 4 reasoning defaults by @wenshao in #18039 \n fix(web-shell): keep mobile Send above software keyboard by @yiliang114 in #17883 \n refactor(managed-agent): drop dead and redundant schema objects by @doudouOUC in #18041 \n test(channels): make four managed DingTalk witnesses exclude what they claim by @wenshao in #17968 \n fix(ci): refuse verification without a prepared scratch directory by @yiliang114 in #18040 \n test(channels): deflake the DingTalk recent-window cap case ( #17834 ) by @qwen-code-dev-bot in #17837 \n fix(ci): strip terminal and Bidi controls from the autofix failed-check evidence by @wenshao in #16748 \n feat(web-shell): mark sessions needing continuation in the sidebar by @wenshao in #18044 \n refactor(managed-agent): use plaintext identity segments in OSS object keys by @doudouOUC in #18048 \n test(cli): synchronize restart recovery crash fixture by @wenshao in #18049 \n feat(web-shell): add the contract-driven ChatSurface chat column by @wenshao in #17952 \n docs: design the local-daemon workspace artifact library page by @wenshao in #18036 \n docs(managed-agent): design Action parking (stateless Harness phase 4) by @doudouOUC in #18047 \n docs: mark the workspace artifact library design accepted ( #18036 ) by @wenshao in #18063 \n fix(web-templates): re-track export renderer budget for ChatSurface copy by @wenshao in #18067 \n fix(web-shell): prioritize session titles across devices by @wenshao in #18011 \n fix(ci): re-pin the RHEL 10 rpm build root to the current stream10 digest by @yiliang114 in #18069 \n fix(managed-agent): close over the resources a config_install record names by @yiliang114 in #17468 \n test(e2e): resolve the feedback transcript path by realpath on macOS by @yiliang114 in #18074 \n fix(acp-bridge): tolerate busy agents in channel liveness and capture failure evidence by @wenshao in #18028 \n feat(web-shell): compact automatic trigger messages by @wenshao in #17970 \n fix(web-shell): use running color for active work by @wenshao in #18072 \n test(managed-agent): gate the four durable existing-dir preflight tests to Linux by @yiliang114 in #18076 \n fix(web-shell): align session hover status with the row's status cues by @wenshao in #18070 \n refactor(managed-agent): move publication OSS scope naming to the contract by @yiliang114 in #18085 \n feat(web-shell): scope ChatSurface admission locks to the owning session and bind loadOlder by @wenshao in #18066 \n test(integration): deflake the SIGKILL restart-recovery case ( #18055 ) by @qwen-code-dev-bot in #18057 \n test(cli): deflake the admitted-mutation idle-timer case ( #18053 ) by @qwen-code-dev-bot in #18056 \n docs(design): record automatic-trigger message landing by @wenshao in #18080 \n fix(core): retain oversized transcript indexes in a bounded cache class by @wenshao in #17910 \n feat(web-shell): accept follow-up suggestions on touch composers by @wenshao in #17918 \n feat(cli): attribute Managed Agent sessions to the managed telemetry channel by @wenshao in #18022 \n fix(ci): isolate self-hosted Maven cache reuse by @wenshao in #18065 \n feat(web-shell): implement the local-daemon workspace artifact library page by @wenshao in #18071 \n New Contributors\n @Barzabel made their first contribution in #17766 \n @jaeminbird made their first contribution in #15786 \n Full Changelog : desktop-v0.28.0...desktop-v0.28.4",
       "four_elements": {
-        "pain_point": "① 现有针对多模态网页智能体的视觉提示注入防御大多只盯着网页截图里的可疑指令，但钓鱼链接等恶意目标可以藏在HTML源码里、在截图中完全不可见，智能体交互时却依然会触发跳转；同时，过去的安全评测很少考虑“了解防御规则并针对性绕过”的自适应攻击者，导致防御手段在实际对抗中容易直接失效。",
-        "mechanism": "② 论文构建了AdaptiveVPI评测体系，分三环推进：首先在10个真实网站上构造覆盖6种劫持策略的360个网页样本，并确保恶意目标在截图中不可见；其次设计自适应攻击流程，根据被测防御机制给出的反馈，逐轮改写并优化恶意注入指令以绕过检测；最后提出3项分层次指标，从不同粒度量化智能体被劫持的程度。",
-        "experiments_summary": "③ 在计算机操作智能体（computer-use agents）的10种防御配置和浏览器操作智能体（browser-use agents）的11种防御配置上，自适应攻击的平均成功率分别达到91.87%和91.99%。具体基座模型规模、算力卡数与随机种子数在原文摘要中均未单列。",
-        "repro_and_reference": "④ 元数据未提供公开GitHub代码或数据集仓库链接，当前无法直接核验脚本与360个网页样本的完整度。该方法属于评测基准与推理期迭代攻击测试，不涉及大模型预训练，复现门槛主要集中在网页/桌面沙箱环境搭建以及多轮交互调用多模态智能体的推理开销。",
+        "pain_point": "① 真实痛点与翻车场景：长周期运行的编码代理在实际部署中频繁遭遇三类工程翻车——一是托管运行时意外中断或进程被强杀后，挂起轮次（parked turn）无法结算、本地追加写入的 JSONL 会话日志被截断；二是流式推送（SSE）写入端卡死耗尽监听配额，以及多端（ACP 协议、终端界面、钉钉/企微/GitHub 等渠道）各自维护执行路径导致状态不同步；三是超长对话历史回放和渲染触发前端输入卡顿与内存膨胀。",
+        "mechanism": "② 具体方法机制：本次发版围绕三层工程链路做系统加固。第一，托管代理（Managed Agent）无状态化：落地 Phase 1 空闲会话休眠（#17690），休眠期间保持空闲的 MCP（模型上下文协议）连接不断开（#17749），为干净休眠打上唤醒标记（#17908），并在运行时彻底失联时安全结算挂起轮次（#17521、#17932），同时限制热路径 SQL 扫描与往返次数（#17856）。第二，执行循环与服务层收敛：将 ACP（代理通信协议）会话与终端界面 OpenTUI 默认统一至共享 Agent Loop（#17744、#17745）；统一各流式入口的 SSE 准入与占用计数并默认回收卡死写入端（#17502、#17662）；加入守护进程重启恢复收件箱（#17677）及中断追加后的 JSONL 记录定界与尾部诊断恢复（#17771、#17901）。第三，多渠道与前端降载：新增 GitHub、企业微信（WeCom）、Microsoft Teams 托管渠道适配器与通用出站 Webhook（#17511、#17441、#15620、#17610），支持向运行中轮次注入消息（#15634）；前端构建契约驱动的 ChatSurface 聊天列（#17520、#17952），并对大记录响应启用 Gzip 压缩、按需加载 xterm/PDF/语言包及隔离输入框重排（#11220、#17840、#17899、#17821）。",
+        "experiments_summary": "③ 实验基准数字与对比口径：所给材料为 desktop-v0.28.0 至 v0.28.4 的软件发版变更列表（PR 标题汇总），不包含任何定量基准测试分数、吞吐/延迟对比数据或消融实验。模型规模、卡数、随机种子数均原文未单列。虽提及若干端到端与集成测试（如 /loop 全栈 E2E #17506、MySQL 唤醒标记测试 #17954、SIGKILL 重启恢复去抖 #18057）及首字延迟（TTFT）计时口径修正（#17790），但未给出通过率、延迟降幅或样本分母。",
+        "repro_and_reference": "④ 公开技术参考与复现成本评估：该条目属于工程系统迭代而非算法研究论文，RSS 元数据未直接附带仓库地址或可执行安装包链接，仅列出了 PR 编号（#11220 至 #18085）与版本区间（desktop-v0.28.0...desktop-v0.28.4）。若仅复现本地桌面端与守护进程功能，普通 CPU 开发机配合外部大模型 API 即可运行，无本地 GPU 训练门槛；但若要完整复现托管代理服务端（Managed Agent Server），则需额外搭建 MySQL、RocketMQ、对象存储（OSS）及钉钉/企微/Teams 等外部渠道回调环境，基础设施配置成本较高。",
         "experiment_rows": [],
-        "backbone_and_params": "原文未单列",
-        "gpu_and_duration": "原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
+        "backbone_and_params": "原文未单列（系多模型编码代理客户端与托管运行时，更新日志涉及 DeepSeek 目录限额、Gemini 代理与 Gemini 4 推理默认配置及 OpenRouter 路由，未绑定单一模型参数量）",
+        "gpu_and_duration": "所给材料未单列（纯软件工程发版日志，未涉及模型训练或推理硬件与耗时）",
+        "seeds_note": "所给材料未单列（无随机种子实验与方差统计，仅含多条 CI/E2E 测试稳定性去抖修复）",
+        "verdict_label": "纯工程发版无研究实证",
+        "verdict_reason": "所给材料仅为 desktop-v0.28.0 至 v0.28.4 的 PR 变更清单，聚焦无状态会话休眠、共享代理循环与多渠道运维加固，未提供任何定量评测、延迟对比或消融证据。对算法研究者缺乏精读与复现价值，仅适合关注长驻 Coding Agent 工程架构与容错机制的开发者参考。",
+        "critique_points": [
+          "无状态托管会话休眠（#17690）与跨休眠保活 MCP 连接（#17749）隐含了唤醒标记（#17908）与底层数据库/对象存储状态强一致的假设；在跨机房网络分区、非正常 SIGKILL 崩溃（#18057）或外部 MCP 服务端超时断连的扰动下，休眠恢复与挂起轮次结算（#17932）仍可能出现状态漂移或死锁，而材料仅列出若干测试去抖（deflake）记录，缺少混沌注入下的恢复成功率与泛化证据。",
+          "多项性能改动宣称限制了热路径 SQL 扫描（#17856）、降低历史回放输入延迟（#17788）并对大记录启用 Gzip 压缩（#11220），但全文未提供任何基线对比、测试机规格、会话长度分布或多次运行的 p50/p99 方差；此外 #17790 修改了首字延迟（TTFT）的起算点（改为从请求派发计时），若后续评估未统一旧版本口径，可能造成前后延迟对比失真。",
+          "该版本同时打包了 200 余项异构改动，涵盖共享执行循环（#17744、#17745）、模型回退链可用性追踪（#17377）、上下文裁剪（#17532、#17736）以及内置 Gemini 4 推理默认配置（#18039），完全缺乏控制基座模型与提示词后的独立消融；若要验证工程机制的真实贡献，需固定底层模型快照开展对照回放实验，单独量化共享循环与无状态休眠对端到端任务完成率、故障恢复率与并发内存占用的净影响。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
       },
       "conference_slug": "",
       "conference_track_tier": "",
-      "relative_score": 8.8
+      "relative_score": 7.6
+    },
+    {
+      "slug": "vlm-infra-release-v0-28-1-preview-1",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "rl-framework",
+        "multimodal-base"
+      ],
+      "lab_tags": [
+        "lab-qwen"
+      ],
+      "institution_tags": [
+        "阿里通义 Qwen"
+      ],
+      "title_zh": "Qwen Code v0.28.1-preview.1 预览版发布：无状态托管挂起、统一 Agent 循环与多通道接入",
+      "title_en": "Release v0.28.1-preview.1",
+      "one_line_pain": "针对托管Agent会话常驻占资源、SSE卡死与多端割裂，新增无状态空闲挂起、统一Agent循环及多通道接入",
+      "metric_badges": [
+        {
+          "text": "无状态Hosted Harness挂起",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "GitHub/WeCom/Teams多通道",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "阿里通义 Qwen"
+      ],
+      "published_date": "2026-11-20",
+      "venue_or_source": "阿里通义 Qwen",
+      "url_primary": "https://github.com/QwenLM/qwen-code/releases/tag/v0.28.1-preview.1",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "What's Changed\n test(managed-agent): observe a real scheduled /loop fire in the full-stack E2E by @wenshao in #17506 \n fix(verify-pr): harden the watch-state shape guard, container nonce, and VM prose by @wenshao in #17440 \n fix(external-context): deflake cumulative-deadline deletion timing by @qwen-code-dev-bot in #17342 \n docs(design): propose idle Session suspension toward a stateless Hosted Harness by @doudouOUC in #17527 \n docs(design): drop the 20-run parity requirement from the loop rollout steps by @qqqys in #17535 \n fix(serve): reserve listener headroom from SSE and reap stalled writers by default by @wenshao in #17502 \n feat(web-shell): explain background tasks from the composer chips by @wenshao in #17398 \n fix(triage): fail closed when QWEN_TRIAGE_DRAFT_DIR is unset in CI by @yiliang114 in #17549 \n test(channels): deflake the DingTalk webhook-cache recency case by @qwen-code-dev-bot in #17615 \n fix(managed-agent): recover vanished Harness admissions safely by @doudouOUC in #17521 \n feat(web-shell): add the unified chat surface contract and capability guards by @wenshao in #17520 \n feat(channels): add GitHub as the third managed channel adapter by @wenshao in #17511 \n perf(core): bound follow-up suggestion context by @callmeYe in #17532 \n feat(generated-ui): let cards save view state through the host by @qqqys in #17522 \n feat(web-shell): send to another session with /send by @qqqys in #17539 \n fix(web-shell): serve PR watch deep links before authentication by @Afloat16 in #17119 \n feat(web-shell): decouple the shared composer from daemon value imports by @wenshao in #17661 \n fix(core): converge Read unchanged-dedup with the preview lineage by @callmeYe in #17465 \n fix(web-shell): bottom-sheet model picker on touch screens by @callmeYe in #17401 \n feat(channels): add generic outbound webhook delivery by @jkxiao in #17610 \n fix(core): scope Grep fallback strategies to the git-aware corpus by @callmeYe in #17530 \n fix(managed-agent): drive continuation-ready parks in the epoch-less resubmission arm by @doudouOUC in #17680 \n fix(web-shell): align managed errors with DAC and stabilize recovery by @yiliang114 in #17557 \n fix(channels): keep DingTalk multi-chunk sends untruncated; the ledger converges by @wenshao in #17529 \n feat(managed-agent): notify attachment retirement and age out suspension waits by @doudouOUC in #17681 \n fix(serve): Prevent automatic work from blocking worktree restore by @doudouOUC in #17654 \n fix(web-shell): keep each /send reply in view and drop the gap under send records by @qqqys in #17686 \n fix(verify-pr): register the watch round ahead of prepare (R17-2 liveness) by @wenshao in #17550 \n fix(core): release idle JSONL append locks by @Afloat16 in #17577 \n fix(web-shell): retry memory content after refresh by @Afloat16 in #17108 \n fix(sdk): apply caller headers without case-sensitive duplicates by @Afloat16 in #17579 \n fix(cli): preserve pending cleanup when handlers unregister by @Afloat16 in #17572 \n fix(sdk): stop buffered SSE delivery after cancellation by @Afloat16 in #17569 \n fix(java): cancel heartbeats removed during registration by @Afloat16 in #17117 \n fix(cli): preserve literal custom command arguments by @Afloat16 in #17367 \n feat(web): configure generic webhook destinations by @jkxiao in #17405 \n feat(web-shell): show the session artifact count at click time from list metadata by @wenshao in #17518 \n feat(acp): run Mods in ACP sessions by @qqqys in #17693 \n refactor(web-shell): extract the shared composer status stack component by @wenshao in #17684 \n fix(sdk-python): isolate initialization from caller cancellation by @Afloat16 in #17499 \n feat(serve): unify SSE admission and occupancy across every stream surface by @wenshao in #17662 \n feat(channels): add WeCom adapter to the managed channel path by @wenshao in #17441 \n fix(web-shell): make background work visible on sidebar session rows by @wenshao in #17676 \n test(managed-agent): align read-retry versioning count with the probe removal by @wenshao in #17082 \n feat(managed-agent): Discover and pin default workspace Skills by @doudouOUC in #17703 \n fix(core): deliver background async hook output to the model by @wenshao in #17477 \n fix(core): label shell output as combined streams apart from execution errors by @qqqys in #17685 \n feat(web-shell): mark sessions carrying a Goal in the sidebar by @wenshao in #17515 \n feat(web-shell): add Traditional Chinese UI locale by @callmeYe in #17421 \n feat(channels): mark inbound truncation across the managed adapters by @wenshao in #17726 \n fix(copy): preserve fence-like content in code and math extraction by @Afloat16 in #17578 \n fix(java): return newlines in file content responses by @Afloat16 in #17688 \n fix(sdk): clear permission deadlines on callback failure by @Afloat16 in #17581 \n fix(web-shell): scope the change overview commit fallback to the session start commit by @wenshao in #17514 \n fix(web-templates): raise document renderer budget for recent transcript copy by @wenshao in #17746 \n feat(managed-agent): implement stateless Hosted Harness phase 1 idle suspension by @doudouOUC in #17690 \n fix(sdk): enforce the peer frame limit before dispatch by @Afloat16 in #17576 \n fix(channels): centralize DingTalk reconnect so one drop arms one chain by @wenshao in #17691 \n fix(web-shell): stop queued image reads after a batch is cancelled by @cactuser-Lu in #17705 \n fix(managed-agent): restore the class-size and facade-population gates by @doudouOUC in #17753 \n test(web-shell): restore the shadow overview focus test budget by @qwen-code-dev-bot in #17487 \n test(serve): cover workspace skill settings by name by @Barzabel in #17766 \n test(cli): deflake the SSE pairing-listener clamp teardown ( #17761 ) by @qwen-code-dev-bot in #17764 \n fix(sdk): wait for actual child termination by @Afloat16 in #17580 \n feat(core): track model availability for the fallback chain (Qoder port) by @wenshao in #17377 \n feat(channels): bind the DingTalk ledger to its registration identity by @wenshao in #17742 \n fix(qqbot): accept QQ voice attachments from the voice CDN by @mvanhorn in #15339 \n feat(channels): deliver injected messages into the running turn by @Eric-GoodBoy-Tech in #15634 \n perf(daemon): Load session sidecars after catalog pagination by @callmeYe in #17738 \n fix(managed-agent): advertise input attachments on unbound Sessions by @wenshao in #17722 \n feat(managed-agent): add the workspace artifact library to the Web UI by @wenshao in #17728 \n docs(cli): clarify side question syntax in Ink and OpenTUI by @Barzabel in #17759 \n fix(web-shell): stabilize composer toolbar near width thresholds by @callmeYe in #17729 \n feat(cli): add native screen-reader presentation by @chiga0 in #17500 \n feat(web-shell): open the session artifacts list in the right panel from the header entry by @wenshao in #17689 \n feat(web-shell): add the daemon chat intent lifecycle core by @wenshao in #17709 \n feat(managed-agent): add PR-watch bound-session private injection by @wenshao in #17665 \n perf(serve): Index bundled startup chunks by @callmeYe in #17720 \n feat(managed-agent): keep idle MCP connections across suspension by @doudouOUC in #17749 \n feat(web-shell): show a workflow's declared phases before it reaches them by @qqqys in #17782 \n perf(web-shell): Batch portal theme variable reads and writes by @callmeYe in #17786 \n fix(managed-agent-server): adapt ToolPublicationContract to networknt json-schema-validator 2.x by @yiliang114 in #17752 \n test(web-shell): pin the goal marker double-click guard and refresh its design record by @wenshao in #17733 \n feat(managed-agent): add external Shell worker profile and publication producer [17357 A/2] by @yiliang114 in #17478 \n perf(web-shell): reduce input lag during history replay by @callmeYe in #17788 \n feat(qqbot): let the agent send a local file to the chat by @Eric-GoodBoy-Tech in #15450 \n feat(channels): add Microsoft Teams extension and host ingress by @XIQIXIQIXIQI in #15620 \n feat(telemetry): record OpenRouter routing backend and generation id by @2SinceJuly in #16495 \n fix(web-shell): refuse background-work deletion in the dialog for any row by @wenshao in #17713 \n fix(core): time TTFT from the request dispatch by @qqqys in #17790 \n fix(core): seed side-records-only sessions and close the artifact-summary residuals by @wenshao in #17711 \n feat(web-shell): allow hosts to configure transcript overscan by @callmeYe in #17807 \n feat(managed-agent): render DingTalk managed replies as editable cards by @wenshao in #17748 \n docs(design): mark PR-watch bound-session design merged ( #17665 ) by @wenshao in #17793 \n docs(approval-mode): say new sessions start in Auto Mode by @qqqys in #17799 \n test(web-shell): clone gitRemotes in the e2e scenario factory and correct the ownership set by @wenshao in #17800 \n feat(core): name the output budget when truncation rejects a write by @xxwtiancai in #16632 \n fix(web-shell): Group approval scopes in a dropdown by @callmeYe in #17801 \n fix(ci): raise the CodeQL JavaScript cap to 180m after the nightly overran 90m by @yiliang114 in #17808 \n docs(security): add GitHub private vulnerability reporting to SECURITY.md by @yiliang114 in #17806 \n feat(web-shell): let hosts disable the composer glow by @callmeYe in #17814 \n feat(core): run ACP sessions on the shared agent loop by default by @qqqys in #17744 \n feat(cli): run background workflows in headless mode by @qqqys in #17809 \n fix(serve): pin remote-access admission and non-REST shutdown drain ( #17712 ) by @wenshao in #17737 \n fix(i18n): Fill remaining Russian UI strings and keep the account menu on one line by @callmeYe in #17719 \n perf(web-shell): isolate composer layout from transcript relayouts by @callmeYe in #17821 \n feat(serve): let create_sub_session reach any session, skip its workspace prompt in YOLO, and drop the thread glyph by @qqqys in #17818 \n feat(serve,web-shell): draw Mod rewrites of reply rows by @qqqys in #17718 \n fix(core): match Windows drive-letter paths in permission rules by @yiliang114 in #17810 \n fix(web-shell): keep a leading BOM in LocalDirectory write validation by @yiliang114 in #17820 \n fix(web-shell): evict aborted mention cache lookups by @yiliang114 in #17826 \n test(ci): assert scheduled workflows retain cron triggers by @yiliang114 in #17829 \n perf(web-shell): load language catalogs on demand by @callmeYe in #17833 \n docs(managed-agent): add Phase 3 control-plane wake design by @doudouOUC in #17805 \n test(serve): share clamp fixture and pin socket pruning by @yiliang114 in #17841 \n fix(core): delimit JSONL records after interrupted appends by @wenshao in #17771 \n feat(cli): set the vision bridge timeout with /model --vision --timeout by @qqqys in #17830 \n test(web-shell): cover focus after mobile composer mode switches by @Barzabel in #17828 \n docs(verify-pr): add Web Shell verification recipes by @Barzabel in #17762 \n docs(managed-agent): mark the H5e card design merged with its verification ledger by @wenshao in #17815 \n fix(i18n): complete missing Russian coverage for mods and vision bridge timeout by @wenshao in #17858 \n perf(managed-agent-server): bound hot-path SQL scans and round-trips by @doudouOUC in #17856 \n docs(managed-agent): add Phase 3 seal-time wake stamp addendum by @doudouOUC in #17869 \n fix(core): reduce or refuse a compression request that cannot fit its window by @yanyukang2003-ux in #15936 \n fix(web-shell): render local-path and failed markdown images as text chips by @doudouOUC in #17866 \n fix(core): bound the joined async hook context block by @wenshao in #17736 \n docs(web-shell): link the deferred background-work reporting gap to its issue by @wenshao in #17850 \n docs(core): record JSONL append verification by @wenshao in #17853 \n feat(web-shell): assemble the daemon chat controller with attempt-bound settlement by @wenshao in #17794 \n test(web-shell): pin value and content in the e2e fixture-ownership cases by @wenshao in #17824 \n fix(core): preserve tool-reported failure content by @callmeYe in #17803 \n fix(managed-agent): close six deferred loop review pins by @wenshao in #17594 \n fix(web-shell): allow drafting while session history loads by @callmeYe in #17842 \n refactor(managed-agent): files-on-v2 lifecycle and public child relaxation (D3/D5') by @doudouOUC in #17871 \n feat(channels): bind the GitHub ledger to its registration identity by @wenshao in #17775 \n refactor(managed-agent): converge pre-production version machinery by @doudouOUC in #17864 \n docs(managed-agent): mark the deferred loop pins design merged with its verification ledger by @wenshao in #17905 \n feat(managed-agent): clarify Web UI parity and wire local terminal by @wenshao in #17795 \n fix(managed-agent): settle recovery from durable native terminals by @doudouOUC in #17886 \n perf(web-shell): load xterm on demand by @callmeYe in #17840 \n test(managed-agent): re-home publication lifecycle IT v1 witness to external-files by @doudouOUC in #17909 \n fix(acp-bridge): merge background-turn live text chunks by @wenshao in #17862 \n fix(web-shell): decouple first prompt from automatic title writes by @callmeYe in #17843 \n fix(core): bound JSONL tail diagnostic recovery and cache churn by @wenshao in #17901 \n fix(managed-agent-server): keep journal blob reclamation moving past sealed heads by @doudouOUC in #17907 \n fix(memory): rebuild extraction indexes in the runtime by @callmeYe in #17785 \n feat(managed-agent): stamp clean suspensions for wake dispatch by @doudouOUC in #17908 \n perf(web-shell): render large workspace PDFs on demand by @callmeYe in #17899 \n feat(core): run OpenTUI on the shared agent loop by default by @qqqys in #17745 \n fix(daemon): include memory metrics in detailed status JSON by @callmeYe in #17906 \n fix(agents): reject incompatible Host replacements by @water-in-stone in #17702 \n fix(i18n): unify ru timeout spelling and vision-bridge term by @wenshao in #17867 \n feat(acp): end a tool-calling turn when queued input is sent now by @qqqys in #17825 \n docs(core): mark JSONL tail diagnostics design as merged by @wenshao in #17913 \n feat(serve): add daemon restart recovery inbox by @wenshao in #17677 \n feat(web-shell): worktree carry metadata + snapshot-then-delete cleanup ( #17237 , P6 partial) by @wenshao in #17533 \n feat(acp): deliver pending async hook output on the default legacy round by @wenshao in #17890 \n docs(managed-agent): design Runtime-owned background observation (Phase 3b) by @doudouOUC in #17912 \n fix(web-shell): keep the model sheet's rows and search field touch-sized by @wenshao in #17892 \n perf(web-shell): gzip serve responses for large transcript loads ( #6181 ) by @now-ing in #11220 \n docs(managed-agent): record the workspace artifact library's merged status by @wenshao in #17779 \n fix(managed-agent): settle a parked turn whose runtime is terminally lost by @doudouOUC in #17932 \n fix(ci): route autofix reviews through live bot by @yiliang114 in #17881 \n fix(core): resolve dotted DeepSeek catalog limits by @yiliang114 in #17876 \n test(integration): deflake the export document budget on all CI runners ( #17884 ) by @qwen-code-dev-bot in #17887 \n docs(worktree): record merged delivery and verification by @wenshao in #17928 \n fix(channels): address Aone channel deferred review findings ( #17517 ) by @wenshao in #17519 \n fix(channels): own DingTalk endpoint discovery so a hung connect stops muting the process by @wenshao in #17773 \n docs(managed-agent): record web UI parity delivery by @wenshao in #17915 \n fix(cli): attribute daemon log lines and bind late channel restores to the boot conflict decline by @wenshao in #17904 \n fix(web-templates): re-track renderer byte budget by @wenshao in #17940 \n feat(web-shell): bind the daemon chat controller to the session provider by @wenshao in #17895 \n fix(managed-agent): create the ephemeral Runtime state directory before spawning by @yiliang114 in #17949 \n test(managed-agent): scope the workspace artifact index assertion to its own database by @wenshao in #17893 \n fix(models): support Gemini proxy streaming and model refresh by @wenshao in #17947 \n feat(managed-agent): degrade process components per package in content-only extension runtimes by @doudouOUC in #17944 \n fix(managed-agent): load transport wakes through the passive verb by @doudouOUC in #17955 \n refactor(managed-agent): key tenant guard on readable VARCHAR scope (identity de-hash increment 1) by @doudouOUC in #17927 \n New Contributors\n @Barzabel made their first contribution in #17766 \n Full Changelog : v0.28.0...v0.28.1-preview.1",
+      "four_elements": {
+        "pain_point": "① 真实痛点与翻车场景：本次材料是阿里通义 Qwen 生态下代码智能体工具（从 PR 路径与机器人名 qwen-code-dev-bot 可见）的工程预览版变更日志，而非学术论文。其面向的核心线上翻车场景包括：托管智能体（Hosted Harness）空闲会话长期占用运行态且进程意外消失后难以安全结算恢复；服务端流式推送（SSE）在慢消费者或取消后堆积缓冲甚至打满监听并发；JSONL 日志在中断追加时粘连或锁不释放；多端交互（ACP、OpenTUI、Web Shell）循环逻辑割裂，以及大对话历史回放和渲染卡顿、上下文压缩超窗崩溃等工程稳定性问题。",
+        "mechanism": "② 具体方法机制：按变更日志归类，核心改动分布在四条工程主线：1）托管运行态无状态化（Phase 1）：在 managed-agent 中引入空闲会话挂起（#17690）并跨挂起保留空闲 MCP（模型上下文协议）连接（#17749），为干净挂起打唤醒时间戳（#17908），对挂起等待做超时老化与终态丢失回合结算（#17681、#17932），同时对热路径 SQL 扫描加界（#17856）；2）核心循环与流式服务收敛：将 ACP 会话与 OpenTUI 默认切换到共享 Agent 循环（#17744、#17745），统一各流式入口的 SSE 准入与占用控制并默认清理卡死写入端（#17502、#17662），增加守护进程重启恢复收件箱（#17677），为模型回退链追踪可用性（#17377），并在压缩请求超窗时缩减或拒绝（#15936）；3）多通道与跨会话协同：新增 GitHub（#17511）、企业微信 WeCom（#17441）、Microsoft Teams（#15620）及通用出站 Webhook（#17610）通道，支持向运行中回合注入消息（#15634）与跨会话 /send 指令（#17539）；4）前端与存储性能修复：大记录服务端 gzip 压缩（#11220）、xterm/PDF/语言包按需加载（#17840、#17899、#17833）、隔离输入框与对话流重排（#17821），以及 JSONL 断行定界与尾部诊断恢复（#17771、#17901）。",
+        "experiments_summary": "③ 实验基准数字与对比口径：所给材料仅为 GitHub Release 变更列表（v0.28.0...v0.28.1-preview.1），不包含任何算法评测基准、端到端性能压测数字、延迟分位（如 TTFT 改动 #17790 仅调整计时起点，未附实测数据）或模型推理效果对比；模型规模、卡数、种子数均未单列。日志中仅提及工程级测试与 CI 变动（如 E2E 定时循环测试 #17506、多处用例去抖 deflake，以及 #17535 移除了循环发布步骤中 20 次运行一致性 parity 要求、#17808 将 CodeQL 扫描上限从 90 分钟提至 180 分钟）。",
+        "repro_and_reference": "④ 公开技术参考与复现成本评估：材料中未附带仓库 URL、Commit Hash 或源码正文，仅给出 PR 编号与版本区间标签（v0.28.0...v0.28.1-preview.1），且属于多组件协同的大型工程发行版（含 CLI、Daemon、Web Shell、Managed-Agent Server、Java/Python SDK 及多 IM 通道适配器）。对研究者而言，其价值在于参考生产级代码智能体的会话挂起状态机、SSE 背压清理与多端循环统一架构；复现本身不依赖大模型训练算力，但完整拉起托管服务端与外部通道需要相应的服务端与第三方回调配置，且当前仅为 preview.1 预览版，部分 Phase 3 控制面唤醒仍停留在设计文档阶段（#17805、#17912）。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列（属多模型兼容的工程客户端/服务端框架，日志提及 OpenRouter、DeepSeek 目录与 Gemini 代理适配）",
+        "gpu_and_duration": "所给材料未单列",
+        "seeds_note": "所给材料未单列",
+        "verdict_label": "工程预览迭代无研究基准",
+        "verdict_reason": "该条目是代码智能体系统的版本更新日志，集中体现了无状态会话挂起、统一 Agent 循环与多通道运维等工程架构演进，但完全不包含可检验的科学假设与实测基准数据，不具备学术精读或算法复现价值。",
+        "critique_points": [
+          "核心工程假设的失效边界未受压力证据检验：例如 #17690/#17749 假设空闲会话挂起期间可跨挂起保留 MCP 连接并在唤醒后安全续跑，但在高并发连接数上限、网络分区或远端 MCP 服务端主动断连等扰动下是否会引发句柄泄漏或幽灵状态，日志仅靠零散 bugfix（如 #17521、#17932）补救，缺少混沌故障注入与长稳压测证据。",
+          "缺乏前后版本对照基准且验收门槛存在松动信号：多项标注为 perf 的改动（如大历史回放降延迟 #17788、热路径 SQL 限界 #17856、gzip 响应 #11220）以及 TTFT 计时口径修改（#17790）均未给出 v0.28.0 与 v0.28.1-preview.1 在相同负载下的吞吐、内存或延迟对比；同时 #17535 明确去掉了循环上线步骤中的 20-run parity 要求，若缺乏替代回归口径，难以量化统一共享循环（#17744、#17745）后的行为方差与稳定性是否退化。",
+          "系统层改动与模型能力贡献完全解耦但缺少归因度量：日志中 #17532（限制后续建议上下文）、#15936（超窗压缩拒绝或缩减）、#17377（模型回退链可用性追踪）均会直接改变实际送入基座模型的上下文分布与后端路由，在未固定基座模型与任务集做消融对照的情况下，无法评估这些工程护栏对代码修复成功率与任务完成率的真实影响（可设计固定基准与种子、开启/关闭上下文裁剪与共享循环的对照实验加以验证）。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.6
+    },
+    {
+      "slug": "vlm-infra-release-v0-28-0-nightly-20261120-19b31401f5",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "rl-framework",
+        "multimodal-base"
+      ],
+      "lab_tags": [
+        "lab-qwen"
+      ],
+      "institution_tags": [
+        "阿里通义 Qwen"
+      ],
+      "title_zh": "通义 Qwen 夜间版 v0.28.0：托管智能体无状态休眠与共享循环统一",
+      "title_en": "Release v0.28.0-nightly.20261120.19b31401f5",
+      "one_line_pain": "针对托管智能体常驻耗资源、流式连接易堵死与多端循环割裂，新增空闲休眠唤醒、统一共享循环及多渠道托管",
+      "metric_badges": [
+        {
+          "text": "无状态Hosted Harness休眠",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "ACP/OpenTUI共享循环",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "阿里通义 Qwen"
+      ],
+      "published_date": "2026-11-20",
+      "venue_or_source": "阿里通义 Qwen",
+      "url_primary": "https://github.com/QwenLM/qwen-code/releases/tag/v0.28.0-nightly.20261120.19b31401f5",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "What's Changed\n test(managed-agent): observe a real scheduled /loop fire in the full-stack E2E by @wenshao in #17506 \n fix(verify-pr): harden the watch-state shape guard, container nonce, and VM prose by @wenshao in #17440 \n fix(external-context): deflake cumulative-deadline deletion timing by @qwen-code-dev-bot in #17342 \n docs(design): propose idle Session suspension toward a stateless Hosted Harness by @doudouOUC in #17527 \n docs(design): drop the 20-run parity requirement from the loop rollout steps by @qqqys in #17535 \n fix(serve): reserve listener headroom from SSE and reap stalled writers by default by @wenshao in #17502 \n feat(web-shell): explain background tasks from the composer chips by @wenshao in #17398 \n fix(triage): fail closed when QWEN_TRIAGE_DRAFT_DIR is unset in CI by @yiliang114 in #17549 \n test(channels): deflake the DingTalk webhook-cache recency case by @qwen-code-dev-bot in #17615 \n fix(managed-agent): recover vanished Harness admissions safely by @doudouOUC in #17521 \n feat(web-shell): add the unified chat surface contract and capability guards by @wenshao in #17520 \n feat(channels): add GitHub as the third managed channel adapter by @wenshao in #17511 \n perf(core): bound follow-up suggestion context by @callmeYe in #17532 \n feat(generated-ui): let cards save view state through the host by @qqqys in #17522 \n feat(web-shell): send to another session with /send by @qqqys in #17539 \n fix(web-shell): serve PR watch deep links before authentication by @Afloat16 in #17119 \n feat(web-shell): decouple the shared composer from daemon value imports by @wenshao in #17661 \n fix(core): converge Read unchanged-dedup with the preview lineage by @callmeYe in #17465 \n fix(web-shell): bottom-sheet model picker on touch screens by @callmeYe in #17401 \n feat(channels): add generic outbound webhook delivery by @jkxiao in #17610 \n fix(core): scope Grep fallback strategies to the git-aware corpus by @callmeYe in #17530 \n fix(managed-agent): drive continuation-ready parks in the epoch-less resubmission arm by @doudouOUC in #17680 \n fix(web-shell): align managed errors with DAC and stabilize recovery by @yiliang114 in #17557 \n fix(channels): keep DingTalk multi-chunk sends untruncated; the ledger converges by @wenshao in #17529 \n feat(managed-agent): notify attachment retirement and age out suspension waits by @doudouOUC in #17681 \n fix(serve): Prevent automatic work from blocking worktree restore by @doudouOUC in #17654 \n fix(web-shell): keep each /send reply in view and drop the gap under send records by @qqqys in #17686 \n fix(verify-pr): register the watch round ahead of prepare (R17-2 liveness) by @wenshao in #17550 \n fix(core): release idle JSONL append locks by @Afloat16 in #17577 \n fix(web-shell): retry memory content after refresh by @Afloat16 in #17108 \n fix(sdk): apply caller headers without case-sensitive duplicates by @Afloat16 in #17579 \n fix(cli): preserve pending cleanup when handlers unregister by @Afloat16 in #17572 \n fix(sdk): stop buffered SSE delivery after cancellation by @Afloat16 in #17569 \n fix(java): cancel heartbeats removed during registration by @Afloat16 in #17117 \n fix(cli): preserve literal custom command arguments by @Afloat16 in #17367 \n feat(web): configure generic webhook destinations by @jkxiao in #17405 \n feat(web-shell): show the session artifact count at click time from list metadata by @wenshao in #17518 \n feat(acp): run Mods in ACP sessions by @qqqys in #17693 \n refactor(web-shell): extract the shared composer status stack component by @wenshao in #17684 \n fix(sdk-python): isolate initialization from caller cancellation by @Afloat16 in #17499 \n feat(serve): unify SSE admission and occupancy across every stream surface by @wenshao in #17662 \n feat(channels): add WeCom adapter to the managed channel path by @wenshao in #17441 \n fix(web-shell): make background work visible on sidebar session rows by @wenshao in #17676 \n test(managed-agent): align read-retry versioning count with the probe removal by @wenshao in #17082 \n feat(managed-agent): Discover and pin default workspace Skills by @doudouOUC in #17703 \n fix(core): deliver background async hook output to the model by @wenshao in #17477 \n fix(core): label shell output as combined streams apart from execution errors by @qqqys in #17685 \n feat(web-shell): mark sessions carrying a Goal in the sidebar by @wenshao in #17515 \n feat(web-shell): add Traditional Chinese UI locale by @callmeYe in #17421 \n feat(channels): mark inbound truncation across the managed adapters by @wenshao in #17726 \n fix(copy): preserve fence-like content in code and math extraction by @Afloat16 in #17578 \n fix(java): return newlines in file content responses by @Afloat16 in #17688 \n fix(sdk): clear permission deadlines on callback failure by @Afloat16 in #17581 \n fix(web-shell): scope the change overview commit fallback to the session start commit by @wenshao in #17514 \n fix(web-templates): raise document renderer budget for recent transcript copy by @wenshao in #17746 \n feat(managed-agent): implement stateless Hosted Harness phase 1 idle suspension by @doudouOUC in #17690 \n fix(sdk): enforce the peer frame limit before dispatch by @Afloat16 in #17576 \n fix(channels): centralize DingTalk reconnect so one drop arms one chain by @wenshao in #17691 \n fix(web-shell): stop queued image reads after a batch is cancelled by @cactuser-Lu in #17705 \n fix(managed-agent): restore the class-size and facade-population gates by @doudouOUC in #17753 \n test(web-shell): restore the shadow overview focus test budget by @qwen-code-dev-bot in #17487 \n test(serve): cover workspace skill settings by name by @Barzabel in #17766 \n test(cli): deflake the SSE pairing-listener clamp teardown ( #17761 ) by @qwen-code-dev-bot in #17764 \n fix(sdk): wait for actual child termination by @Afloat16 in #17580 \n feat(core): track model availability for the fallback chain (Qoder port) by @wenshao in #17377 \n feat(channels): bind the DingTalk ledger to its registration identity by @wenshao in #17742 \n fix(qqbot): accept QQ voice attachments from the voice CDN by @mvanhorn in #15339 \n feat(channels): deliver injected messages into the running turn by @Eric-GoodBoy-Tech in #15634 \n perf(daemon): Load session sidecars after catalog pagination by @callmeYe in #17738 \n fix(managed-agent): advertise input attachments on unbound Sessions by @wenshao in #17722 \n feat(managed-agent): add the workspace artifact library to the Web UI by @wenshao in #17728 \n docs(cli): clarify side question syntax in Ink and OpenTUI by @Barzabel in #17759 \n fix(web-shell): stabilize composer toolbar near width thresholds by @callmeYe in #17729 \n feat(cli): add native screen-reader presentation by @chiga0 in #17500 \n feat(web-shell): open the session artifacts list in the right panel from the header entry by @wenshao in #17689 \n feat(web-shell): add the daemon chat intent lifecycle core by @wenshao in #17709 \n feat(managed-agent): add PR-watch bound-session private injection by @wenshao in #17665 \n perf(serve): Index bundled startup chunks by @callmeYe in #17720 \n feat(managed-agent): keep idle MCP connections across suspension by @doudouOUC in #17749 \n feat(web-shell): show a workflow's declared phases before it reaches them by @qqqys in #17782 \n perf(web-shell): Batch portal theme variable reads and writes by @callmeYe in #17786 \n fix(managed-agent-server): adapt ToolPublicationContract to networknt json-schema-validator 2.x by @yiliang114 in #17752 \n test(web-shell): pin the goal marker double-click guard and refresh its design record by @wenshao in #17733 \n feat(managed-agent): add external Shell worker profile and publication producer [17357 A/2] by @yiliang114 in #17478 \n perf(web-shell): reduce input lag during history replay by @callmeYe in #17788 \n feat(qqbot): let the agent send a local file to the chat by @Eric-GoodBoy-Tech in #15450 \n feat(channels): add Microsoft Teams extension and host ingress by @XIQIXIQIXIQI in #15620 \n feat(telemetry): record OpenRouter routing backend and generation id by @2SinceJuly in #16495 \n fix(web-shell): refuse background-work deletion in the dialog for any row by @wenshao in #17713 \n fix(core): time TTFT from the request dispatch by @qqqys in #17790 \n fix(core): seed side-records-only sessions and close the artifact-summary residuals by @wenshao in #17711 \n feat(web-shell): allow hosts to configure transcript overscan by @callmeYe in #17807 \n feat(managed-agent): render DingTalk managed replies as editable cards by @wenshao in #17748 \n docs(design): mark PR-watch bound-session design merged ( #17665 ) by @wenshao in #17793 \n docs(approval-mode): say new sessions start in Auto Mode by @qqqys in #17799 \n test(web-shell): clone gitRemotes in the e2e scenario factory and correct the ownership set by @wenshao in #17800 \n feat(core): name the output budget when truncation rejects a write by @xxwtiancai in #16632 \n fix(web-shell): Group approval scopes in a dropdown by @callmeYe in #17801 \n fix(ci): raise the CodeQL JavaScript cap to 180m after the nightly overran 90m by @yiliang114 in #17808 \n docs(security): add GitHub private vulnerability reporting to SECURITY.md by @yiliang114 in #17806 \n feat(web-shell): let hosts disable the composer glow by @callmeYe in #17814 \n feat(core): run ACP sessions on the shared agent loop by default by @qqqys in #17744 \n feat(cli): run background workflows in headless mode by @qqqys in #17809 \n fix(serve): pin remote-access admission and non-REST shutdown drain ( #17712 ) by @wenshao in #17737 \n fix(i18n): Fill remaining Russian UI strings and keep the account menu on one line by @callmeYe in #17719 \n perf(web-shell): isolate composer layout from transcript relayouts by @callmeYe in #17821 \n feat(serve): let create_sub_session reach any session, skip its workspace prompt in YOLO, and drop the thread glyph by @qqqys in #17818 \n feat(serve,web-shell): draw Mod rewrites of reply rows by @qqqys in #17718 \n fix(core): match Windows drive-letter paths in permission rules by @yiliang114 in #17810 \n fix(web-shell): keep a leading BOM in LocalDirectory write validation by @yiliang114 in #17820 \n fix(web-shell): evict aborted mention cache lookups by @yiliang114 in #17826 \n test(ci): assert scheduled workflows retain cron triggers by @yiliang114 in #17829 \n perf(web-shell): load language catalogs on demand by @callmeYe in #17833 \n docs(managed-agent): add Phase 3 control-plane wake design by @doudouOUC in #17805 \n test(serve): share clamp fixture and pin socket pruning by @yiliang114 in #17841 \n fix(core): delimit JSONL records after interrupted appends by @wenshao in #17771 \n feat(cli): set the vision bridge timeout with /model --vision --timeout by @qqqys in #17830 \n test(web-shell): cover focus after mobile composer mode switches by @Barzabel in #17828 \n docs(verify-pr): add Web Shell verification recipes by @Barzabel in #17762 \n docs(managed-agent): mark the H5e card design merged with its verification ledger by @wenshao in #17815 \n fix(i18n): complete missing Russian coverage for mods and vision bridge timeout by @wenshao in #17858 \n perf(managed-agent-server): bound hot-path SQL scans and round-trips by @doudouOUC in #17856 \n docs(managed-agent): add Phase 3 seal-time wake stamp addendum by @doudouOUC in #17869 \n fix(core): reduce or refuse a compression request that cannot fit its window by @yanyukang2003-ux in #15936 \n fix(web-shell): render local-path and failed markdown images as text chips by @doudouOUC in #17866 \n fix(core): bound the joined async hook context block by @wenshao in #17736 \n docs(web-shell): link the deferred background-work reporting gap to its issue by @wenshao in #17850 \n docs(core): record JSONL append verification by @wenshao in #17853 \n feat(web-shell): assemble the daemon chat controller with attempt-bound settlement by @wenshao in #17794 \n test(web-shell): pin value and content in the e2e fixture-ownership cases by @wenshao in #17824 \n fix(core): preserve tool-reported failure content by @callmeYe in #17803 \n fix(managed-agent): close six deferred loop review pins by @wenshao in #17594 \n fix(web-shell): allow drafting while session history loads by @callmeYe in #17842 \n refactor(managed-agent): files-on-v2 lifecycle and public child relaxation (D3/D5') by @doudouOUC in #17871 \n feat(channels): bind the GitHub ledger to its registration identity by @wenshao in #17775 \n refactor(managed-agent): converge pre-production version machinery by @doudouOUC in #17864 \n docs(managed-agent): mark the deferred loop pins design merged with its verification ledger by @wenshao in #17905 \n feat(managed-agent): clarify Web UI parity and wire local terminal by @wenshao in #17795 \n fix(managed-agent): settle recovery from durable native terminals by @doudouOUC in #17886 \n perf(web-shell): load xterm on demand by @callmeYe in #17840 \n test(managed-agent): re-home publication lifecycle IT v1 witness to external-files by @doudouOUC in #17909 \n fix(acp-bridge): merge background-turn live text chunks by @wenshao in #17862 \n fix(web-shell): decouple first prompt from automatic title writes by @callmeYe in #17843 \n fix(core): bound JSONL tail diagnostic recovery and cache churn by @wenshao in #17901 \n fix(managed-agent-server): keep journal blob reclamation moving past sealed heads by @doudouOUC in #17907 \n fix(memory): rebuild extraction indexes in the runtime by @callmeYe in #17785 \n feat(managed-agent): stamp clean suspensions for wake dispatch by @doudouOUC in #17908 \n perf(web-shell): render large workspace PDFs on demand by @callmeYe in #17899 \n feat(core): run OpenTUI on the shared agent loop by default by @qqqys in #17745 \n fix(daemon): include memory metrics in detailed status JSON by @callmeYe in #17906 \n fix(agents): reject incompatible Host replacements by @water-in-stone in #17702 \n fix(i18n): unify ru timeout spelling and vision-bridge term by @wenshao in #17867 \n feat(acp): end a tool-calling turn when queued input is sent now by @qqqys in #17825 \n docs(core): mark JSONL tail diagnostics design as merged by @wenshao in #17913 \n feat(serve): add daemon restart recovery inbox by @wenshao in #17677 \n feat(web-shell): worktree carry metadata + snapshot-then-delete cleanup ( #17237 , P6 partial) by @wenshao in #17533 \n feat(acp): deliver pending async hook output on the default legacy round by @wenshao in #17890 \n docs(managed-agent): design Runtime-owned background observation (Phase 3b) by @doudouOUC in #17912 \n fix(web-shell): keep the model sheet's rows and search field touch-sized by @wenshao in #17892 \n perf(web-shell): gzip serve responses for large transcript loads ( #6181 ) by @now-ing in #11220 \n docs(managed-agent): record the workspace artifact library's merged status by @wenshao in #17779 \n fix(managed-agent): settle a parked turn whose runtime is terminally lost by @doudouOUC in #17932 \n fix(ci): route autofix reviews through live bot by @yiliang114 in #17881 \n fix(core): resolve dotted DeepSeek catalog limits by @yiliang114 in #17876 \n test(integration): deflake the export document budget on all CI runners ( #17884 ) by @qwen-code-dev-bot in #17887 \n docs(worktree): record merged delivery and verification by @wenshao in #17928 \n fix(channels): address Aone channel deferred review findings ( #17517 ) by @wenshao in #17519 \n fix(channels): own DingTalk endpoint discovery so a hung connect stops muting the process by @wenshao in #17773 \n docs(managed-agent): record web UI parity delivery by @wenshao in #17915 \n fix(cli): attribute daemon log lines and bind late channel restores to the boot conflict decline by @wenshao in #17904 \n fix(web-templates): re-track renderer byte budget by @wenshao in #17940 \n feat(web-shell): bind the daemon chat controller to the session provider by @wenshao in #17895 \n fix(managed-agent): create the ephemeral Runtime state directory before spawning by @yiliang114 in #17949 \n test(managed-agent): scope the workspace artifact index assertion to its own database by @wenshao in #17893 \n fix(models): support Gemini proxy streaming and model refresh by @wenshao in #17947 \n feat(managed-agent): degrade process components per package in content-only extension runtimes by @doudouOUC in #17944 \n fix(managed-agent): load transport wakes through the passive verb by @doudouOUC in #17955 \n refactor(managed-agent): key tenant guard on readable VARCHAR scope (identity de-hash increment 1) by @doudouOUC in #17927 \n test(managed-agent): run the wake stamp suites on MySQL and pin each suspension gate clause by @doudouOUC in #17954 \n refactor(managed-agent): drop redundant storage keys by @doudouOUC in #17958 \n refactor(managed-agent): drop redundant in-process locks and the archived legacy Session guard stub by @doudouOUC in #17959 \n feat(channels): bind the email ledger to its registration identity by @wenshao in #17925 \n New Contributors\n @Barzabel made their first contribution in #17766 \n Full Changelog : v0.28.0...v0.28.0-nightly.20261120.19b31401f5",
+      "four_elements": {
+        "pain_point": "① 真实痛点与翻车场景：从该夜间版百余条提交记录来看，原有智能体运行框架在生产部署中面临四类典型工程故障：一是托管会话（Managed Agent）空闲时持续占用运行时资源，且运行实例意外消失后挂起的对话轮次难以安全收敛；二是服务端流式推送（SSE，服务器发送事件）缺少准入限流与僵死写入回收，容易挤占监听连接并在并发写入 JSONL 日志时引发锁滞留或记录截断；三是不同交互入口（ACP 协议与 OpenTUI 终端界面）长期维护割裂的智能体循环，功能与异步钩子输出行为不一致；四是钉钉等外部渠道重连失控、长消息截断以及 Web 端历史记录回放和大型文档渲染卡顿。",
+        "mechanism": "② 具体方法机制：本次更新属于系统工程迭代而非算法创新，核心改动分四环推进。第一，无状态托管运行时（Hosted Harness）一阶段落地：在会话空闲时触发休眠并打上唤醒标记（wake stamp，#17690、#17908），休眠期间保持空闲的外部工具协议连接（MCP，模型上下文协议，#17749），同时补齐运行实例彻底丢失时的轮次收敛与附件淘汰机制（#17681、#17932），并限制热路径 SQL 扫描次数（#17856）。第二，执行循环与流式底座收敛：将 ACP 与 OpenTUI 默认切入共享智能体循环（#17744、#17745），统一各流式接口的 SSE 准入与占用计数、默认回收僵死写入端（#17502、#17662），增加守护进程重启恢复收件箱（#17677）与 JSONL 中断追加分隔保护（#17771），并在模型回退链中跟踪可用性（#17377）、修正首字延迟（TTFT）计时起点（#17790）。第三，多渠道托管扩展：新增 GitHub、企业微信（WeCom）、Microsoft Teams 适配器与通用出站 Webhook（#17511、#17441、#15620、#17610），集中管理钉钉重连链并支持可编辑卡片与运行中消息注入（#17691、#17748、#15634）。第四，前端与工具链优化：通过 Gzip 压缩长对话响应（#11220）、按需加载终端组件 xterm 与大 PDF（#17840、#17899）、隔离输入框与消息区重排（#17821）来降低交互延迟。",
+        "experiments_summary": "③ 实验基准数字与对比口径：所给材料仅为版本变更日志（Changelog），不含任何学术基准测试数字、延迟/吞吐实测曲线或模型任务成功率对比。涉及的模型规模、显卡数量、测试样本分母与随机种子数，原文均未单列；日志中仅提及端到端定时循环测试（#17506）、MySQL 唤醒标记测试套（#17954）及取消循环上线前 20 次一致性校验要求（#17535）等工程测试动作。",
+        "repro_and_reference": "④ 公开技术参考与复现成本评估：所给元数据未附带代码仓库链接与可执行基准脚本，仅列出内部 PR 编号与版本号对比范围（v0.28.0...v0.28.0-nightly.20261120.19b31401f5）。该条目不涉及模型训练，不构成算力复现门槛，但若要复用其托管休眠架构需具备完整服务端、MySQL 及多渠道 Webhook 环境；对算法研究者而言无精读必要，仅适合构建多渠道编程智能体运行时的工程团队作架构清单参考。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列（日志仅提及兼容 DeepSeek 目录限额、OpenRouter 路由及 Gemini 代理流式调用，未绑定特定参数量基座）",
+        "gpu_and_duration": "所给材料未单列",
+        "seeds_note": "所给材料未单列",
+        "verdict_label": "工程系统迭代无实证评测",
+        "verdict_reason": "该材料是夜间版发布日志而非研究论文，所有改动均聚焦于智能体运行时休眠、流式稳定性与多渠道工程集成，缺乏任何定量基准指标、消融对照或可复现实验数据。",
+        "critique_points": [
+          "核心假设与失效边界：无状态托管休眠（#17690）假设会话状态与空闲 MCP 连接（#17749）可在休眠与唤醒标记调度（#17908）间无损衔接，但在外部 MCP 服务有状态/非幂等、网络分区导致半开连接、或守护进程与 MySQL 发生主从切换时，状态机可能出现挂起轮次误判或资源泄漏；日志仅提及 MySQL 唤醒标记测试（#17954）与单条 E2E 定时触发测试（#17506），缺少高并发故障注入下的泛化稳定性证据。",
+          "基线公平性与测量缺失：日志声称优化了热路径 SQL 扫描（#17856）、历史回放输入延迟（#17788）、大对话 Gzip 传输（#11220）并修正了 TTFT 计时起点（#17790），但未给出 v0.28.0 稳定版与本次夜间版在相同硬件与负载下的任何延迟分位数、内存占用或错误率对照，甚至在循环上线流程中移除了 20 次一致性校验要求（#17535），无法判断工程改动是否以稳定性方差上升换取吞吐。",
+          "消融与独立贡献识别：本次夜间版一次性打包了共享循环默认化（#17744、#17745）、上下文与异步钩子截断限制（#17532、#17736）、超窗压缩拒绝（#15936）及百余项前后端修复，缺少控制模型与提示词不变的对照实验；需进一步通过 A/B 实验回答：共享循环与上下文硬截断是否会改变长程编码任务的完成率与工具调用成功率。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.6
     },
     {
       "slug": "gui-rl-2611-28947",
@@ -372,17 +839,17 @@
       ],
       "lab_tags": [],
       "institution_tags": [],
-      "title_zh": "别打盹，盯紧屏幕：面向计算机操作智能体的主动流式感知框架 NightWatch",
+      "title_zh": "别睡了，盯紧屏幕：面向计算机操作智能体的主动感知框架 NightWatch",
       "title_en": "Don't Sleep, Keep Watch: Proactive Perception for Computer-Use Agents",
-      "one_line_pain": "针对屏幕动态变化时截图过时与长等待问题，挂载0.8B轻量守望模型持续盯屏，在不改原智能体下实现实时状态同步",
+      "one_line_pain": "针对桌面智能体固定休眠且推理期失明导致操作过期，外挂0.8B监测模型实时判态，自动打断、作废并唤醒",
       "metric_badges": [
         {
-          "text": "OSWorld无效耗时降53%",
+          "text": "OSWorld非推理耗时-33%",
           "verified": true,
           "unverified_numbers": []
         },
         {
-          "text": "DynaCU-Bench 39.5%→44.2%",
+          "text": "DynaCU成功率39.5%→44.2%",
           "verified": true,
           "unverified_numbers": []
         }
@@ -412,85 +879,125 @@
       "corroborating_sources": [],
       "abstract_en": "Computer-use agents (CUAs) built on vision-language models are increasingly entrusted with long-horizon tasks in live desktop, web, and mobile environments, where the screen keeps changing on its own. However, current CUAs lack real-time situational awareness: they perceive the environment through discrete snapshots, and the substantial inference latency of VLMs, compounded by highly dynamic interfaces, opens a perception-action gap in which the observed state frequently becomes stale before the corresponding action is executed. To bridge this gap, we present NightWatch, a plug-and-play framework that endows any CUA with continuous, temporally grounded perception without changing the agent's model, prompt, or action space. NightWatch couples the VLM agent with NightWatch-0.8B, a lightweight System-1 model that performs streaming monitoring of the interface state and keeps the agent synchronized with the evolving environment at low computational cost and latency, thereby grounding each decision in the current state rather than an outdated snapshot and reducing both stale actions and idle waiting while preserving task success. Experiments on desktop and dynamic web environments (OSWorld-Verified and DynaCU-Bench) show that NightWatch, driven by a watcher of only 0.8B parameters, reduces non-reasoning wall-clock time by 33% and wasted time by 53% on OSWorld while keeping task success on par, raises success on DynaCU-Bench from 39.5% to 44.2% with the large VLM agent, and is more efficient than passive-watching baselines such as AOI and PUSV under the same screenshot-only input, as well as a System-1 decision model more than $30\\times$ its size. Overall, NightWatch demonstrates that the timing of perception is as critical as its content, marking a step toward agents that maintain continuous awareness of their environment rather than perceiving it turn by turn.",
       "four_elements": {
-        "pain_point": "① 现有基于视觉语言模型（VLM）的计算机操作智能体（CUA）只能按回合截取离散屏幕快照来感知环境。在桌面、网页或移动端等界面会自动持续变化的实时长程任务中，VLM 本身推理延迟较高，导致感知与执行之间出现时间差——动作真正发出时，先前看到的界面状态早已过时，进而引发基于旧状态的错误操作或大量无效空等。",
-        "mechanism": "② NightWatch 采用即插即用的外挂式设计，不改动原 VLM 智能体的模型权重、提示词或动作空间：第一步，在主智能体旁挂载一个仅 0.8B 参数的轻量级“系统一（直觉快速响应）”守望模型 NightWatch-0.8B，仅依赖纯屏幕截图输入，以低算力和低延迟持续流式监测界面状态变化；第二步，由该守望模型实时把界面动态同步给主智能体，让每一步决策都对齐当前真实画面而非过时快照，从而在保持任务成功率的同时压缩过时操作与空闲等待时间。",
-        "experiments_summary": "③ 评测覆盖桌面环境 OSWorld-Verified 与动态网页环境 DynaCU-Bench。采用 0.8B 参数的 NightWatch-0.8B 作为守望模块（主智能体大 VLM 的具体型号与参数量原文摘要未单列）：在 OSWorld 上，任务成功率与基线持平的前提下，非推理阶段总挂钟耗时降低 33%，无效浪费时间减少 53%；在 DynaCU-Bench 上，搭配大 VLM 智能体时任务成功率由 39.5% 提升至 44.2%。在同等纯截图输入口径下，其效率优于被动观察基线（AOI、PUSV）以及参数规模超过其 30 倍的系统一决策模型。训练所用卡数、耗时与随机种子数原文摘要未单列。",
-        "repro_and_reference": "④ 当前元数据未提供 GitHub 仓库链接，开源代码、模型权重与训练数据细节尚不明确。由于框架本身即插即用且新增守望模块仅 0.8B 参数，推理部署的额外算力门槛较低，主要开销仍在原有大 VLM 智能体及 OSWorld/DynaCU-Bench 交互环境的搭建；但在官方未释出守望模型权重与训练脚本前，从零复现流式监测能力的工程成本中等偏高。",
-        "experiment_rows": [],
-        "backbone_and_params": "守望模型为 0.8B 参数的 NightWatch-0.8B；主智能体大模型基座型号与参数量原文摘要未单列",
-        "gpu_and_duration": "原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
+        "pain_point": "① 现有视觉语言模型（VLM）计算机操作智能体普遍采用“截屏—推理—执行—固定休眠”的被动定时循环。在真实桌面和网页中，弹窗、加载动画和状态切换随时发生：一方面，大模型推理耗时长，期间智能体完全“失明”，等动作下发时目标界面可能已过期导致翻车；另一方面，动作后的等待时间全靠人工硬编码（OSWorld官方脚本中跨度达20倍），设短了截到半渲染画面，设长了干等浪费墙钟时间甚至错过瞬态反馈。",
+        "mechanism": "② NightWatch 在不改动原智能体模型、提示词和动作空间的前提下，于调度层外挂一个仅0.8B参数的轻量级快思考监测模型（NightWatch-0.8B），仅凭纯截图流持续盯屏：第一步，模型对每帧图像单次编码后，并行回答一组跨应用通用的固定选择题（如是否弹出对话框、页面是否仍在加载），不生成自由文本也不直接做动作决策；第二步，用确定性规则代码将监测结果转化为三种主动干预——若推理期间界面已使当前思考过时则立即打断推理、若待执行动作的目标已失效则作废该动作、一旦界面真正稳定就绪则立刻唤醒智能体以替代固定休眠；第三步，为避免把“加载中的短暂静止”误判为就绪，监测模型基于独立生成任务轨迹与程序化合成界面上的事后标注（根据后续帧变化反推当前是否稳定）进行训练，不接触评测基准数据。",
+        "experiments_summary": "③ 在100个OSWorld-Verified桌面任务（纯截图输入、未改动大VLM智能体）上，NightWatch将非推理墙钟时间减少33%、浪费时间减少53%，同时任务成功率与未改动基线持平（具体百分点在所给正文片段中缺失）。在49个DynaCU-Bench动态网页任务上，冻结的NightWatch-0.8B将大VLM智能体的任务成功率从39.5%提升至44.2%（绝对提升4.7个百分点，相对增幅约11.9%），并保持小VLM智能体成功率不降（具体数值片段缺失）。论文还称在相同纯截图输入下效率高于被动监测基线AOI、PUSV，且0.8B监测器在速度与成功率上优于30倍以上参数规模的快思考决策模型及闭源快思考API。除NightWatch-0.8B参数量外，大小VLM基座型号与规模、卡数、耗时、随机种子数及完整消融表均未在所给材料中单列。（⚠️ 原文待核数字：4.7、11.9%）",
+        "repro_and_reference": "④ 论文声称将开源代码、数据与0.8B模型权重，但当前元数据中GitHub与Hugging Face链接均为空，代码与数据完整度尚无法核验。架构上，NightWatch定位为即插即用的外挂调度层，且监测模型仅0.8B、采用单次编码多选题判别，推理端算力门槛预期较低；但复现完整训练流程需自建桌面交互轨迹采集与合成界面数据管线，且所给材料未披露训练卡型、时长及端到端VLM重推理开销，实际复现成本与收益比需待开源仓库与完整实验章节公开后评估。",
+        "experiment_rows": [
+          {
+            "benchmark": "OSWorld-Verified",
+            "metric": "非推理墙钟时间变化",
+            "value": "-33%",
+            "baseline_delta": "-33%（相对未改动大VLM基线）",
+            "setup_note": "分母为100个桌面任务（纯截图输入）；任务成功率具体数值、总墙钟时间及种子数在所给片段中缺失",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "OSWorld-Verified",
+            "metric": "浪费时间变化",
+            "value": "-53%",
+            "baseline_delta": "-53%（相对未改动大VLM基线）",
+            "setup_note": "分母为100个桌面任务（纯截图输入）；“浪费时间”的具体核算口径（原文3.1节）在所给片段中未完整呈现",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "DynaCU-Bench",
+            "metric": "任务成功率",
+            "value": "44.2%",
+            "baseline_delta": "+4.7个百分点（基线39.5%，相对增幅约11.9%）",
+            "setup_note": "分母为49个动态网页任务，使用冻结NightWatch-0.8B与大VLM；49任务下4.7pp约对应2至3个任务，未提供多次运行方差",
+            "verified": false,
+            "unverified_numbers": [
+              "4.7",
+              "11.9%"
+            ]
+          }
+        ],
+        "backbone_and_params": "监测器为 NightWatch-0.8B（0.8B参数，具体底层视觉语言基座架构原文未单列）；所搭配的“大VLM智能体”“小VLM智能体”及对比用“30倍以上规模快思考决策模型”和“闭源快思考API”的具体模型名称与参数量在所给材料中均未单列。",
+        "gpu_and_duration": "所给材料未单列训练与推理使用的GPU型号、卡数、训练总时长及NightWatch-0.8B单帧监测延迟。",
+        "seeds_note": "所给材料未单列随机种子数、重复评测次数及结果方差。",
+        "verdict_label": "直击真痛点但实证待补齐",
+        "verdict_reason": "将“何时看屏与是否打断”从重型VLM剥离给0.8B纯视觉监测器并配合确定性规则，切中了动态环境CUA的真实工程瓶颈；但当前材料缺少完整端到端耗时、基座与种子方差、以及拆解各干预模块的消融数据，尚不足以单独据此决定全面复现。",
+        "critique_points": [
+          "核心假设失效边界与泛化证据：NightWatch假设跨应用的界面关键状态可由一组固定通用选择题和静态阈值规则覆盖，且仅靠纯像素帧即可可靠区分“影响当前动作的变化”与“无关动画”。在高频局部刷新界面（如实时行情、视频剪辑时间轴、画布/WebGL应用）或极慢异步加载场景下，通用规则极易出现误打断（反复清空有效推理）或漏判（未作废过期动作）。当前泛化证据仅涵盖100个桌面任务和49个动态网页任务，引言提及的移动端Android场景并未见实测结果，跨平台与高噪动态UI的稳健性需通过扰动对照实验验证。",
+          "基线公平性、方差与核算口径风险：其一，DynaCU-Bench分母仅49个任务，+4.7个百分点（39.5%→44.2%）仅相当于约2至3个任务的波动，在未报告随机种子数与多次运行方差的情况下，难以排除随机采样噪声；其二，OSWorld主指标强调“非推理墙钟时间-33%”，但主动打断机制一旦误触发会增加大VLM的重复推理耗时与Token开销，若不给出包含重推理与监测器自身耗时在内的端到端总墙钟时间与总Token预算，并与调优后固定等待及AOI/PUSV在同等预算下对比，无法确认净效率收益是否公平。",
+          "控制数据与基座后的消融归因：NightWatch同时引入了事后标注的合成/独立轨迹训练数据、0.8B多选判别式监测架构以及“打断/作废/唤醒”三类确定性干预规则。所给材料未提供逐项移除三类干预的消融结果，也未说明被超越的“30倍以上规模快思考决策模型”和AOI/PUSV是否使用了同等事后标注数据或阈值调参，因此目前无法独立区分收益主要来自“主动感知调度机制”还是“针对界面就绪状态的专项事后监督数据”，需补充同数据、同基座的受控消融实验。"
+        ],
+        "evidence_boundary": "已结合 arXiv HTML 正文片段与摘要研判"
       },
       "conference_slug": "",
       "conference_track_tier": "",
-      "relative_score": 7.8
-    },
-    {
-      "slug": "ossl-ood-2611-28986",
-      "section": "papers",
-      "track": "ossl-ood",
-      "track_label": "OSSL/OOD",
-      "subtopics": [
-        "open-world-vocab",
-        "ossl-ood-core"
-      ],
-      "lab_tags": [],
-      "institution_tags": [],
-      "title_zh": "CLASP：面向医学视觉语言模型零样本分布外检测的互补层选择与特征画像",
-      "title_en": "CLASP: Complementary Layer Selection and Profiling for Zero-Shot OOD Detection using Vision-Language Models",
-      "one_line_pain": "针对医学零样本分布外检测只看末层置信度或按熵选层失效的问题，改用条件互信息筛选互补中间层并联合视觉特征算马氏距离",
-      "metric_badges": [
-        {
-          "text": "MIDOG近OOD 87.54% AUROC",
-          "verified": true,
-          "unverified_numbers": []
-        },
-        {
-          "text": "免微调/仅用分布内数据",
-          "verified": true,
-          "unverified_numbers": []
-        }
-      ],
-      "openness": "paper_only",
-      "openness_label": "仅论文",
-      "small_compute_friendly": true,
-      "small_compute_note": "原文标注：test-time",
-      "authors": [
-        "Saahil Islam",
-        "Adarsh Bhandary Panambur",
-        "Teodora Spasojevic",
-        "Eduardo Castaneda",
-        "Andreas Maier"
-      ],
-      "published_date": "2026-11-21",
-      "venue_or_source": "arXiv cs.CV",
-      "url_primary": "https://arxiv.org/abs/2611.28986",
-      "url_pdf": "https://arxiv.org/pdf/2611.28986",
-      "url_arxiv_html": "https://arxiv.org/html/2611.28986",
-      "url_github": "",
-      "url_hf": "",
-      "arxiv_id": "2611.28986",
-      "doi": "",
-      "github_stars": null,
-      "license_name": "",
-      "corroborating_sources": [],
-      "abstract_en": "Vision-language models (VLMs) enable zero-shot out-of-distribution (OOD) detection in medical imaging, yet existing approaches often rely on final-layer confidence or entropy-based layer selection, potentially missing complementary information. We show that low in-distribution (ID) confidence entropy does not reliably predict OOD discrimination. We introduce CLASP (Complementary Layer Selection and Profiling), an ID-only framework that jointly models layer--prompt responses and visual features. CLASP ranks visual encoder layers using Gaussian conditional mutual information and selects a compact subset through anchored spectral selection, without fixing the number of layers. It then combines the selected layer--prompt profiles with PCA-compressed visual embeddings and fits a single shrinkage-regularized Gaussian. OOD scores are computed using squared Mahalanobis distance, without fine-tuning, OOD training data, or test-time adaptation. Across histopathology, chest X-ray, and brain MRI benchmarks with UniMedCLIP and BioMedCLIP, CLASP performs strongly under varied distribution shifts. On MIDOG near-OOD, it achieves 87.54% AUROC with UniMedCLIP, outperforming confidence-based baselines; with BioMedCLIP, it remains competitive but trails visual-only Mahalanobis modeling. Ablations highlight the value of layer--prompt interactions and cross-feature dependencies, while exposing shift-dependent contributions and limitations under semantic shifts.",
-      "four_elements": {
-        "pain_point": "① 现有的医学影像视觉语言模型零样本分布外（OOD）检测，通常只依赖最后一层输出的置信度，或者按置信度熵来挑中间层。但作者指出，分布内（ID）数据的置信度熵低，并不代表该层就能可靠区分分布外样本；死盯末层或单靠熵选层容易漏掉不同层级间的互补判别信息。",
-        "mechanism": "② CLASP 仅利用分布内数据完成四步建模：第一步，用高斯条件互信息对视觉编码器各层排序；第二步，通过锚定谱选择自适应挑出紧凑的互补层子集，无需人为预先固定层数；第三步，把选中层的层-提示词响应特征与经主成分分析（PCA）压缩后的视觉嵌入拼接，拟合单个收缩正则化高斯分布；第四步，直接计算平方马氏距离作为分布外得分，全程不需要微调模型、不需要分布外训练数据，也不做测试时自适应。",
-        "experiments_summary": "③ 在组织病理学、胸部X光和脑部磁共振成像（MRI）基准上，基于 UniMedCLIP 和 BioMedCLIP 评测多种分布偏移。在 MIDOG 近分布外（near-OOD）任务上，搭配 UniMedCLIP 取得 87.54% AUROC，高于基于置信度的基线；但搭配 BioMedCLIP 时虽保持竞争力，仍落后于纯视觉马氏距离建模。消融实验验证了层-提示词交互与跨特征依赖的作用，同时也暴露出各部分贡献依赖偏移类型，且在语义偏移下存在局限。模型参数量、算力卡数、耗时与随机种子数原文摘要均未单列。",
-        "repro_and_reference": "④ 元数据未提供公开 GitHub 代码链接，需依据正文自行实现。由于全程免微调、免测试时自适应，只需对分布内样本做前向推理提取多层特征并执行互信息排序、谱选择、PCA 压缩及单高斯收缩拟合，算力门槛相对较低；但锚定谱选择与提示词构造的具体实现细节摘要未展开，复现完整度依赖论文正文公开程度。",
-        "experiment_rows": [],
-        "backbone_and_params": "UniMedCLIP、BioMedCLIP（具体参数量原文摘要未单列）",
-        "gpu_and_duration": "原文摘要未单列",
-        "seeds_note": "原文摘要未单列"
-      },
-      "conference_slug": "",
-      "conference_track_tier": "",
-      "relative_score": 6.5
+      "relative_score": 7.4
     }
   ],
   "folded_items": [
+    {
+      "slug": "fold-ossl-ood-2611-28986",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "CLASP：基于视觉语言模型互补层选择与画像的零样本OOD检测",
+      "title_en": "CLASP: Complementary Layer Selection and Profiling for Zero-Shot OOD Detection using Vision-Language Models",
+      "one_line_takeaway": "突破仅依赖末层置信度的局限，融合多互补层特征提升零样本分布外检测。",
+      "url": "https://arxiv.org/abs/2611.28986",
+      "published_date": "2026-11-21",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.28986"
+    },
+    {
+      "slug": "fold-vlm-infra-inclusionai-ling-3",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "inclusionAI/Ling-3",
+      "title_en": "inclusionAI/Ling-3",
+      "one_line_takeaway": "属「推理引擎与系统优化 / 多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]，原文报告 61%, 16%）",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y3la3q/inclusionailing32air_hugging_face/",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-2611-32649",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "ICLWorld：从数字到物理世界的智能体上下文学习基准",
+      "title_en": "ICLWorld: Benchmarking In-Context Learning of Agents from Digital to Physical Worlds",
+      "one_line_takeaway": "构建跨数字与物理环境的上下文学习评测基准，覆盖面广但方法创新有限。",
+      "url": "https://arxiv.org/abs/2611.32649",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.32649"
+    },
+    {
+      "slug": "fold-vlm-infra-serving-and-infrastructure",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Serving and infrastructure",
+      "title_en": "Serving and infrastructure",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/vllm_project/status/2125041827107741733",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-how-the-memory-for-1m-tokens-shrank-from",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "How the memory for 1M tokens shrank from 130TB to 890MB (Activity: 588)…",
+      "title_en": "How the memory for 1M tokens shrank from 130TB to 890MB (Activity: 588): The post links to a tec",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y4kikk/how_the_memory_for_1m_tokens_shrank_from_130tb_to/",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
     {
       "slug": "fold-vlm-infra-nvme-kv-cache-offload-in-vllm",
       "section": "industry",
@@ -505,17 +1012,56 @@
       "arxiv_id": ""
     },
     {
-      "slug": "fold-gui-rl-2611-18562",
+      "slug": "fold-gui-rl-2611-32102",
       "section": "papers",
       "track": "gui-rl",
       "track_label": "GUI-RL",
-      "title_zh": "在仿真环境中训练原生操控真实机器人的推理模型",
-      "title_en": "Training Reasoning Models in Simulation to Natively Use Real Robots",
-      "one_line_takeaway": "在仿真中训练推理模型原生操控真实机器人，探索开源权重追赶前沿专有模型路径。",
-      "url": "https://arxiv.org/abs/2611.18562",
-      "published_date": "2026-11-20",
-      "venue_or_source": "arXiv cs.RO",
-      "arxiv_id": "2611.18562"
+      "title_zh": "RISE：面向GUI智能体的隐式状态表征推理",
+      "title_en": "RISE: Reasoning with Implicit State Embeddings for GUI Agents",
+      "one_line_takeaway": "用隐式状态嵌入替代显式文本推理，缓解GUI智能体对长推理链的过度依赖。",
+      "url": "https://arxiv.org/abs/2611.32102",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.32102"
+    },
+    {
+      "slug": "fold-gui-rl-2611-32097",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "GUI-PRISM：面向GUI智能体的高效动作解码",
+      "title_en": "GUI-PRISM: Efficient Action Decoding for GUI Agents",
+      "one_line_takeaway": "直击视觉语言模型文本生成动作的高延迟瓶颈，显著提升GUI执行解码效率。",
+      "url": "https://arxiv.org/abs/2611.32097",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.32097"
+    },
+    {
+      "slug": "fold-gui-rl-2611-31974",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "Coding4Games：现代编程智能体能否玩转现代电子游戏？",
+      "title_en": "Coding4Games: Can Modern Coding Agents Play Modern Video Games?",
+      "one_line_takeaway": "评测编程智能体游玩大型游戏的长程决策能力，与主流GUI任务关联较弱。",
+      "url": "https://arxiv.org/abs/2611.31974",
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.AI",
+      "arxiv_id": "2611.31974"
+    },
+    {
+      "slug": "fold-vlm-infra-songe-open-source-engine-that-fine-tunes",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Songe: open-source engine that fine-tunes your local model on your traces…",
+      "title_en": "Songe: open-source engine that fine-tunes your local model on your traces while your machine is ",
+      "one_line_takeaway": "属「推理引擎与系统优化 / 多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y3xhrh/songe_opensource_engine_that_finetunes_your_local/",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
     },
     {
       "slug": "fold-vlm-infra-inkling-absolutely-rips",
@@ -528,19 +1074,6 @@
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y2gxo7/inkling_absolutely_rips_200_toks_decode_6700/",
       "published_date": "2026-11-24",
       "venue_or_source": "Latent Space [AINews]",
-      "arxiv_id": ""
-    },
-    {
-      "slug": "fold-vlm-infra-perplexity-and-intelligence",
-      "section": "industry",
-      "track": "vlm-infra",
-      "track_label": "VLM/RL底座",
-      "title_zh": "困惑度与智能：衡量AI模型进展的共享评估视角",
-      "title_en": "Perplexity and Intelligence",
-      "one_line_takeaway": "探讨困惑度作为模型能力演进统一评测指标的潜力，对大模型基建评估有一定参考。",
-      "url": "https://openai.com/index/perplexity-and-intelligence",
-      "published_date": "2026-11-22",
-      "venue_or_source": "OpenAI",
       "arxiv_id": ""
     },
     {
@@ -570,94 +1103,42 @@
       "arxiv_id": ""
     },
     {
-      "slug": "fold-gui-rl-2603-02277",
-      "section": "industry",
-      "track": "gui-rl",
-      "track_label": "GUI-RL",
-      "title_zh": "AI研发相关模型能力快速提升且愈发难以衡量",
-      "title_en": "AI R&D-relevant model capabilities are improving rapidly and are getting harder to measure",
-      "one_line_takeaway": "系统分析研发相关模型能力快速提升及评测难度加剧问题，对长程智能体评估有启发。",
-      "url": "https://metr.org/blog/2026-11-20-q4-2026-capability-update/",
-      "published_date": "2026-11-20",
-      "venue_or_source": "METR",
-      "arxiv_id": "2603.02277"
-    },
-    {
-      "slug": "fold-gui-rl-2611-29847",
-      "section": "papers",
-      "track": "gui-rl",
-      "track_label": "GUI-RL",
-      "title_zh": "MobileGrail：面向端侧部署的轻量级移动GUI安全护栏学习",
-      "title_en": "MobileGrail: Learning Compact Guardrails for On-Device deployable Mobile GUI Agent Safety",
-      "one_line_takeaway": "提出可端侧部署的轻量级移动GUI安全护栏，兼顾动作拦截安全性与屏幕隐私保护。",
-      "url": "https://arxiv.org/abs/2611.29847",
-      "published_date": "2026-11-23",
-      "venue_or_source": "arXiv cs.AI",
-      "arxiv_id": "2611.29847"
-    },
-    {
-      "slug": "fold-ossl-ood-2611-30316",
-      "section": "papers",
-      "track": "ossl-ood",
-      "track_label": "OSSL/OOD",
-      "title_zh": "视频广义类别发现",
-      "title_en": "Video Generalized Category Discovery",
-      "one_line_takeaway": "将广义类别发现从静态图像拓展至视频域，应对时序动态下的未知类聚类挑战。",
-      "url": "https://arxiv.org/abs/2611.30316",
-      "published_date": "2026-11-23",
-      "venue_or_source": "arXiv cs.CV",
-      "arxiv_id": "2611.30316"
-    },
-    {
-      "slug": "fold-vlm-infra-interpreting-a-recent-acceleration-in-pre",
+      "slug": "fold-vlm-infra-connected-intelligence-for-in-house-legal",
       "section": "industry",
       "track": "vlm-infra",
       "track_label": "VLM/RL底座",
-      "title_zh": "解读近期预训练损失加速下降的现象",
-      "title_en": "Interpreting a recent acceleration in pretraining loss",
-      "one_line_takeaway": "深入解读前沿模型预训练损失近期加速下降现象，为理解模型缩放趋势提供关键实证。",
-      "url": "https://metr.org/blog/2026-11-24-interpreting-a-recent-acceleration-in-pretraining-loss/",
-      "published_date": "2026-11-24",
-      "venue_or_source": "METR",
+      "title_zh": "Connected intelligence for in-house legal",
+      "title_en": "Connected intelligence for in-house legal",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：OpenAI）",
+      "url": "https://openai.com/business/learn/connected-intelligence-for-in-house-legal",
+      "published_date": "2026-11-23",
+      "venue_or_source": "OpenAI",
       "arxiv_id": ""
     },
     {
-      "slug": "fold-vlm-infra-weak-to-strong-alignment",
+      "slug": "fold-vlm-infra-richpanel-helps-companies-automate-50-of",
       "section": "industry",
       "track": "vlm-infra",
       "track_label": "VLM/RL底座",
-      "title_zh": "Weak to Strong alignment",
-      "title_en": "Weak to Strong alignment",
-      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
-      "url": "https://openai.com/index/weak-to-strong-generalization/",
-      "published_date": "2026-11-21",
-      "venue_or_source": "Latent Space [AINews]",
+      "title_zh": "Richpanel helps companies automate 50% of support in 30 days",
+      "title_en": "Richpanel helps companies automate 50% of support in 30 days",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：OpenAI）",
+      "url": "https://openai.com/business/customer-stories/richpanel-ai-customer-support",
+      "published_date": "2026-11-23",
+      "venue_or_source": "OpenAI",
       "arxiv_id": ""
     },
     {
-      "slug": "fold-ossl-ood-2611-28611",
-      "section": "papers",
-      "track": "ossl-ood",
-      "track_label": "OSSL/OOD",
-      "title_zh": "基于动作条件转移不可逆性的强化学习分布外检测",
-      "title_en": "Action-Conditioned Transition Irreversibility for Out-of-Distribution Detection in Reinforcement Learning",
-      "one_line_takeaway": "基于动作条件转移不可逆性检测强化学习分布外状态，切中序贯决策OOD核心难点。",
-      "url": "https://arxiv.org/abs/2611.28611",
-      "published_date": "2026-11-21",
-      "venue_or_source": "arXiv cs.LG",
-      "arxiv_id": "2611.28611"
-    },
-    {
-      "slug": "fold-vlm-infra-vllm-project-vllm-ascend-community-mainta",
-      "section": "opensource",
+      "slug": "fold-vlm-infra-perplexity-and-intelligence",
+      "section": "industry",
       "track": "vlm-infra",
       "track_label": "VLM/RL底座",
-      "title_zh": "vllm-project/vllm-ascend: Community maintained hardware plugin for vLLM on…",
-      "title_en": "vllm-project/vllm-ascend: Community maintained hardware plugin for vLLM on Huawei Ascend",
-      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：GitHub Trending）",
-      "url": "https://github.com/vllm-project/vllm-ascend",
-      "published_date": "2026-11-25",
-      "venue_or_source": "GitHub Trending",
+      "title_zh": "Perplexity and Intelligence",
+      "title_en": "Perplexity and Intelligence",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：OpenAI）",
+      "url": "https://openai.com/index/perplexity-and-intelligence",
+      "published_date": "2026-11-22",
+      "venue_or_source": "OpenAI",
       "arxiv_id": ""
     },
     {
@@ -665,25 +1146,38 @@
       "section": "industry",
       "track": "vlm-infra",
       "track_label": "VLM/RL底座",
-      "title_zh": "打击对抗性模型蒸馏的多层防御策略",
+      "title_zh": "Combatting adversarial distillation",
       "title_en": "Combatting adversarial distillation",
-      "one_line_takeaway": "介绍防范模型能力被对抗性蒸馏窃取的多层防御体系，偏商业安全策略与合规治理。",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：OpenAI）",
       "url": "https://openai.com/index/combatting-adversarial-distillation",
       "published_date": "2026-11-20",
       "venue_or_source": "OpenAI",
       "arxiv_id": ""
     },
     {
-      "slug": "fold-gui-rl-microsoft-markitdown-python-tool-for-convert",
-      "section": "opensource",
-      "track": "gui-rl",
-      "track_label": "GUI-RL",
-      "title_zh": "microsoft/markitdown: Python tool for converting files and office documents…",
-      "title_en": "microsoft/markitdown: Python tool for converting files and office documents to Markdown.",
-      "one_line_takeaway": "属「GUI 在线/离线 RL」方向的边际/常规增量动态（来源：GitHub Trending）",
-      "url": "https://github.com/microsoft/markitdown",
-      "published_date": "2026-11-25",
-      "venue_or_source": "GitHub Trending",
+      "slug": "fold-vlm-infra-hebbia-sees-improvements-in-financial-res",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Hebbia sees improvements in financial research with GPT-6 Astra",
+      "title_en": "Hebbia sees improvements in financial research with GPT-6 Astra",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：OpenAI）",
+      "url": "https://openai.com/business/customer-stories/hebbia",
+      "published_date": "2026-11-20",
+      "venue_or_source": "OpenAI",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-can-ai-help-scientists-identify-promising",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Can AI help scientists identify promising drug candidates?",
+      "title_en": "Can AI help scientists identify promising drug candidates?",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：OpenAI）",
+      "url": "https://openai.com/index/introducing-medchembench",
+      "published_date": "2026-11-20",
+      "venue_or_source": "OpenAI",
       "arxiv_id": ""
     },
     {
@@ -691,64 +1185,12 @@
       "section": "industry",
       "track": "vlm-infra",
       "track_label": "VLM/RL底座",
-      "title_zh": "结合智能体团队与形式化验证发现更快的量子算法",
+      "title_zh": "Finding faster quantum algorithms with agents and formal verification",
       "title_en": "Finding faster quantum algorithms with agents and formal verification",
-      "one_line_takeaway": "结合多智能体与形式化验证加速量子算法发现，属前沿科学计算探索但偏离主线。",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：Google DeepMind）",
       "url": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
       "published_date": "2026-11-23",
       "venue_or_source": "Google DeepMind",
-      "arxiv_id": ""
-    },
-    {
-      "slug": "fold-vlm-infra-local-speed-unsloth-reports-125-tok-s-on",
-      "section": "industry",
-      "track": "vlm-infra",
-      "track_label": "VLM/RL底座",
-      "title_zh": "Local speed : Unsloth reports 125 tok/s on an RTX PRO 6000 and fixed…",
-      "title_en": "Local speed : Unsloth reports 125 tok/s on an RTX PRO 6000 and fixed KV-cache quantization memor",
-      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
-      "url": "https://x.com/danielhanchen/status/2124901209836519479",
-      "published_date": "2026-11-24",
-      "venue_or_source": "Latent Space [AINews]",
-      "arxiv_id": ""
-    },
-    {
-      "slug": "fold-vlm-infra-rack-scale-serving",
-      "section": "industry",
-      "track": "vlm-infra",
-      "track_label": "VLM/RL底座",
-      "title_zh": "Rack-scale serving",
-      "title_en": "Rack-scale serving",
-      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
-      "url": "https://x.com/SemiAnalysis_/status/2124637709176016998",
-      "published_date": "2026-11-24",
-      "venue_or_source": "Latent Space [AINews]",
-      "arxiv_id": ""
-    },
-    {
-      "slug": "fold-vlm-infra-glm-5",
-      "section": "industry",
-      "track": "vlm-infra",
-      "track_label": "VLM/RL底座",
-      "title_zh": "GLM-5",
-      "title_en": "GLM-5",
-      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
-      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y3enps/glm54_toward_generalized_coding_with_our_first/",
-      "published_date": "2026-11-24",
-      "venue_or_source": "Latent Space [AINews]",
-      "arxiv_id": ""
-    },
-    {
-      "slug": "fold-vlm-infra-inkling-2-mini",
-      "section": "industry",
-      "track": "vlm-infra",
-      "track_label": "VLM/RL底座",
-      "title_zh": "Inkling 2 Mini",
-      "title_en": "Inkling 2 Mini",
-      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
-      "url": "https://x.com/thinkymachines/status/2123871643797995872",
-      "published_date": "2026-11-21",
-      "venue_or_source": "Latent Space [AINews]",
       "arxiv_id": ""
     }
   ]

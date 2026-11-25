@@ -13,7 +13,7 @@ from daily_radar.models import DailyIssue, RawCandidate
 
 ARXIV_ID_RE = re.compile(r"(?:arxiv[:/\s]+)?(\d{4}\.\d{4,5})(?:v\d+)?", re.IGNORECASE)
 GITHUB_REPO_URL_RE = re.compile(r"github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)")
-WORD_TOKEN_RE = re.compile(r"[a-z0-9]{2,}")
+WORD_TOKEN_RE = re.compile(r"[a-z0-9]{2,}|[\u4e00-\u9fff]{2,}")
 
 STOPWORDS = frozenset(
     {

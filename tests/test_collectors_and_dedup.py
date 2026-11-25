@@ -8,6 +8,8 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest import mock
+from urllib.parse import urlsplit
 
 from daily_radar.cli import main as cli_main
 from daily_radar.collectors import (
@@ -21,8 +23,9 @@ from daily_radar.collectors import (
     parse_github_trending,
     parse_rss_or_atom,
 )
+from daily_radar.config import RepoConfig
 from daily_radar.dedup import deduplicate_candidates, normalize_arxiv_id
-from daily_radar.models import DailyIssue, FoldedItem, FourElements, MetricBadge, RadarItem, RawCandidate
+from daily_radar.models import VALID_SECTIONS, DailyIssue, FoldedItem, FourElements, MetricBadge, RadarItem, RawCandidate
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -53,6 +56,132 @@ class _MockFeedServerHandler(BaseHTTPRequestHandler):
 
 
 class CollectorsAndDedupTest(unittest.TestCase):
+    def test_bluesky_native_rss_uses_description_as_title(self) -> None:
+        xml = b"""
+        <rss version="2.0"><channel>
+          <item>
+            <link>https://bsky.app/profile/researcher.bsky.social/post/first</link>
+            <pubDate>Mon, 23 Nov 2026 10:00:00 GMT</pubDate>
+            <description><![CDATA[<br><p>New   agent benchmark results. More details below.</p>
+            <p>Second paragraph.</p>]]></description>
+          </item>
+          <item>
+            <title></title><link>https://bsky.app/profile/researcher.bsky.social/post/long</link>
+            <description>New agent benchmark results include several evaluations across desktop and mobile tasks with reproducible baselines.</description>
+          </item>
+          <item>
+            <link>https://bsky.app/profile/researcher.bsky.social/post/short</link>
+            <description><![CDATA[<p><strong>Good morning!</strong></p>]]></description>
+          </item>
+        </channel></rss>
+        """
+        rows = parse_rss_or_atom(xml, {"id": "bsky", "name": "Bluesky", "social_feed": True}, "2026-11-24")
+        self.assertEqual(len(rows), 2)
+        first, long = rows
+        self.assertEqual(first.title, "New agent benchmark results.")
+        self.assertEqual(first.published_at, "2026-11-23")
+        self.assertTrue(first.url.endswith("/first"))
+        self.assertIn("Second paragraph.", first.summary_raw)
+        self.assertEqual(
+            long.title,
+            "New agent benchmark results include several evaluations across desktop and mobile tasks with…",
+        )
+        self.assertLessEqual(len(long.title), 96)
+
+    def test_smol_ainews_uses_secondary_links_and_filters_split_items(self) -> None:
+        xml = b"""
+        <rss version="2.0"><channel><item>
+          <title>Today's digest</title><link>https://news.smol.ai/issues/example</link>
+          <description><![CDATA[<ul>
+            <li><strong>New desktop benchmark</strong> The Agent team published an
+              <a href="https://example.org/announcement">announcement</a>,
+              <a href="https://arxiv.org/abs/2611.90123v2">paper</a>, and
+              <a href="https://github.com/example/Bench">code</a>.</li>
+            <li><strong>Companion benchmark</strong> Agent evaluation artifacts are at
+              github.com/example/companion and arXiv:2611.90124.</li>
+            <li><strong>Community meetup</strong> A casual gathering over coffee on Saturday morning.</li>
+          </ul>]]></description>
+        </item></channel></rss>
+        """
+        cfg = {"id": "ls", "name": "Latent Space", "split_ainews": True, "require_keywords": ["aGeNt"]}
+        rows = parse_rss_or_atom(xml, cfg, "2026-11-24")
+        self.assertEqual([row.title for row in rows], ["New desktop benchmark", "Companion benchmark"])
+        self.assertEqual(rows[0].url, "https://example.org/announcement")
+        self.assertEqual((rows[0].arxiv_id, rows[0].github_repo), ("2611.90123", "example/bench"))
+        self.assertEqual((rows[1].arxiv_id, rows[1].github_repo), ("2611.90124", "example/companion"))
+        self.assertEqual(parse_rss_or_atom(xml, {**cfg, "require_keywords": ["digest"]}, "2026-11-24"), [])
+
+    def test_rss_and_atom_filter_nightly_releases_and_off_topic_posts(self) -> None:
+        postings = (
+            ("Qwen Code NIGHTLY", "GUI fixes"),
+            ("Qwen Code v1.2", "Improves GUI navigation"),
+            ("Community meetup", "Bring a snack"),
+        )
+        cfg = {
+            "id": "qwen",
+            "name": "Qwen",
+            "exclude_title_regex": "(?i)nightly|preview|canary|alpha|beta",
+            "require_keywords": ["Gui"],
+        }
+        rss = "".join(
+            f"<item><title>{title}</title><link>https://example.org/{idx}</link><description>{body}</description></item>"
+            for idx, (title, body) in enumerate(postings)
+        )
+        atom = "".join(
+            f'<entry><title>{title}</title><link href="https://example.org/{idx}"/><summary>{body}</summary></entry>'
+            for idx, (title, body) in enumerate(postings)
+        )
+        for xml in (f"<rss><channel>{rss}</channel></rss>", f'<feed xmlns="http://www.w3.org/2005/Atom">{atom}</feed>'):
+            with self.subTest(feed=xml[:10]):
+                rows = parse_rss_or_atom(xml.encode(), cfg, "2026-11-24")
+                self.assertEqual([row.title for row in rows], ["Qwen Code v1.2"])
+
+    def test_enabled_source_configuration(self) -> None:
+        config = RepoConfig.load(REPO_ROOT)
+        sources = [source for source in config.sources["sources"] if source.get("enabled", True)]
+        self.assertTrue(sources)
+        seen_ids: set[str] = set()
+        for source in sources:
+            with self.subTest(source=source.get("id")):
+                self.assertRegex(source["id"], r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+                self.assertNotIn(source["id"], seen_ids)
+                seen_ids.add(source["id"])
+                self.assertIn(source["kind"], {
+                    "arxiv_api", "hf_daily_papers", "github_releases", "github_trending", "rss", "conference_json",
+                })
+                self.assertIn(source["section"], VALID_SECTIONS)
+                for url in [source["url"], *source.get("extra_urls", []), *source.get("fallback_urls", [])]:
+                    parsed = urlsplit(url)
+                    self.assertIn(parsed.scheme, {"http", "https"})
+                    self.assertTrue(parsed.hostname)
+                    self.assertNotRegex(url, r"\s")
+
+    def test_multi_feed_health_depends_on_all_configured_urls(self) -> None:
+        source = {
+            "id": "union",
+            "name": "Feed union",
+            "kind": "rss",
+            "url": "https://example.org/primary",
+            "extra_urls": ["https://example.org/extra"],
+            "fallback_urls": ["https://example.org/fallback"],
+        }
+        config = {"sources": [source]}
+        run_date = "2026-11-24"
+        good_feed = (FIXTURES_DIR / "blog-anthropic.xml").read_bytes()
+        for responses, expected_calls in (
+            ([good_feed, TimeoutError("extra failed")], 2),
+            ([TimeoutError("primary failed"), good_feed], 2),
+            ([b"broken XML", TimeoutError("extra failed"), good_feed], 3),
+            ([b"broken XML", TimeoutError("extra failed"), b"<rss/>"], 3),
+            ([b"broken XML", TimeoutError("extra failed"), TimeoutError("fallback failed")], 3),
+        ):
+            with self.subTest(responses=[type(response).__name__ for response in responses]):
+                with mock.patch("daily_radar.collectors.fetch_url_bytes", side_effect=responses) as fetch:
+                    candidates, alerts = collect_all_sources(config, run_date=run_date)
+                self.assertEqual(fetch.call_count, expected_calls)
+                self.assertEqual(bool(candidates), good_feed in responses)
+                self.assertEqual(bool(alerts), isinstance(responses[-1], TimeoutError) and not candidates)
+
     def test_arxiv_html_excerpt_prefers_clean_sections_and_soft_fails(self) -> None:
         _MockFeedServerHandler.hit_counts = {}
         _MockFeedServerHandler.routes = {

@@ -15,16 +15,16 @@ sources:
     kind: "arxiv_api"
     section: "papers"
     enabled: true
-    url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.CL+OR+cat:cs.LG+OR+cat:cs.AI+OR+cat:cs.HC)+AND+(all:%22GUI+agent%22+OR+all:%22computer+use%22+OR+all:%22computer-use%22+OR+all:%22OSWorld%22+OR+all:%22AndroidWorld%22+OR+all:%22WebArena%22)&sortBy=submittedDate&sortOrder=descending&max_results=40"
-    openalex_query: '"GUI agent" OR "computer use" OR "OSWorld" OR "AndroidWorld" OR "WebArena"'
+    url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.CL+OR+cat:cs.LG+OR+cat:cs.AI+OR+cat:cs.HC+OR+cat:cs.RO+OR+cat:cs.CR)+AND+(all:%22GUI+agent%22+OR+all:%22computer+use%22+OR+all:%22computer-use%22+OR+all:%22OSWorld%22+OR+all:%22AndroidWorld%22+OR+all:%22WebArena%22+OR+all:%22GUI+grounding%22+OR+all:%22mobile+agent%22+OR+all:%22desktop+agent%22+OR+all:%22browser+agent%22+OR+all:%22UI-TARS%22)&sortBy=submittedDate&sortOrder=descending&max_results=40"
+    openalex_query: '"GUI agent" OR "computer use" OR "OSWorld" OR "AndroidWorld" OR "WebArena" OR "GUI grounding" OR "mobile agent" OR "desktop agent" OR "browser agent" OR "UI-TARS"'
 
   - id: "arxiv-ossl-ood"
     name: "arXiv Daily (Open-Set SSL / VLM OOD / GCD)"
     kind: "arxiv_api"
     section: "papers"
     enabled: true
-    url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.LG)+AND+(all:%22open-set+semi-supervised%22+OR+all:%22out-of-distribution+detection%22+OR+all:%22generalized+category+discovery%22+OR+all:%22negative+label%22)&sortBy=submittedDate&sortOrder=descending&max_results=35"
-    openalex_query: '"open-set semi-supervised" OR "out-of-distribution detection" OR "generalized category discovery" OR "negative label"'
+    url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.LG+OR+cat:cs.AI+OR+cat:cs.CL+OR+cat:stat.ML)+AND+(all:%22open-set+semi-supervised%22+OR+all:%22out-of-distribution+detection%22+OR+all:%22generalized+category+discovery%22+OR+all:%22negative+label%22+OR+all:%22OOD+detection%22+OR+all:%22zero-shot+OOD%22+OR+all:%22open-world+semi-supervised%22+OR+all:%22novel+class+discovery%22+OR+all:%22open-vocabulary%22)&sortBy=submittedDate&sortOrder=descending&max_results=35"
+    openalex_query: '"open-set semi-supervised" OR "out-of-distribution detection" OR "generalized category discovery" OR "negative label" OR "OOD detection" OR "zero-shot OOD" OR "open-world semi-supervised" OR "novel class discovery" OR "open-vocabulary"'
 
   - id: "hf-daily-papers"
     name: "Hugging Face Daily Papers"
@@ -89,6 +89,54 @@ sources:
     enabled: true
     url: "https://api.github.com/repos/xlang-ai/OSWorld/releases?per_page=5"
 
+  - id: "gh-release-ui-tars-desktop"
+    name: "GitHub Releases: bytedance/UI-TARS-desktop"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "bytedance/UI-TARS-desktop"
+    enabled: true
+    url: "https://api.github.com/repos/bytedance/UI-TARS-desktop/releases?per_page=5"
+
+  - id: "gh-release-ufo"
+    name: "GitHub Releases: microsoft/UFO"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "microsoft/UFO"
+    enabled: true
+    url: "https://api.github.com/repos/microsoft/UFO/releases?per_page=5"
+
+  - id: "gh-release-openood"
+    name: "GitHub Releases: Jingkang50/OpenOOD"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "Jingkang50/OpenOOD"
+    enabled: true
+    url: "https://api.github.com/repos/Jingkang50/OpenOOD/releases?per_page=5"
+
+  - id: "gh-release-qwen-agent"
+    name: "GitHub Releases: QwenLM/Qwen-Agent"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "QwenLM/Qwen-Agent"
+    enabled: true
+    url: "https://api.github.com/repos/QwenLM/Qwen-Agent/releases?per_page=5"
+
+  - id: "gh-release-open-instruct"
+    name: "GitHub Releases: allenai/open-instruct"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "allenai/open-instruct"
+    enabled: true
+    url: "https://api.github.com/repos/allenai/open-instruct/releases?per_page=5"
+
+  - id: "gh-release-inspect-ai"
+    name: "GitHub Releases: UKGovernmentBEIS/inspect_ai"
+    kind: "github_releases"
+    section: "opensource"
+    repo: "UKGovernmentBEIS/inspect_ai"
+    enabled: true
+    url: "https://api.github.com/repos/UKGovernmentBEIS/inspect_ai/releases?per_page=5"
+
   # 3. Official industry lab blogs & high-signal researcher newsletters
   - id: "blog-anthropic"
     name: "Anthropic Research & Engineering"
@@ -100,6 +148,7 @@ sources:
     extra_urls:
       - "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_engineering.xml"
       - "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml"
+      - "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_red.xml"
 
   - id: "blog-openai"
     name: "OpenAI News & Research"
@@ -122,6 +171,7 @@ sources:
     kind: "rss"
     section: "industry"
     org: "阿里通义 Qwen"
+    exclude_title_regex: "(?i)nightly|preview|canary|alpha|beta"
     enabled: true
     url: "https://github.com/QwenLM/qwen-code/releases.atom"
     extra_urls:
@@ -208,3 +258,85 @@ sources:
     split_ainews: true
     enabled: true
     url: "https://www.latent.space/feed"
+    extra_urls: ["https://news.smol.ai/rss.xml"]
+
+  - id: "blog-bair"
+    name: "Berkeley Artificial Intelligence Research Blog"
+    kind: "rss"
+    section: "industry"
+    org: "UC Berkeley BAIR"
+    enabled: true
+    url: "https://bair.berkeley.edu/blog/feed.xml"
+
+  - id: "blog-meta-fair"
+    name: "Meta FAIR Blog"
+    kind: "rss"
+    section: "industry"
+    org: "Meta FAIR"
+    enabled: true
+    url: "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_meta_ai.xml"
+
+  - id: "blog-uk-aisi"
+    name: "UK AI Security Institute Blog"
+    kind: "rss"
+    section: "industry"
+    org: "UK AISI"
+    enabled: true
+    url: "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_aisi.xml"
+
+  - id: "safety-alignment-forum"
+    name: "Alignment Forum"
+    kind: "rss"
+    section: "industry"
+    org: "Alignment Forum"
+    enabled: true
+    url: "https://www.alignmentforum.org/feed.xml"
+    require_keywords: ["control", "monitor", "agent", "scheming", "injection", "gui", "computer use", "rl", "eval"]
+
+  # 4. Social and Chinese community feeds
+  - id: "social-bsky-researchers"
+    name: "Bluesky AI Researchers"
+    kind: "rss"
+    section: "industry"
+    org: "Bluesky AI Researchers"
+    enabled: true
+    social_feed: true
+    url: "https://bsky.app/profile/natolambert.bsky.social/rss"
+    extra_urls:
+      - "https://bsky.app/profile/karpathy.bsky.social/rss"
+      - "https://bsky.app/profile/simonwillison.net/rss"
+      - "https://bsky.app/profile/rasbt.bsky.social/rss"
+      - "https://bsky.app/profile/ai2.bsky.social/rss"
+      - "https://bsky.app/profile/hardmaru.bsky.social/rss"
+      - "https://bsky.app/profile/srushnlp.bsky.social/rss"
+      - "https://bsky.app/profile/swyx.io/rss"
+      - "https://bsky.app/profile/gneubig.bsky.social/rss"
+    require_keywords: ["agent", "gui", "rl", "grpo", "ppo", "vlm", "multimodal", "ood", "open-set", "benchmark", "osworld", "verl", "vllm", "sglang", "model", "paper", "arxiv", "eval", "reasoning", "post-training", "computer use", "safety", "control"]
+
+  - id: "cn-qbitai"
+    name: "量子位"
+    kind: "rss"
+    section: "industry"
+    org: "量子位"
+    enabled: true
+    url: "https://www.qbitai.com/feed"
+    require_keywords: ["AI", "Agent", "GUI", "RL", "VLM", "OOD", "开源", "模型", "论文", "强化学习", "智能体", "分布外检测", "开放集", "广义类别发现", "视觉码本"]
+
+  - id: "cn-baoyu-ai"
+    name: "宝玉 AI 精选"
+    kind: "rss"
+    section: "industry"
+    org: "宝玉 AI 精选"
+    enabled: true
+    url: "https://baoyu.io/feed.xml"
+    require_keywords: ["AI", "Agent", "GUI", "RL", "VLM", "Claude", "OpenAI", "Qwen", "DeepSeek", "开源", "模型", "智能体"]
+
+  - id: "cn-github-weekly"
+    name: "GitHub 中文周刊"
+    kind: "rss"
+    section: "opensource"
+    org: "GitHub 中文周刊"
+    enabled: true
+    url: "https://hellogithub.com/rss"
+    extra_urls: ["https://www.ruanyifeng.com/blog/atom.xml"]
+    require_keywords: ["ai", "llm", "vlm", "agent", "gui", "rl", "大模型", "智能体", "强化学习", "多模态", "视觉", "推理"]

@@ -814,6 +814,19 @@ def parse_github_releases(json_bytes: bytes, source_cfg: dict[str, Any], fallbac
     return results
 
 
+EXPLICIT_ARXIV_PROSE_RE = re.compile(
+    r"(?:arxiv\.org/(?:abs|pdf|html)/|arxiv[:\s]+)(\d{4}\.\d{4,5})(?:v\d+)?",
+    re.IGNORECASE,
+)
+
+
+def _extract_explicit_arxiv_id(text: str) -> str:
+    if not text:
+        return ""
+    match = EXPLICIT_ARXIV_PROSE_RE.search(text)
+    return match.group(1) if match else ""
+
+
 def _split_ainews_items(
     entry_title: str,
     entry_html: str,
@@ -823,21 +836,45 @@ def _split_ainews_items(
 ) -> list[RawCandidate]:
     """Split Latent Space `[AINews]` digest bullet items into standalone high-signal candidates."""
     sub_items: list[RawCandidate] = []
-    for match in AINEWS_BULLET_RE.finditer(entry_html):
+    for idx, match in enumerate(AINEWS_BULLET_RE.finditer(entry_html), start=1):
         lead = strip_html(match.group(1) or "")
         rest_html = match.group(2) or ""
         full_plain = strip_html(f"{lead} {rest_html}").strip(" -—:：")
         if len(full_plain) < 40:
             continue
-        hrefs = [
-            u
-            for u in HREF_RE.findall(match.group(0))
-            if "latent.space" not in u.lower() and "substack.com" not in u.lower()
+        hrefs = HREF_RE.findall(match.group(0))
+        external_hrefs = [
+            url for url in hrefs if "latent.space" not in url.lower() and "substack.com" not in url.lower()
         ]
-        item_url = hrefs[0] if hrefs else entry_url
+        item_url = external_hrefs[0] if external_hrefs else entry_url
         sub_title = lead if len(lead) >= 12 else full_plain.split(".")[0][:96]
-        gh_repo = normalize_github_repo("", item_url)
-        ax_id = normalize_arxiv_id(item_url)
+
+        ax_id = ""
+        for u in external_hrefs:
+            if "arxiv.org" in u.lower():
+                ax_id = normalize_arxiv_id(u)
+                if ax_id:
+                    break
+        if not ax_id:
+            ax_id = _extract_explicit_arxiv_id(full_plain)
+
+        primary_gh_repo = normalize_github_repo("", item_url)
+        gh_repo = primary_gh_repo
+        if not gh_repo:
+            secondary_gh = [normalize_github_repo("", u) for u in external_hrefs[1:]]
+            secondary_gh = [r for r in secondary_gh if r]
+            if len(set(secondary_gh)) == 1:
+                gh_repo = secondary_gh[0]
+            elif not secondary_gh:
+                gh_repo = normalize_github_repo("", full_plain)
+
+        if item_url == entry_url:
+            if ax_id:
+                item_url = f"https://arxiv.org/abs/{ax_id}"
+            else:
+                sep = "&" if "?" in entry_url else "?"
+                item_url = f"{entry_url}{sep}ainews_item={idx}"
+
         inferred_insts = [str(source_cfg.get("org", "Latent Space"))]
         parsed_host = urllib.parse.urlparse(item_url).netloc.lower()
         for dom, org_label in DOMAIN_ORG_HINTS:
@@ -851,7 +888,7 @@ def _split_ainews_items(
             RawCandidate(
                 source_id=source_cfg["id"],
                 source_name=f"{source_cfg['name']} 拆条",
-                section="opensource" if gh_repo else source_cfg.get("section", "industry"),
+                section="opensource" if primary_gh_repo else source_cfg.get("section", "industry"),
                 title=sub_title,
                 url=item_url,
                 published_at=pub_date,
@@ -867,76 +904,91 @@ def _split_ainews_items(
     return sub_items
 
 
+def _rss_title_from_summary(summary: str) -> str:
+    first_line = summary.splitlines()[0] if summary else ""
+    first_sentence = re.split(r"(?<=[.!?])\s+|(?<=[。！？])", first_line, maxsplit=1)[0]
+    title = " ".join(first_sentence.split())
+    if len(title) <= 96:
+        return title
+    prefix = title[:95]
+    if not title[95].isspace():
+        prefix = prefix.rpartition(" ")[0] or prefix
+    return prefix.rstrip() + "…"
+
+
+def _compile_keyword_matchers(raw_keywords: list[str] | tuple[str, ...]) -> tuple[re.Pattern[str] | str, ...]:
+    matchers: list[re.Pattern[str] | str] = []
+    for kw in raw_keywords:
+        cleaned = str(kw).strip().lower()
+        if not cleaned:
+            continue
+        if cleaned.isascii():
+            matchers.append(re.compile(rf"(?<![a-z0-9]){re.escape(cleaned)}(?![a-z0-9])"))
+        else:
+            matchers.append(cleaned)
+    return tuple(matchers)
+
+
 def parse_rss_or_atom(xml_bytes: bytes, source_cfg: dict[str, Any], fallback_date: str) -> list[RawCandidate]:
     root = ET.fromstring(sanitize_xml_bytes(xml_bytes))
     org = str(source_cfg.get("org") or source_cfg["name"])
     split_ainews = bool(source_cfg.get("split_ainews", False))
+    social_feed = bool(source_cfg.get("social_feed"))
+    exclude_title_regex = source_cfg.get("exclude_title_regex")
+    keyword_matchers = _compile_keyword_matchers(source_cfg.get("require_keywords") or [])
     results: list[RawCandidate] = []
 
-    # RSS 2.0 items
-    rss_items = root.findall(".//item")
-    if rss_items:
-        for item in rss_items:
-            title = " ".join((item.findtext("title") or "").split())
-            link = (item.findtext("link") or "").strip()
-            pub_raw = item.findtext("pubDate") or item.findtext("{http://purl.org/dc/elements/1.1/}date") or ""
-            pub_date = normalize_iso_date(pub_raw, fallback_date)
-            content_html = (
-                item.findtext("{http://purl.org/rss/1.0/modules/content/}encoded")
-                or item.findtext("description")
-                or ""
-            )
-            if not title or not link:
-                continue
-            if split_ainews and "[ainews]" in title.lower():
-                split_rows = _split_ainews_items(title, content_html, link, pub_date, source_cfg)
-                if split_rows:
-                    results.extend(split_rows)
-                    continue
-            summary = strip_html(content_html)
-            results.append(
-                RawCandidate(
-                    source_id=source_cfg["id"],
-                    source_name=source_cfg["name"],
-                    section=source_cfg.get("section", "industry"),
-                    title=title,
-                    url=link,
-                    published_at=pub_date,
-                    summary_raw=summary or title,
-                    authors=[org],
-                    institutions=[org],
-                    arxiv_id=normalize_arxiv_id(summary),
-                    github_repo=normalize_github_repo("", summary),
-                    venue=org,
-                    extra={"source_kind": "rss"},
-                )
-            )
-        return results
+    def matches_keywords(title: str, summary: str) -> bool:
+        if not keyword_matchers:
+            return True
+        text = (title + " " + summary).lower()
+        return any(
+            (m.search(text) is not None) if isinstance(m, re.Pattern) else (m in text)
+            for m in keyword_matchers
+        )
 
-    # Atom 1.0 entries
-    for entry in root.findall("{http://www.w3.org/2005/Atom}entry") or root.findall("entry"):
+    rss_items = root.findall(".//item")
+    atom_items = root.findall("{http://www.w3.org/2005/Atom}entry") or root.findall("entry")
+    for entry in rss_items or atom_items:
         ns = "{http://www.w3.org/2005/Atom}" if entry.tag.startswith("{") else ""
         title = " ".join((entry.findtext(f"{ns}title") or "").split())
-        link = ""
-        for lk in entry.findall(f"{ns}link"):
-            rel = lk.attrib.get("rel", "alternate")
-            href = lk.attrib.get("href", "").strip()
-            if href and rel == "alternate":
-                link = href
-                break
-            if href and not link:
-                link = href
-        pub_raw = entry.findtext(f"{ns}published") or entry.findtext(f"{ns}updated") or ""
-        pub_date = normalize_iso_date(pub_raw, fallback_date)
-        content_html = entry.findtext(f"{ns}content") or entry.findtext(f"{ns}summary") or ""
+        if rss_items:
+            link = (entry.findtext("link") or "").strip()
+            pub_raw = entry.findtext("pubDate") or entry.findtext("{http://purl.org/dc/elements/1.1/}date") or ""
+            content_html = (
+                entry.findtext("{http://purl.org/rss/1.0/modules/content/}encoded")
+                or entry.findtext("description")
+                or ""
+            )
+        else:
+            link = ""
+            for lk in entry.findall(f"{ns}link"):
+                rel = lk.attrib.get("rel", "alternate")
+                href = lk.attrib.get("href", "").strip()
+                if href and rel == "alternate":
+                    link = href
+                    break
+                if href and not link:
+                    link = href
+            pub_raw = entry.findtext(f"{ns}published") or entry.findtext(f"{ns}updated") or ""
+            content_html = entry.findtext(f"{ns}content") or entry.findtext(f"{ns}summary") or ""
+
+        summary = strip_html(content_html)
+        if social_feed and len(summary) < 28:
+            continue
+        title = title or _rss_title_from_summary(summary)
         if not title or not link:
             continue
-        if split_ainews and "[ainews]" in title.lower():
+        if exclude_title_regex and re.search(exclude_title_regex, title):
+            continue
+        pub_date = normalize_iso_date(pub_raw, fallback_date)
+        if split_ainews and ("[ainews]" in title.lower() or "smol.ai" in link.lower()):
             split_rows = _split_ainews_items(title, content_html, link, pub_date, source_cfg)
             if split_rows:
-                results.extend(split_rows)
+                results.extend(row for row in split_rows if matches_keywords(row.title, row.summary_raw))
                 continue
-        summary = strip_html(content_html)
+        if not matches_keywords(title, summary or title):
+            continue
         results.append(
             RawCandidate(
                 source_id=source_cfg["id"],
@@ -948,7 +1000,7 @@ def parse_rss_or_atom(xml_bytes: bytes, source_cfg: dict[str, Any], fallback_dat
                 summary_raw=summary or title,
                 authors=[org],
                 institutions=[org],
-                arxiv_id=normalize_arxiv_id(summary),
+                arxiv_id=_extract_explicit_arxiv_id(summary),
                 github_repo=normalize_github_repo("", summary),
                 venue=org,
                 extra={"source_kind": "rss"},
@@ -1153,14 +1205,15 @@ def _collect_live_source(
     src_kind = str(src["kind"])
     extra_urls = [str(u) for u in (src.get("extra_urls") or []) if str(u).strip()]
     fallback_urls = [str(u) for u in (src.get("fallback_urls") or []) if str(u).strip()]
+    urls_to_try = [str(src["url"])] + fallback_urls
+    any_ok = False
+    last_exc: Exception | None = None
 
     # Multi-feed union mode (e.g. Anthropic research+engineering+news or active Qwen release feeds)
     if extra_urls:
         union_urls = [str(src["url"])] + extra_urls
         merged: list[RawCandidate] = []
         seen_urls: set[str] = set()
-        any_ok = False
-        last_exc: Exception | None = None
         for url in union_urls:
             try:
                 raw_bytes = fetch_url_bytes(url, rate_limiter=rate_limiter)
@@ -1180,12 +1233,7 @@ def _collect_live_source(
                 continue
         if any_ok:
             return merged
-        assert last_exc is not None
-        raise last_exc
-
-    urls_to_try = [str(src["url"])] + fallback_urls
-    last_exc = None
-    any_ok = False
+        urls_to_try = fallback_urls
 
     for url in urls_to_try:
         try:

@@ -55,8 +55,14 @@ tracks:
       - "gui grounding"
       - "mobile agent"
       - "desktop agent"
+      - "browser agent"
       - "trajectory reward"
       - "visual prompt injection"
+      - "GUI智能体"
+      - "电脑操作"
+      - "桌面智能体"
+      - "手机智能体"
+      - "图形界面"
     subtopics:
       gui-online-rl:
         label: "GUI 在线/离线 RL"
@@ -91,7 +97,15 @@ tracks:
       - "open-vocabulary ood"
       - "codebook"
       - "zero-shot ood"
+      - "novel class discovery"
       - "unknown detection"
+      - "分布外检测"
+      - "开放集"
+      - "开放世界视觉"
+      - "开放世界半监督"
+      - "未知类检测"
+      - "广义类别发现"
+      - "视觉码本"
     subtopics:
       open-world-vocab:
         label: "开放词表与码本对齐"
@@ -124,6 +138,11 @@ tracks:
       - "world model"
       - "kv cache"
       - "async rl"
+      - "多模态大模型"
+      - "强化学习框架"
+      - "后训练"
+      - "推理引擎"
+      - "开源权重"
     subtopics:
       rl-framework:
         label: "RL 训练与并发调度框架"

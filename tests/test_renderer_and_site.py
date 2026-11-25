@@ -122,11 +122,13 @@ class RendererAndSiteTest(unittest.TestCase):
                 self.assertTrue(resolved.is_file(), f"Broken relative link '{ref}' in {hf} -> {resolved}")
 
     def test_tier1_tier2_tier3_structure_and_zoteroctl_command(self) -> None:
-        # Root index.html mirrors latest overview (2026-11-24) with depth-0 links and zero placeholder/chopped text
+        # Root index.html mirrors latest overview with depth-0 links and zero placeholder/chopped text
+        latest_json = sorted((REPO_ROOT / "content").rglob("*.json"))[-1]
+        expected_latest_cards = len(json.loads(latest_json.read_text(encoding="utf-8"))["featured_items"])
         root_html = (self.site_dir / "index.html").read_text(encoding="utf-8")
         root_ins = _DOMInspector()
         root_ins.feed(root_html)
-        self.assertEqual(len(root_ins.card_slugs), 7)
+        self.assertEqual(len(root_ins.card_slugs), expected_latest_cards)
         self.assertNotIn("前沿技术动态速览", root_html)
         self.assertNotIn("自动合成大；", root_html)
 
@@ -283,7 +285,9 @@ class RendererAndSiteTest(unittest.TestCase):
                 out_dir=out,
                 hot_years_override=0,
             )
-            self.assertEqual(summary["detail_pages_rendered"], 7)
+            latest_json = sorted((REPO_ROOT / "content").rglob("*.json"))[-1]
+            expected_latest_cards = len(json.loads(latest_json.read_text(encoding="utf-8"))["featured_items"])
+            self.assertEqual(summary["detail_pages_rendered"], expected_latest_cards)
             self.assertTrue((out / "daily" / "item.html").is_file())
             self.assertFalse(any((out / "daily" / "2026-11-22").glob("item-*.html")))
             old_overview = (out / "daily" / "2026-11-22" / "index.html").read_text(encoding="utf-8")

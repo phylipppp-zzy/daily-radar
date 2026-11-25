@@ -1,0 +1,749 @@
+{
+  "date": "2026-11-25",
+  "weekday_zh": "周三",
+  "generated_at_cst": "2026-11-25 09:20:54 CST",
+  "global_trend_summary": [
+    "今日共从增量候选池中精选 7 条高信噪比动态（GUI-RL 论文 5 篇、OSSL/OOD 论文 1 篇、开源与业界前沿 1 条），另折叠泛相关速览 20 条。",
+    "核心看点聚焦：[GUI-RL] ROSWORLD：当数字桌面任务能力撞上物理键鼠执行；[GUI-RL] PACT：保护正确规划并修复错误动作的GUI智能体计划-动作一致性…。",
+    "近期顶会关键节点提醒：AAAI 2027（5 天后 2026-11-30）、NeurIPS 2026（11 天后 2026-12-06）、ICLR 2027（21 天后 2026-12-16）。"
+  ],
+  "highlights_top3": [
+    "• [GUI-RL] ROSWORLD：当数字桌面任务能力撞上物理键鼠执行（40任务/10款应用 ⚠️ 原文待核）",
+    "• [GUI-RL] PACT：保护正确规划并修复错误动作的GUI智能体计划-动作一致性训练（AndroidWorld +8.63 pp (68.97%)）",
+    "• [GUI-RL] 面向计算机操作智能体的自演化评测环境 CUA-SEE（任务与校验器闭环协同演化）"
+  ],
+  "special_conference_banner": null,
+  "source_health_alerts": [],
+  "llm_channel_used": "gemini-agy-primary",
+  "featured_items": [
+    {
+      "slug": "gui-rl-2611-27467",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-env"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "ROSWORLD：当数字桌面任务能力撞上物理键鼠执行",
+      "title_en": "ROSWORLD: When Digital Task Competence Meets Physical Execution",
+      "one_line_pain": "针对前沿模型直连软件能做任务却常按偏按漏键鼠的痛点，将物理仿真机械臂工位接入OSWorld实现同题评测",
+      "metric_badges": [
+        {
+          "text": "40任务/10款应用",
+          "verified": false,
+          "unverified_numbers": [
+            "10"
+          ]
+        },
+        {
+          "text": "桌面31-39题 vs 物理≤28题",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Caoyuan Ma",
+        "Wendi Liu",
+        "Zhimin Zhang",
+        "Muyao Niu",
+        "Yujie Lu",
+        "Zengxi Zhang",
+        "Ji Zhao",
+        "Shuai Dong",
+        "Wenpu Liu",
+        "Ziyue Wang",
+        "Wenzheng Chang",
+        "Taiqiang Wu",
+        "Weichu Xie",
+        "Yuqi Xu",
+        "Haiyuan Wan",
+        "Xuehui Wang",
+        "Jiaqi Wang",
+        "Wenqi Shao",
+        "Yinqiang Zheng"
+      ],
+      "published_date": "2026-11-20",
+      "venue_or_source": "arXiv cs.RO",
+      "url_primary": "https://arxiv.org/abs/2611.27467",
+      "url_pdf": "https://arxiv.org/pdf/2611.27467",
+      "url_arxiv_html": "https://arxiv.org/html/2611.27467",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.27467",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Computer-use agents now solve most desktop tasks through direct software input, but a robot using the same computer must turn GUI knowledge into physical contact with a keyboard and mouse. We introduce ROSWorld, a benchmark that couples a physically simulated robot workstation to a live OSWorld desktop, so that a robot and a desktop agent pursue the same goals under the same official evaluators. The evaluated model receives observations only from the workstation camera views and operates the peripherals through either a single-arm rigid probe or dual-arm dexterous hands. Across five frontier models and 40 tasks in ten applications, models that complete 31-39 tasks on the desktop complete at most 23 with the probe and 28 with the hands. Paired trajectory analysis shows that models adapt their interaction strategies toward keyboard input, yet physical execution frequently fails through missed presses, incorrect targets, and unintended contacts. ROSWorld makes the gap between knowing what to do on a computer and physically doing it measurable.\n[Comment: 13 pages, 9 figures, 4 tables]",
+      "four_elements": {
+        "pain_point": "现有电脑操控智能体靠软件接口直接发指令，已经能搞定大部分桌面任务；可一旦换成机器人去操作同一台电脑，就得把屏幕界面理解落到物理按键盘和用鼠标上。真动手时很容易翻车，经常出现按键没按实（漏按）、按错目标键位、以及不该碰的地方误触等问题，导致“知道该怎么用电脑”和“物理上能按出来”之间脱节明显。",
+        "mechanism": "论文搭建了 ROSWorld 评测基准，分三步把数字任务与物理执行拉到同一把尺子下：第一步，把物理仿真的机器人工作台直接耦合到实时运行的 OSWorld 桌面系统里，让机器人和纯软件桌面智能体做完全一样的任务，并用同一套官方评测器判分；第二步，收紧感知入口，被测模型只能看工作台摄像头拍到的画面，不能靠软件底层拿状态；第三步，让模型通过单臂刚性探针或双臂灵巧手两种物理末端去操作真实对应的键鼠外设，并通过成对轨迹分析观察策略变化（如模型在物理操控下会明显倾向多用键盘输入）。",
+        "experiments_summary": "实验在 10 款应用的 40 个任务上测试了 5 个前沿模型，采用同一套官方评测器对比纯软件桌面与物理仿真两种形态：在桌面端能完成 31–39 个任务的模型，改用单臂刚性探针最多仅完成 23 个任务，改用双臂灵巧手最多也只完成 28 个任务。具体模型名称与参数量、算力卡数与耗时、以及随机种子数，原文摘要均未单列。（⚠️ 原文待核数字：10、5）",
+        "repro_and_reference": "当前元数据未提供 GitHub 代码仓库地址，代码、仿真场景与评测脚本的开源完整度暂无法确认。从系统构成看，复现需同时部署 OSWorld 实时桌面环境与支持接触力学及视觉渲染的机器人物理仿真工位（含单臂探针与双臂灵巧手），外加 5 个前沿模型的多步交互推理开销，环境耦合度与推理成本较高；具体本地硬件门槛原文摘要未单列。",
+        "experiment_rows": [],
+        "backbone_and_params": "5个前沿模型（具体模型名称与参数量原文摘要未单列）",
+        "gpu_and_duration": "原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 10.2
+    },
+    {
+      "slug": "gui-rl-2611-22591",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl",
+        "gui-env"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "PACT：保护正确规划并修复错误动作的GUI智能体计划-动作一致性训练",
+      "title_en": "PACT: Plan-Action Consistency Training by Preserving Correct Plans and Repairing Actions in GUI Agents",
+      "one_line_pain": "针对GUI智能体想对做错且负奖励误伤正确规划的问题，掩码规划段负梯度并用偏好替代目标在原上下文中修复错误动作",
+      "metric_badges": [
+        {
+          "text": "AndroidWorld +8.63 pp (68.97%)",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "OSWorld 369任务 +3.25 pp",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Zhuohan Cai",
+        "Zhangxuan Gu",
+        "Runze Li",
+        "Beitong Zhou",
+        "Ming Wen",
+        "Hongbo Yu",
+        "Shuheng Shen",
+        "Changhua Meng"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "url_primary": "https://arxiv.org/abs/2611.22591",
+      "url_pdf": "https://arxiv.org/pdf/2611.22591",
+      "url_arxiv_html": "https://arxiv.org/html/2611.22591",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.22591",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "GUI agents can formulate a correct immediate plan in their reasoning yet emit an action that fails to execute it, creating an execution gap. This recurring mismatch undermines reliable task completion, as a single execution error can derail a multi-step workflow. In outcome-supervised reinforcement learning, broadcasting a negative response-level advantage across all generated tokens risks penalizing valid planning together with erroneous execution. To address this credit-assignment conflict, we introduce PACT (Plan-Action Consistency Training), a training framework that combines reference-aligned plan protection and plan-aligned action repair without altering the original scalar action reward. Using annotated reference actions to identify execution gaps, PACT protects the verified plan by masking negative policy-gradient contributions across its token span. Keeping the generated reasoning unchanged as context, it then favors the reference action over the emitted erroneous action through a preference surrogate with stop-gradient pair weights. Compared with the outcome-only baseline, PACT raises AndroidWorld task success from 60.34% to 68.97% (+8.63 pp), while improving rule-based plan-action consistency on AndroidControl High from 83.71% to 89.74% (+6.03 pp). Adapting PACT to desktop agents also improves task success from 40.92% to 44.17% (+3.25 pp) on the full 369-task OSWorld benchmark. Together, these results establish PACT as an effective credit-assignment framework for bridging execution gaps and improving task completion across mobile and desktop GUI environments.\n[Comment: 21 pages, 11 figures, including supplementary material. This version clarifies implementation details and evaluation protocols in the supplementary material]",
+      "four_elements": {
+        "pain_point": "① 图形界面（GUI）智能体在多步操作中经常出现“想对了但点错了”的执行落差：推理过程里的即时规划明明正确，最终输出的动作却没能落实该规划，而多步流程中只要错一步就容易全盘翻车。在基于结果监督的强化学习训练中，一旦动作错了，系统会把整条回复的负向优势信号一刀切地广播给所有生成词元，导致原本正确的规划段落跟着错误动作一起挨罚，造成信用分配冲突。",
+        "mechanism": "② 论文提出计划-动作一致性训练（PACT），在不改动原有标量动作奖励的前提下分三步解耦规划与执行：第一步，借助带标注的参考动作识别出“规划对、动作错”的执行落差样本；第二步（参考对齐的规划保护），在已核实正确的规划词元区间上掩码掉负向策略梯度贡献，避免好规划被负奖励连坐惩罚；第三步（规划对齐的动作修复），保持模型原生成的推理内容作为上下文不变，通过带有停止梯度（stop-gradient）成对权重的偏好替代目标，引导模型在相同规划上下文下更偏好参考动作而非此前输出的错误动作。",
+        "experiments_summary": "③ 对比仅用结果监督的基线方法，PACT在移动端基准 AndroidWorld 上将任务成功率从 60.34% 提升至 68.97%（+8.63 个百分点），在 AndroidControl High 上将基于规则的计划-动作一致性从 83.71% 提升至 89.74%（+6.03 个百分点）；迁移到桌面端后，在完整的 369 任务 OSWorld 基准上将任务成功率从 40.92% 提升至 44.17%（+3.25 个百分点）。原文摘要未单列基座模型规模、训练卡数与随机种子数。",
+        "repro_and_reference": "④ 元数据未提供开源 GitHub 代码库链接，论文正文及补充材料共 21 页、11 张图，并在补充材料中说明了实现细节与评测协议。方法依赖带标注参考动作的数据来识别执行落差与构建偏好对，同时涉及移动端（AndroidWorld/AndroidControl）与桌面端（OSWorld）多步交互环境评测与强化学习训练，在无官方代码的情况下，数据标注口径、负梯度掩码区间切分及环境评测管线的复现成本偏高，具体算力门槛因摘要未披露模型规模与卡数而无法直接核算。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列",
+        "gpu_and_duration": "原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 10.2
+    },
+    {
+      "slug": "gui-rl-2611-30962",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl",
+        "gui-verifier",
+        "gui-env"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "面向计算机操作智能体的自演化评测环境 CUA-SEE",
+      "title_en": "Self-Evolving Evaluation Environments for Computer-Use Agents",
+      "one_line_pain": "针对静态评测难度封顶、覆盖受限且粗分难辨优劣的问题，CUA-SEE根据交互轨迹闭环协同演化任务与可执行校验器",
+      "metric_badges": [
+        {
+          "text": "任务与校验器闭环协同演化",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "状态锚定校验点与对抗验证",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Wenhao Wang",
+        "Panrong Tong",
+        "Quyu Kong",
+        "Pengxiang Li",
+        "Haowen Yang",
+        "chenglin Cai",
+        "Siheng Chen",
+        "Yue Wang"
+      ],
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "url_primary": "https://arxiv.org/abs/2611.30962",
+      "url_pdf": "https://arxiv.org/pdf/2611.30962",
+      "url_arxiv_html": "https://arxiv.org/html/2611.30962",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.30962",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Computer-use agents (CUAs) are rapidly improving, yet their evaluation remains largely static. Existing benchmarks provide a strong foundation, but fixed difficulty ceilings, limited feature coverage, and coarse aggregate scores progressively weaken their discriminative and diagnostic value. We introduce CUA-SEE, a closed-loop evaluation environment that co-evolves tasks and executable verifiers from rollout evidence. It disentangles three objectives: benchmark evolution expands evaluation scope through cohort-calibrated difficulty and coverage growth; diagnostic evolution increases resolution through agent-conditional capability-boundary probes; and verifier evolution improves precision by translating changing requirements into state-grounded checkpoints with adversarial validation. Across multiple agents, applications, and rounds, CUA-SEE generates challenging, measurable tasks while preserving process-level evidence. Our results position adaptive evaluation as a scalable counterpart to self-evolving agents, continuously tracking what agents can do, where their boundaries lie, and how reliably progress is measured.",
+      "four_elements": {
+        "pain_point": "① 现有计算机操作智能体（CUA）能力迭代很快，但主流评测基准基本是静态题库。随着模型变强，固定题库的难度上限容易被刷穿，对软件功能的覆盖面也有限，再加上只看粗粒度的总体汇总分数，导致基准越来越难拉开模型差距，也无法诊断智能体究竟在哪些具体操作上翻车。",
+        "mechanism": "② CUA-SEE 构建了一个基于智能体交互轨迹证据、协同演化测试任务与可执行校验器的闭环评测环境，并将演化过程拆解为三个独立目标：一是基准演化，通过多智能体群组校准逐步扩展任务难度上限与功能覆盖面；二是诊断演化，针对特定智能体的表现定向生成能力边界探针，提升问题定位的细粒度；三是校验器演化，将随之变化的任务需求转化为锚定系统实际状态的检查点，并配合对抗验证来提升评分精度，同时完整保留过程级证据。",
+        "experiments_summary": "③ 原文摘要提及已在多个计算机操作智能体、多种应用程序以及多轮迭代上验证了 CUA-SEE 能够持续生成有挑战性且可量化的任务并保留过程级证据，但未给出具体通过率、任务数量、轮次等基准指标，所测模型规模、算力卡数与随机种子数原文摘要均未单列。",
+        "repro_and_reference": "④ 当前元数据未提供 GitHub 开源仓库链接，代码与环境构建脚本的完整度尚无法核实。从机制上看，闭环自演化需在多款桌面或系统应用环境中反复收集多轮智能体交互轨迹，并同步生成新任务与运行对抗式校验验证，复现的沙箱维护复杂度与多轮推理调用开销预计较高，具体算力门槛原文摘要未单列。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文摘要未单列",
+        "gpu_and_duration": "原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 9.0
+    },
+    {
+      "slug": "vlm-infra-inference-engines-are-becoming-too-fragmented",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "inference-engine",
+        "multimodal-base"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "Latent Space"
+      ],
+      "title_zh": "本地大模型推理引擎过度碎片化：实测吞吐分化与社区分层选型共识",
+      "title_en": "Inference engines are becoming too fragmented",
+      "one_line_pain": "针对本地推理引擎碎片化与选型维护成本飙升的痛点，社区梳理了按场景分层的引擎选型图谱并警示小众分支的供应链安全风险",
+      "metric_badges": [
+        {
+          "text": "Strata 200k+ KV 达 ~180 tok/s",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "Basalt 60 vs 28 tok/s",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "blog_or_release",
+      "openness_label": "官方一手报告",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Latent Space [AINews]"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "url_primary": "https://www.reddit.com/r/LocalLLaMA/comments/1y30a6x/inference_engines_are_becoming_too_fragmented/",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Inference engines are becoming too fragmented. There are just too many choices and specialist engines. (Activity: 644): The post argues that local LLM inference has fragmented beyond the “Swiss army knife” role of llama.cpp , with users now choosing between model-/GPU-/architecture-specific engines and forks for features like KV-cache quantization, KV streaming, MoE support, and newer model architectures. The author reports large engine-dependent throughput differences: Qwen FN at and ~300 pp on llama.cpp versus ~180 tok/s and ~2500 pp with 200k+ KV on Strata, and Inkling-2-Mini at 28 tok/s on a llama.cpp fork versus 60 tok/s on Basalt; they currently rotate between beelama, an adaptive KV-streaming llama.cpp fork, Strata, Basalt, and upstream llama.cpp . They also note production-oriented alternatives like vLLM and SGLang , but complain that Linux requirements, fork proliferation, slow upstream model support, and optimization PR rejections make engine selection increasingly costly. Top commenters mostly frame the fragmentation as optional: llama.cpp remains a reliable baseline, and chasing maximum per-model throughput is a user choice rather than a requirement. One substantive concern raised is supply-chain/security risk: trying many young engines, forks, binaries, and dependencies increases exposure to malware or infostealers, so users should prefer mature, widely tested projects. \n A practical engine taxonomy emerged: llama.cpp is described as the default for most local inference, LiteRT for mobile, vLLM/SGLang for professional or advanced serving setups, and newer specialized engines like Basalt or Radiance for specific model/GPU combinations such as NVIDIA 50-series or Radeon R9700 Pro. One commenter notes that llama.cpp has recently closed gaps with vLLM by adding features like tensor parallelism, MTP support, and partial RAM offloading, making it a more viable general-purpose baseline despite specialized engines chasing peak tok/s.",
+      "four_elements": {
+        "pain_point": "① 过去靠 llama.cpp 一个“瑞士军刀”就能跑通多数本地大模型，如今为了拿到 KV 缓存量化、流式 KV 缓存、混合专家模型（MoE）及新架构支持，用户被迫在大量针对特定模型或特定显卡的专用引擎和第三方分支间来回切换（发帖者同时轮换使用 beelama、自适应流式 KV 的 llama.cpp 分支、Strata、Basalt 与上游 llama.cpp）。另一方面，vLLM 和 SGLang 等生产级方案有 Linux 环境门槛，上游新模型适配偏慢且性能优化 PR 常遭拒，加上盲目试用年轻分支与二进制包还会带来恶意软件和窃密木马等供应链安全风险。",
+        "mechanism": "② 本文为社区讨论汇总而非单一算法论文，核心产出是一套按使用场景分层的本地推理引擎选型框架：1）通用默认层：以成熟且经广泛测试的 llama.cpp 作为绝大多数本地推理的基线，其近期新增了张量并行、多词元预测（MTP）与部分内存卸载功能，正缩小与 vLLM 的差距；2）移动端层：采用 LiteRT；3）专业服务部署层：采用 vLLM 或 SGLang；4）极限吞吐专用层：仅在明确需要针对特定显卡（如 NVIDIA 50 系列或 Radeon R9700 Pro）与特定模型压榨峰值速度时，按需选用 Basalt、Radiance 或 Strata 等专用引擎，并优先规避未经充分审计的小众二进制包。",
+        "experiments_summary": "③ 原文为社区用户自报的本地推理吞吐对比，非严格控制变量的学术评测：在 Qwen FN 上，llama.cpp 提示词处理速度约 ~300 pp（原文未给出对应生成速率），而 Strata 在 200k+ KV 缓存下达到 ~180 tok/s 与 ~2500 pp；在 Inkling-2-Mini 上，某 llama.cpp 分支为 28 tok/s，Basalt 为 60 tok/s。模型具体参数量、硬件卡数、测试批次与随机种子数原文均未单列。",
+        "repro_and_reference": "④ 原文为 Latent Space [AINews] 整理的社区讨论帖（互动热度 Activity: 644），未附统一代码仓库或基准复现脚本。提及的 llama.cpp、vLLM、SGLang、LiteRT 等属于公开成熟生态，而 Strata、Basalt、Radiance、beelama 及各类 llama.cpp 分支分散在不同项目与特定硬件（如 NVIDIA 50 系列、Radeon R9700 Pro）下，复现需自行配置对应硬件与环境并注意第三方二进制的供应链安全。",
+        "experiment_rows": [],
+        "backbone_and_params": "涉及 Qwen FN、Inkling-2-Mini 等测试模型；具体参数量原文未单列",
+        "gpu_and_duration": "原文为推理引擎讨论，提及 NVIDIA 50 系列、Radeon R9700 Pro 等显卡；训练算力卡数与耗时原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 9.0
+    },
+    {
+      "slug": "gui-rl-2611-29268",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-env",
+        "gui-security"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "AdaptiveVPI：面向自适应视觉提示注入的网页智能体防御评测基准",
+      "title_en": "Benchmarking Web Agent Defenses Against Adaptive Visual Prompt Injection",
+      "one_line_pain": "针对现有视觉提示注入防御只查截图且忽略自适应攻击的盲区，构建360个隐蔽HTML网页基准并按防御反馈迭代攻击",
+      "metric_badges": [
+        {
+          "text": "360个隐蔽HTML劫持网页",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "自适应攻击成功率91.87%/91.99%",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Haichuan Zhang",
+        "Zhiyuan Zhong",
+        "Shih-Chieh Dai",
+        "Xinyu Sun",
+        "Guanhong Tao"
+      ],
+      "published_date": "2026-11-22",
+      "venue_or_source": "arXiv cs.CR",
+      "url_primary": "https://arxiv.org/abs/2611.29268",
+      "url_pdf": "https://arxiv.org/pdf/2611.29268",
+      "url_arxiv_html": "https://arxiv.org/html/2611.29268",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.29268",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Multimodal web agents automate website interactions but remain vulnerable to visual prompt injection (VPI), where malicious webpage content manipulates their visual processing and induces unintended actions. Although several defenses focus on detecting injected instructions in screenshots, malicious destinations such as phishing URLs embedded in HTML can remain hidden yet accessible through agent interactions. Existing evaluations have also not sufficiently examined adaptive attackers who know the defense mechanisms. To address these limitations, we introduce AdaptiveVPI, the first benchmark for systematically evaluating adaptive VPI threats in web agents. Specifically, we present a dataset of 360 webpage instances spanning 6 distinct hijack strategies across 10 real-world websites, with malicious destinations not visible in screenshots. We design an adaptive attack framework that iteratively refines malicious instructions based on feedback from the defense mechanism being evaluated. We also introduce three metrics to measure the extent of agent hijacking at three different levels. Across 10 defense configurations for computer-use agents and 11 defense configurations for browser-use agents, our adaptive attacks achieve average success rates of 91.87% and 91.99%, respectively. These results reveal a gap between current VPI defenses and realistic threats and highlight the need for defenses designed with adaptive attackers in mind.",
+      "four_elements": {
+        "pain_point": "① 现有针对多模态网页智能体的视觉提示注入防御大多只盯着网页截图里的可疑指令，但钓鱼链接等恶意目标可以藏在HTML源码里、在截图中完全不可见，智能体交互时却依然会触发跳转；同时，过去的安全评测很少考虑“了解防御规则并针对性绕过”的自适应攻击者，导致防御手段在实际对抗中容易直接失效。",
+        "mechanism": "② 论文构建了AdaptiveVPI评测体系，分三环推进：首先在10个真实网站上构造覆盖6种劫持策略的360个网页样本，并确保恶意目标在截图中不可见；其次设计自适应攻击流程，根据被测防御机制给出的反馈，逐轮改写并优化恶意注入指令以绕过检测；最后提出3项分层次指标，从不同粒度量化智能体被劫持的程度。",
+        "experiments_summary": "③ 在计算机操作智能体（computer-use agents）的10种防御配置和浏览器操作智能体（browser-use agents）的11种防御配置上，自适应攻击的平均成功率分别达到91.87%和91.99%。具体基座模型规模、算力卡数与随机种子数在原文摘要中均未单列。",
+        "repro_and_reference": "④ 元数据未提供公开GitHub代码或数据集仓库链接，当前无法直接核验脚本与360个网页样本的完整度。该方法属于评测基准与推理期迭代攻击测试，不涉及大模型预训练，复现门槛主要集中在网页/桌面沙箱环境搭建以及多轮交互调用多模态智能体的推理开销。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列",
+        "gpu_and_duration": "原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 8.8
+    },
+    {
+      "slug": "gui-rl-2611-28947",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "别打盹，盯紧屏幕：面向计算机操作智能体的主动流式感知框架 NightWatch",
+      "title_en": "Don't Sleep, Keep Watch: Proactive Perception for Computer-Use Agents",
+      "one_line_pain": "针对屏幕动态变化时截图过时与长等待问题，挂载0.8B轻量守望模型持续盯屏，在不改原智能体下实现实时状态同步",
+      "metric_badges": [
+        {
+          "text": "OSWorld无效耗时降53%",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "DynaCU-Bench 39.5%→44.2%",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "Jiaqi Su",
+        "Jie-Jing Shao",
+        "Yichen Liu",
+        "Long-Kai Huang",
+        "Haiyan Yin"
+      ],
+      "published_date": "2026-11-21",
+      "venue_or_source": "arXiv cs.CL",
+      "url_primary": "https://arxiv.org/abs/2611.28947",
+      "url_pdf": "https://arxiv.org/pdf/2611.28947",
+      "url_arxiv_html": "https://arxiv.org/html/2611.28947",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.28947",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Computer-use agents (CUAs) built on vision-language models are increasingly entrusted with long-horizon tasks in live desktop, web, and mobile environments, where the screen keeps changing on its own. However, current CUAs lack real-time situational awareness: they perceive the environment through discrete snapshots, and the substantial inference latency of VLMs, compounded by highly dynamic interfaces, opens a perception-action gap in which the observed state frequently becomes stale before the corresponding action is executed. To bridge this gap, we present NightWatch, a plug-and-play framework that endows any CUA with continuous, temporally grounded perception without changing the agent's model, prompt, or action space. NightWatch couples the VLM agent with NightWatch-0.8B, a lightweight System-1 model that performs streaming monitoring of the interface state and keeps the agent synchronized with the evolving environment at low computational cost and latency, thereby grounding each decision in the current state rather than an outdated snapshot and reducing both stale actions and idle waiting while preserving task success. Experiments on desktop and dynamic web environments (OSWorld-Verified and DynaCU-Bench) show that NightWatch, driven by a watcher of only 0.8B parameters, reduces non-reasoning wall-clock time by 33% and wasted time by 53% on OSWorld while keeping task success on par, raises success on DynaCU-Bench from 39.5% to 44.2% with the large VLM agent, and is more efficient than passive-watching baselines such as AOI and PUSV under the same screenshot-only input, as well as a System-1 decision model more than $30\\times$ its size. Overall, NightWatch demonstrates that the timing of perception is as critical as its content, marking a step toward agents that maintain continuous awareness of their environment rather than perceiving it turn by turn.",
+      "four_elements": {
+        "pain_point": "① 现有基于视觉语言模型（VLM）的计算机操作智能体（CUA）只能按回合截取离散屏幕快照来感知环境。在桌面、网页或移动端等界面会自动持续变化的实时长程任务中，VLM 本身推理延迟较高，导致感知与执行之间出现时间差——动作真正发出时，先前看到的界面状态早已过时，进而引发基于旧状态的错误操作或大量无效空等。",
+        "mechanism": "② NightWatch 采用即插即用的外挂式设计，不改动原 VLM 智能体的模型权重、提示词或动作空间：第一步，在主智能体旁挂载一个仅 0.8B 参数的轻量级“系统一（直觉快速响应）”守望模型 NightWatch-0.8B，仅依赖纯屏幕截图输入，以低算力和低延迟持续流式监测界面状态变化；第二步，由该守望模型实时把界面动态同步给主智能体，让每一步决策都对齐当前真实画面而非过时快照，从而在保持任务成功率的同时压缩过时操作与空闲等待时间。",
+        "experiments_summary": "③ 评测覆盖桌面环境 OSWorld-Verified 与动态网页环境 DynaCU-Bench。采用 0.8B 参数的 NightWatch-0.8B 作为守望模块（主智能体大 VLM 的具体型号与参数量原文摘要未单列）：在 OSWorld 上，任务成功率与基线持平的前提下，非推理阶段总挂钟耗时降低 33%，无效浪费时间减少 53%；在 DynaCU-Bench 上，搭配大 VLM 智能体时任务成功率由 39.5% 提升至 44.2%。在同等纯截图输入口径下，其效率优于被动观察基线（AOI、PUSV）以及参数规模超过其 30 倍的系统一决策模型。训练所用卡数、耗时与随机种子数原文摘要未单列。",
+        "repro_and_reference": "④ 当前元数据未提供 GitHub 仓库链接，开源代码、模型权重与训练数据细节尚不明确。由于框架本身即插即用且新增守望模块仅 0.8B 参数，推理部署的额外算力门槛较低，主要开销仍在原有大 VLM 智能体及 OSWorld/DynaCU-Bench 交互环境的搭建；但在官方未释出守望模型权重与训练脚本前，从零复现流式监测能力的工程成本中等偏高。",
+        "experiment_rows": [],
+        "backbone_and_params": "守望模型为 0.8B 参数的 NightWatch-0.8B；主智能体大模型基座型号与参数量原文摘要未单列",
+        "gpu_and_duration": "原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.8
+    },
+    {
+      "slug": "ossl-ood-2611-28986",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "subtopics": [
+        "open-world-vocab",
+        "ossl-ood-core"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "CLASP：面向医学视觉语言模型零样本分布外检测的互补层选择与特征画像",
+      "title_en": "CLASP: Complementary Layer Selection and Profiling for Zero-Shot OOD Detection using Vision-Language Models",
+      "one_line_pain": "针对医学零样本分布外检测只看末层置信度或按熵选层失效的问题，改用条件互信息筛选互补中间层并联合视觉特征算马氏距离",
+      "metric_badges": [
+        {
+          "text": "MIDOG近OOD 87.54% AUROC",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "免微调/仅用分布内数据",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": true,
+      "small_compute_note": "原文标注：test-time",
+      "authors": [
+        "Saahil Islam",
+        "Adarsh Bhandary Panambur",
+        "Teodora Spasojevic",
+        "Eduardo Castaneda",
+        "Andreas Maier"
+      ],
+      "published_date": "2026-11-21",
+      "venue_or_source": "arXiv cs.CV",
+      "url_primary": "https://arxiv.org/abs/2611.28986",
+      "url_pdf": "https://arxiv.org/pdf/2611.28986",
+      "url_arxiv_html": "https://arxiv.org/html/2611.28986",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.28986",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "Vision-language models (VLMs) enable zero-shot out-of-distribution (OOD) detection in medical imaging, yet existing approaches often rely on final-layer confidence or entropy-based layer selection, potentially missing complementary information. We show that low in-distribution (ID) confidence entropy does not reliably predict OOD discrimination. We introduce CLASP (Complementary Layer Selection and Profiling), an ID-only framework that jointly models layer--prompt responses and visual features. CLASP ranks visual encoder layers using Gaussian conditional mutual information and selects a compact subset through anchored spectral selection, without fixing the number of layers. It then combines the selected layer--prompt profiles with PCA-compressed visual embeddings and fits a single shrinkage-regularized Gaussian. OOD scores are computed using squared Mahalanobis distance, without fine-tuning, OOD training data, or test-time adaptation. Across histopathology, chest X-ray, and brain MRI benchmarks with UniMedCLIP and BioMedCLIP, CLASP performs strongly under varied distribution shifts. On MIDOG near-OOD, it achieves 87.54% AUROC with UniMedCLIP, outperforming confidence-based baselines; with BioMedCLIP, it remains competitive but trails visual-only Mahalanobis modeling. Ablations highlight the value of layer--prompt interactions and cross-feature dependencies, while exposing shift-dependent contributions and limitations under semantic shifts.",
+      "four_elements": {
+        "pain_point": "① 现有的医学影像视觉语言模型零样本分布外（OOD）检测，通常只依赖最后一层输出的置信度，或者按置信度熵来挑中间层。但作者指出，分布内（ID）数据的置信度熵低，并不代表该层就能可靠区分分布外样本；死盯末层或单靠熵选层容易漏掉不同层级间的互补判别信息。",
+        "mechanism": "② CLASP 仅利用分布内数据完成四步建模：第一步，用高斯条件互信息对视觉编码器各层排序；第二步，通过锚定谱选择自适应挑出紧凑的互补层子集，无需人为预先固定层数；第三步，把选中层的层-提示词响应特征与经主成分分析（PCA）压缩后的视觉嵌入拼接，拟合单个收缩正则化高斯分布；第四步，直接计算平方马氏距离作为分布外得分，全程不需要微调模型、不需要分布外训练数据，也不做测试时自适应。",
+        "experiments_summary": "③ 在组织病理学、胸部X光和脑部磁共振成像（MRI）基准上，基于 UniMedCLIP 和 BioMedCLIP 评测多种分布偏移。在 MIDOG 近分布外（near-OOD）任务上，搭配 UniMedCLIP 取得 87.54% AUROC，高于基于置信度的基线；但搭配 BioMedCLIP 时虽保持竞争力，仍落后于纯视觉马氏距离建模。消融实验验证了层-提示词交互与跨特征依赖的作用，同时也暴露出各部分贡献依赖偏移类型，且在语义偏移下存在局限。模型参数量、算力卡数、耗时与随机种子数原文摘要均未单列。",
+        "repro_and_reference": "④ 元数据未提供公开 GitHub 代码链接，需依据正文自行实现。由于全程免微调、免测试时自适应，只需对分布内样本做前向推理提取多层特征并执行互信息排序、谱选择、PCA 压缩及单高斯收缩拟合，算力门槛相对较低；但锚定谱选择与提示词构造的具体实现细节摘要未展开，复现完整度依赖论文正文公开程度。",
+        "experiment_rows": [],
+        "backbone_and_params": "UniMedCLIP、BioMedCLIP（具体参数量原文摘要未单列）",
+        "gpu_and_duration": "原文摘要未单列",
+        "seeds_note": "原文摘要未单列"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 6.5
+    }
+  ],
+  "folded_items": [
+    {
+      "slug": "fold-vlm-infra-nvme-kv-cache-offload-in-vllm",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "NVMe KV-cache offload in vLLM",
+      "title_en": "NVMe KV-cache offload in vLLM",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]，原文报告 1%）",
+      "url": "https://x.com/vllm_project/status/2124783794112938241",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-2611-18562",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "在仿真环境中训练原生操控真实机器人的推理模型",
+      "title_en": "Training Reasoning Models in Simulation to Natively Use Real Robots",
+      "one_line_takeaway": "在仿真中训练推理模型原生操控真实机器人，探索开源权重追赶前沿专有模型路径。",
+      "url": "https://arxiv.org/abs/2611.18562",
+      "published_date": "2026-11-20",
+      "venue_or_source": "arXiv cs.RO",
+      "arxiv_id": "2611.18562"
+    },
+    {
+      "slug": "fold-vlm-infra-inkling-absolutely-rips",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Inkling absolutely rips",
+      "title_en": "Inkling absolutely rips",
+      "one_line_takeaway": "属「推理引擎与系统优化 / 多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y2gxo7/inkling_absolutely_rips_200_toks_decode_6700/",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-perplexity-and-intelligence",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "困惑度与智能：衡量AI模型进展的共享评估视角",
+      "title_en": "Perplexity and Intelligence",
+      "one_line_takeaway": "探讨困惑度作为模型能力演进统一评测指标的潜力，对大模型基建评估有一定参考。",
+      "url": "https://openai.com/index/perplexity-and-intelligence",
+      "published_date": "2026-11-22",
+      "venue_or_source": "OpenAI",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-hy4-tencent",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "Hy4 (Tencent)",
+      "title_en": "Hy4 (Tencent)",
+      "one_line_takeaway": "属「GUI 在线/离线 RL」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/ollama/status/2124669766723920377",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-computer-use-in-the-gemini-mac-app-geminiapp",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "Computer use in the Gemini Mac app ( @GeminiApp )",
+      "title_en": "Computer use in the Gemini Mac app ( @GeminiApp )",
+      "one_line_takeaway": "属「GUI 在线/离线 RL」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/GeminiApp/status/2123513203745538423",
+      "published_date": "2026-11-20",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-2603-02277",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "AI研发相关模型能力快速提升且愈发难以衡量",
+      "title_en": "AI R&D-relevant model capabilities are improving rapidly and are getting harder to measure",
+      "one_line_takeaway": "系统分析研发相关模型能力快速提升及评测难度加剧问题，对长程智能体评估有启发。",
+      "url": "https://metr.org/blog/2026-11-20-q4-2026-capability-update/",
+      "published_date": "2026-11-20",
+      "venue_or_source": "METR",
+      "arxiv_id": "2603.02277"
+    },
+    {
+      "slug": "fold-gui-rl-2611-29847",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "MobileGrail：面向端侧部署的轻量级移动GUI安全护栏学习",
+      "title_en": "MobileGrail: Learning Compact Guardrails for On-Device deployable Mobile GUI Agent Safety",
+      "one_line_takeaway": "提出可端侧部署的轻量级移动GUI安全护栏，兼顾动作拦截安全性与屏幕隐私保护。",
+      "url": "https://arxiv.org/abs/2611.29847",
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "arxiv_id": "2611.29847"
+    },
+    {
+      "slug": "fold-ossl-ood-2611-30316",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "视频广义类别发现",
+      "title_en": "Video Generalized Category Discovery",
+      "one_line_takeaway": "将广义类别发现从静态图像拓展至视频域，应对时序动态下的未知类聚类挑战。",
+      "url": "https://arxiv.org/abs/2611.30316",
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.30316"
+    },
+    {
+      "slug": "fold-vlm-infra-interpreting-a-recent-acceleration-in-pre",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "解读近期预训练损失加速下降的现象",
+      "title_en": "Interpreting a recent acceleration in pretraining loss",
+      "one_line_takeaway": "深入解读前沿模型预训练损失近期加速下降现象，为理解模型缩放趋势提供关键实证。",
+      "url": "https://metr.org/blog/2026-11-24-interpreting-a-recent-acceleration-in-pretraining-loss/",
+      "published_date": "2026-11-24",
+      "venue_or_source": "METR",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-weak-to-strong-alignment",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Weak to Strong alignment",
+      "title_en": "Weak to Strong alignment",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://openai.com/index/weak-to-strong-generalization/",
+      "published_date": "2026-11-21",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-ossl-ood-2611-28611",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "基于动作条件转移不可逆性的强化学习分布外检测",
+      "title_en": "Action-Conditioned Transition Irreversibility for Out-of-Distribution Detection in Reinforcement Learning",
+      "one_line_takeaway": "基于动作条件转移不可逆性检测强化学习分布外状态，切中序贯决策OOD核心难点。",
+      "url": "https://arxiv.org/abs/2611.28611",
+      "published_date": "2026-11-21",
+      "venue_or_source": "arXiv cs.LG",
+      "arxiv_id": "2611.28611"
+    },
+    {
+      "slug": "fold-vlm-infra-vllm-project-vllm-ascend-community-mainta",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "vllm-project/vllm-ascend: Community maintained hardware plugin for vLLM on…",
+      "title_en": "vllm-project/vllm-ascend: Community maintained hardware plugin for vLLM on Huawei Ascend",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：GitHub Trending）",
+      "url": "https://github.com/vllm-project/vllm-ascend",
+      "published_date": "2026-11-25",
+      "venue_or_source": "GitHub Trending",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-combatting-adversarial-distillation",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "打击对抗性模型蒸馏的多层防御策略",
+      "title_en": "Combatting adversarial distillation",
+      "one_line_takeaway": "介绍防范模型能力被对抗性蒸馏窃取的多层防御体系，偏商业安全策略与合规治理。",
+      "url": "https://openai.com/index/combatting-adversarial-distillation",
+      "published_date": "2026-11-20",
+      "venue_or_source": "OpenAI",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-microsoft-markitdown-python-tool-for-convert",
+      "section": "opensource",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "microsoft/markitdown: Python tool for converting files and office documents…",
+      "title_en": "microsoft/markitdown: Python tool for converting files and office documents to Markdown.",
+      "one_line_takeaway": "属「GUI 在线/离线 RL」方向的边际/常规增量动态（来源：GitHub Trending）",
+      "url": "https://github.com/microsoft/markitdown",
+      "published_date": "2026-11-25",
+      "venue_or_source": "GitHub Trending",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-finding-faster-quantum-algorithms-with-ag",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "结合智能体团队与形式化验证发现更快的量子算法",
+      "title_en": "Finding faster quantum algorithms with agents and formal verification",
+      "one_line_takeaway": "结合多智能体与形式化验证加速量子算法发现，属前沿科学计算探索但偏离主线。",
+      "url": "https://deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification/",
+      "published_date": "2026-11-23",
+      "venue_or_source": "Google DeepMind",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-local-speed-unsloth-reports-125-tok-s-on",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Local speed : Unsloth reports 125 tok/s on an RTX PRO 6000 and fixed…",
+      "title_en": "Local speed : Unsloth reports 125 tok/s on an RTX PRO 6000 and fixed KV-cache quantization memor",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/danielhanchen/status/2124901209836519479",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-rack-scale-serving",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Rack-scale serving",
+      "title_en": "Rack-scale serving",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/SemiAnalysis_/status/2124637709176016998",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-glm-5",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "GLM-5",
+      "title_en": "GLM-5",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y3enps/glm54_toward_generalized_coding_with_our_first/",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-inkling-2-mini",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Inkling 2 Mini",
+      "title_en": "Inkling 2 Mini",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/thinkymachines/status/2123871643797995872",
+      "published_date": "2026-11-21",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    }
+  ]
+}

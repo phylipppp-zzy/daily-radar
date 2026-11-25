@@ -168,7 +168,7 @@ def _render_summary_card(
     is_hot: bool = True,
     extra_conf_tags: str = "",
 ) -> str:
-    """Render Tier-1 summary card exposing strictly the 5 essential scannable elements (§3.2)."""
+    """Render a scannable Tier-1 summary card."""
     detail_href = _rel(depth, _item_rel_path(issue_date, item.slug, is_hot=is_hot))
 
     # Element 2: Track & institution tags
@@ -193,6 +193,9 @@ def _render_summary_card(
 
     if item.small_compute_friendly:
         footer_pills.append('<span class="badge badge-open-full">4–8卡可复现</span>')
+
+    if item.four_elements.verdict_label:
+        footer_pills.append(f'<span class="badge verdict-pill">研判：{_esc(item.four_elements.verdict_label)}</span>')
 
     conf_attr = f' data-conf-tags="{_esc(extra_conf_tags)}"' if extra_conf_tags else ""
     return (
@@ -230,9 +233,14 @@ def _render_overview_page(
     weekly_slug = f"{weekly_iso.year}-W{weekly_iso.week:02d}"
     weekly_href = _rel(depth, f"weekly/{weekly_slug}.html")
 
+    mode_badge_cls = "badge badge-amber" if issue.run_mode == "trial" else "badge badge-open-full"
+    mode_badge_label = "TRIAL 演练样本" if issue.run_mode == "trial" else "LIVE 实采"
+    distiller_label = str(issue.provenance.get("distiller") or issue.llm_channel_used or "unknown")
     permalink_html = (
-        '<div class="permalink-bar">'
-        f'<span>当前期次：<strong>{_esc(issue.date)}（{_esc(issue.weekday_zh)}）</strong> · 生成于 {_esc(issue.generated_at_cst)}</span>'
+        f'<div class="permalink-bar" data-run-mode="{_esc(issue.run_mode)}" data-distiller="{_esc(distiller_label)}">'
+        f'<span>当前期次：<strong>{_esc(issue.date)}（{_esc(issue.weekday_zh)}）</strong> · 生成于 {_esc(issue.generated_at_cst)} '
+        f'<span class="{mode_badge_cls}">{_esc(mode_badge_label)}</span> '
+        f'<span class="badge">distiller: {_esc(distiller_label)}</span></span>'
         f'<span><a href="{_esc(permalink_href)}">本期永久链接</a> · <a href="{_esc(weekly_href)}">本周汇总 ({_esc(weekly_slug)})</a></span>'
         "</div>"
     )
@@ -368,6 +376,32 @@ def _render_detail_page(
     lic_str = f" · 协议：{item.license_name}" if item.license_name else ""
 
     fe = item.four_elements
+    critique_html = ""
+    critique_nav = ""
+    if fe.verdict_label or fe.verdict_reason or fe.critique_points or fe.evidence_boundary:
+        verdict_pill = f'<span class="verdict-pill">{_esc(fe.verdict_label)}</span>' if fe.verdict_label else ""
+        verdict_reason = f"<p>{_esc(fe.verdict_reason)}</p>" if fe.verdict_reason else ""
+        verdict_banner = (
+            f'<div class="verdict-banner">{verdict_pill}{verdict_reason}</div>'
+            if verdict_pill or verdict_reason
+            else ""
+        )
+        critique_list = ""
+        if fe.critique_points:
+            points = "".join(f"<li>{_esc(point)}</li>" for point in fe.critique_points)
+            critique_list = f'<ol class="critique-list">{points}</ol>'
+        evidence_footer = (
+            f'<footer class="evidence-boundary">{_esc(fe.evidence_boundary)}</footer>'
+            if fe.evidence_boundary
+            else ""
+        )
+        critique_html = (
+            '<section id="el-critique" class="four-el-card critique-card">'
+            '<h2>⑤ 审稿人视角批判与独立观点</h2>'
+            f"{verdict_banner}{critique_list}{evidence_footer}</section>"
+        )
+        critique_nav = '<a class="nav-pill" href="#el-critique">⑤ 审稿批判</a>'
+
     rows_table_html = ""
     if fe.experiment_rows:
         trs = []
@@ -471,6 +505,8 @@ def _render_detail_page(
         <p>{_esc(fe.repro_and_reference)}</p>
       </section>
 
+      {critique_html}
+
       <details id="en-abstract-details" class="abstract-box">
         <summary>展开/收起原文英文摘要对照（用于核验原始措辞与数字）</summary>
         <div class="abstract-content">{_esc(item.abstract_en)}</div>
@@ -490,6 +526,7 @@ def _render_detail_page(
           <a class="nav-pill" href="#el-mech">② 机制</a>
           <a class="nav-pill" href="#el-exp">③ 实验数字</a>
           <a class="nav-pill" href="#el-repro">④ 复现参考</a>
+          {critique_nav}
         </div>
       </div>
 

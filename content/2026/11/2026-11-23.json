@@ -14,6 +14,12 @@
   "special_conference_banner": null,
   "source_health_alerts": [],
   "llm_channel_used": "deterministic-verified",
+  "run_mode": "trial",
+  "provenance": {
+    "run_mode": "trial",
+    "distiller": "deterministic-verified",
+    "source_origin": "seeded_trial"
+  },
   "featured_items": [
     {
       "slug": "gui-rl-2607-25904",

@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from email.utils import parsedate_to_datetime
 import html
+import html.entities
+from html.parser import HTMLParser
+from http.client import HTTPException
 import json
 from pathlib import Path
 import re
@@ -57,12 +60,37 @@ DOMAIN_ORG_HINTS: tuple[tuple[str, str], ...] = (
 )
 
 
+OPENALEX_ARXIV_SOURCE_ID = "S4306400194"
+XML_CDATA_SPLIT_RE = re.compile(r"(<!\[CDATA\[.*?\]\]>)", re.DOTALL)
+XML_NAMED_OR_BARE_AMP_RE = re.compile(
+    r"&(?!amp;|lt;|gt;|quot;|apos;|#[0-9]+;|#x[0-9a-fA-F]+;)([A-Za-z][A-Za-z0-9]+;)?"
+)
+
+
+def _escape_non_cdata_xml(chunk: str) -> str:
+    def _replace_amp(match: re.Match[str]) -> str:
+        named = match.group(1)
+        if named:
+            # Convert HTML named entities (e.g. &nbsp;, &mdash;, &rsquo;) to numeric XML char refs.
+            name = named[:-1]
+            cp = html.entities.name2codepoint.get(name)
+            if cp is not None:
+                return f"&#{cp};"
+            return f"&amp;{named}"
+        return "&amp;"
+
+    return XML_NAMED_OR_BARE_AMP_RE.sub(_replace_amp, chunk)
+
+
 def sanitize_xml_bytes(xml_bytes: bytes) -> bytes:
-    """Strip UTF-8 BOM, illegal XML 1.0 control chars, and invalid numeric char refs before ET.fromstring."""
-    text = xml_bytes.decode("utf-8-sig", errors="replace")
+    """Strip UTF-8 BOM, illegal XML 1.0 control chars, invalid char refs, and unescaped `&` / HTML entities."""
+    text = xml_bytes.decode("utf-8-sig", errors="replace").lstrip()
     text = ILLEGAL_XML_CTRL_RE.sub("", text)
     text = ILLEGAL_XML_ENTITY_RE.sub("", text)
-    return text.encode("utf-8")
+    parts = XML_CDATA_SPLIT_RE.split(text)
+    for idx in range(0, len(parts), 2):
+        parts[idx] = _escape_non_cdata_xml(parts[idx])
+    return "".join(parts).encode("utf-8")
 
 
 def strip_html(raw: str) -> str:
@@ -176,6 +204,143 @@ class SourceHealthTracker:
         return None
 
 
+class HealthCheckSchemaError(ValueError):
+    """Raised immediately (fail-fast) when source_health.json violates the required schema."""
+
+
+@dataclass
+class SourceHealthFailure:
+    source_id: str
+    source_name: str
+    last_ok_date: str
+    consecutive_failed_dates: list[str]
+    last_error: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "source_id": self.source_id,
+            "source_name": self.source_name,
+            "last_ok_date": self.last_ok_date,
+            "consecutive_failed_dates": self.consecutive_failed_dates,
+            "consecutive_failed_days": len(self.consecutive_failed_dates),
+            "last_error": self.last_error,
+        }
+
+
+@dataclass
+class HealthCheckReport:
+    state_file: str
+    total_sources: int
+    ok_sources: list[str]
+    failing_sources: list[SourceHealthFailure]
+    missing_sources: list[str]
+
+    @property
+    def is_healthy(self) -> bool:
+        return len(self.failing_sources) == 0 and len(self.missing_sources) == 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "state_file": self.state_file,
+            "total_sources": self.total_sources,
+            "ok_count": len(self.ok_sources),
+            "failed_count": len(self.failing_sources),
+            "missing_count": len(self.missing_sources),
+            "healthy": self.is_healthy,
+            "failing_sources": [f.to_dict() for f in self.failing_sources],
+            "missing_sources": self.missing_sources,
+        }
+
+
+REQUIRED_HEALTH_FIELDS: tuple[str, ...] = ("last_ok_date", "consecutive_failed_dates", "last_error")
+
+
+def check_source_health(
+    state_file: Path,
+    *,
+    expected_source_ids: list[str] | None = None,
+) -> HealthCheckReport:
+    """Strictly validate source_health.json schema (fail-fast) and report all failing sources."""
+    if not state_file.is_file():
+        raise HealthCheckSchemaError(f"Health state file does not exist: {state_file}")
+    try:
+        data = json.loads(state_file.read_text(encoding="utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HealthCheckSchemaError(f"Invalid UTF-8 or JSON in {state_file}: {exc}") from exc
+
+    if not isinstance(data, dict) or "sources" not in data or not isinstance(data["sources"], dict):
+        raise HealthCheckSchemaError(f"Health state file {state_file} must be a JSON object with a 'sources' dict.")
+
+    sources_map: dict[str, Any] = data["sources"]
+    ok_sources: list[str] = []
+    failing_sources: list[SourceHealthFailure] = []
+
+    for src_id, entry in sources_map.items():
+        if not isinstance(entry, dict):
+            raise HealthCheckSchemaError(f"Source '{src_id}' entry must be a JSON object, got {type(entry).__name__}")
+        for req_key in REQUIRED_HEALTH_FIELDS:
+            if req_key not in entry:
+                raise HealthCheckSchemaError(
+                    f"Source '{src_id}' missing required field '{req_key}' (present keys: {sorted(entry.keys())})"
+                )
+        last_ok = entry["last_ok_date"]
+        failed_dates = entry["consecutive_failed_dates"]
+        last_error = entry["last_error"]
+        if not isinstance(last_ok, str):
+            raise HealthCheckSchemaError(f"Source '{src_id}' field 'last_ok_date' must be str, got {type(last_ok).__name__}")
+        if last_ok.strip():
+            try:
+                date.fromisoformat(last_ok.strip())
+            except ValueError as exc:
+                raise HealthCheckSchemaError(
+                    f"Source '{src_id}' field 'last_ok_date' is not a valid ISO date: {last_ok!r}"
+                ) from exc
+        if not isinstance(failed_dates, list) or not all(isinstance(d, str) and d.strip() for d in failed_dates):
+            raise HealthCheckSchemaError(
+                f"Source '{src_id}' field 'consecutive_failed_dates' must be a list of non-empty date strings."
+            )
+        for fd in failed_dates:
+            try:
+                date.fromisoformat(fd.strip())
+            except ValueError as exc:
+                raise HealthCheckSchemaError(
+                    f"Source '{src_id}' field 'consecutive_failed_dates' contains invalid ISO date: {fd!r}"
+                ) from exc
+        if not isinstance(last_error, str):
+            raise HealthCheckSchemaError(f"Source '{src_id}' field 'last_error' must be str, got {type(last_error).__name__}")
+
+        if failed_dates or last_error.strip():
+            failing_sources.append(
+                SourceHealthFailure(
+                    source_id=str(src_id),
+                    source_name=str(entry.get("source_name") or src_id),
+                    last_ok_date=last_ok,
+                    consecutive_failed_dates=list(failed_dates),
+                    last_error=last_error,
+                )
+            )
+        else:
+            if not last_ok.strip():
+                raise HealthCheckSchemaError(
+                    f"Source '{src_id}' has empty 'last_ok_date' with no failures recorded; cannot be marked healthy."
+                )
+            ok_sources.append(str(src_id))
+
+    missing_sources: list[str] = []
+    if expected_source_ids:
+        for exp_id in expected_source_ids:
+            if exp_id not in sources_map:
+                missing_sources.append(exp_id)
+
+    return HealthCheckReport(
+        state_file=str(state_file),
+        total_sources=len(sources_map),
+        ok_sources=ok_sources,
+        failing_sources=failing_sources,
+        missing_sources=missing_sources,
+    )
+
+
 def fetch_url_bytes(
     url: str,
     *,
@@ -204,7 +369,7 @@ def fetch_url_bytes(
                 sleep_fn(1.5 * (2**attempt))
                 continue
             raise
-        except urllib.error.URLError as exc:
+        except (urllib.error.URLError, TimeoutError) as exc:
             last_err = exc
             if attempt < max_retries:
                 sleep_fn(1.0 * (2**attempt))
@@ -212,6 +377,120 @@ def fetch_url_bytes(
             raise
     assert last_err is not None
     raise last_err
+
+
+class _ArxivExcerptParser(HTMLParser):
+    _ignored_tags = {"head", "script", "style", "nav", "header", "footer", "figure", "svg", "math", "mjx-container"}
+    _ignored_classes = {
+        "ltx_page_header", "ltx_page_footer", "ltx_page_navbar", "ltx_note",
+        "ltx_math", "ltx_equation", "ltx_equationgroup", "ltx_figure",
+    }
+    _void_tags = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+    _block_tags = {"article", "br", "div", "li", "p", "section", "td", "th"}
+    _heading_tags = {"h1", "h2", "h3", "h4", "h5", "h6"}
+    _preferred_heading = re.compile(
+        r"\b(?:introductions?|methods?|methodology|approach|experiments?|experimental|evaluations?|results|"
+        r"limitations?|conclusions?)\b",
+        re.IGNORECASE,
+    )
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._ignored_tag = ""
+        self._ignored_depth = 0
+        self._heading = ""
+        self._preferred_level = 0
+        self._parts: list[str] = []
+        self._sections: list[str] = []
+        self._preferred_sections: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if self._ignored_tag:
+            if tag == self._ignored_tag:
+                self._ignored_depth += 1
+            return
+        classes = (dict(attrs).get("class") or "").lower().split()
+        if tag in self._ignored_tags or self._ignored_classes.intersection(classes):
+            if tag not in self._void_tags:
+                self._ignored_tag = tag
+                self._ignored_depth = 1
+        elif tag in self._heading_tags:
+            self._finish_section()
+            self._heading = tag
+            if self._preferred_level >= int(tag[1]):
+                self._preferred_level = 0
+        elif tag in self._block_tags:
+            self._parts.append(" ")
+
+    def handle_endtag(self, tag: str) -> None:
+        if self._ignored_tag:
+            if tag == self._ignored_tag:
+                self._ignored_depth -= 1
+                if self._ignored_depth == 0:
+                    self._ignored_tag = ""
+            return
+        if tag == self._heading:
+            if not self._preferred_level and self._preferred_heading.search("".join(self._parts)):
+                self._preferred_level = int(tag[1])
+            self._heading = ""
+            self._parts.append("\n")
+        elif tag in self._block_tags:
+            self._parts.append(" ")
+
+    def handle_data(self, data: str) -> None:
+        if not self._ignored_tag:
+            self._parts.append(re.sub(r"\s+", " ", data))
+
+    def _finish_section(self) -> None:
+        section = "\n".join(part for line in "".join(self._parts).splitlines() if (part := " ".join(line.split())))
+        self._parts.clear()
+        if section:
+            self._sections.append(section)
+            if self._preferred_level:
+                self._preferred_sections.append(section)
+
+    def excerpt(self, max_chars: int) -> str:
+        self._finish_section()
+        text = "\n\n".join(self._preferred_sections or self._sections)
+        prefix = text[:max_chars]
+        if len(text) > max_chars and not text[max_chars].isspace() and not prefix[-1].isspace():
+            prefix = re.sub(r"\s+\S+$", "", prefix)
+        return prefix.rstrip()
+
+
+def fetch_arxiv_html_excerpt(
+    arxiv_id: str,
+    *,
+    base_url: str = "https://arxiv.org/html",
+    timeout_sec: float = 10.0,
+    max_chars: int = 7000,
+    max_bytes: int = 524_288,
+) -> str:
+    """Fetch an arXiv HTML paper (bounded bytes & timeout) and return a clean text excerpt."""
+    arxiv_id = arxiv_id.strip()
+    if not arxiv_id or max_chars <= 0 or max_bytes <= 0:
+        return ""
+
+    path = urllib.parse.quote(arxiv_id, safe="/")
+    url = f"{base_url.rstrip('/')}/{path}"
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+            if getattr(resp, "status", 200) != 200:
+                return ""
+            raw = resp.read(max_bytes)
+    except (OSError, HTTPException, urllib.error.URLError):
+        return ""
+
+    html_text = raw.decode("utf-8-sig", errors="replace")
+    lower_head = html_text[:8192].lower()
+    if not any(marker in lower_head for marker in ("<article", "ltx_document", "ltx_page", "<h1", "<h2")):
+        return ""
+
+    parser = _ArxivExcerptParser()
+    parser.feed(html_text)
+    parser.close()
+    return parser.excerpt(max_chars)
 
 
 def parse_arxiv_atom(xml_bytes: bytes, source_cfg: dict[str, Any], fallback_date: str) -> list[RawCandidate]:
@@ -277,6 +556,174 @@ def parse_arxiv_atom(xml_bytes: bytes, source_cfg: dict[str, Any], fallback_date
                 hf_url=hf_match.group(0) if hf_match else "",
                 venue=venue_str,
                 extra={"source_kind": "arxiv_api", "comment": comment, "primary_category": primary_cat},
+            )
+        )
+    return results
+
+
+def reconstruct_openalex_abstract(inverted_index: dict[str, list[int]] | None) -> str:
+    """Reconstruct plaintext abstract from OpenAlex `abstract_inverted_index`."""
+    if not isinstance(inverted_index, dict) or not inverted_index:
+        return ""
+    word_positions: list[tuple[int, str]] = []
+    for word, positions in inverted_index.items():
+        if not isinstance(positions, list):
+            continue
+        for pos in positions:
+            if isinstance(pos, int):
+                word_positions.append((pos, str(word)))
+    if not word_positions:
+        return ""
+    word_positions.sort(key=lambda pair: pair[0])
+    return " ".join(word for _, word in word_positions)
+
+
+def _derive_openalex_search_query(source_cfg: dict[str, Any]) -> str:
+    explicit = str(source_cfg.get("openalex_query") or "").strip()
+    if explicit:
+        return explicit
+    parsed = urllib.parse.urlparse(str(source_cfg.get("url") or ""))
+    qs = urllib.parse.parse_qs(parsed.query)
+    raw_sq = (qs.get("search_query") or [""])[0]
+    quoted_terms = re.findall(r'"([^"]+)"', raw_sq)
+    if quoted_terms:
+        return " OR ".join(f'"{t}"' for t in quoted_terms[:8])
+    return str(source_cfg.get("name") or "arXiv")
+
+
+def build_openalex_arxiv_url(
+    source_cfg: dict[str, Any],
+    *,
+    run_date: str,
+    max_age_days: int = 5,
+) -> str:
+    """Build an OpenAlex works query scoped to the arXiv index (`S4306400194`)."""
+    explicit_url = str(source_cfg.get("openalex_fallback_url") or "").strip()
+    if explicit_url:
+        return explicit_url
+    ref = date.fromisoformat(run_date)
+    lookback = max(max_age_days + 2, 7)
+    from_date = (ref - timedelta(days=lookback)).isoformat()
+    to_date = (ref + timedelta(days=2)).isoformat()
+    search_q = _derive_openalex_search_query(source_cfg)
+    params = urllib.parse.urlencode(
+        {
+            "filter": (
+                f"primary_location.source.id:{OPENALEX_ARXIV_SOURCE_ID},"
+                f"from_publication_date:{from_date},to_publication_date:{to_date}"
+            ),
+            "search": search_q,
+            "sort": "publication_date:desc",
+            "per-page": "35",
+            "select": "id,doi,title,publication_date,primary_location,locations,authorships,abstract_inverted_index,ids",
+        }
+    )
+    return f"https://api.openalex.org/works?{params}"
+
+
+def parse_openalex_works(json_bytes: bytes, source_cfg: dict[str, Any], fallback_date: str) -> list[RawCandidate]:
+    """Parse OpenAlex `/works` JSON response (arXiv index `S4306400194`) into RawCandidates."""
+    payload = json.loads(json_bytes.decode("utf-8"))
+    if isinstance(payload, dict):
+        rows = payload.get("results")
+        if not isinstance(rows, list):
+            raise ValueError(
+                f"OpenAlex response missing 'results' list (keys: {sorted(payload.keys())})"
+            )
+    elif isinstance(payload, list):
+        rows = payload
+    else:
+        raise ValueError(f"Unexpected OpenAlex JSON root type: {type(payload).__name__}")
+    results: list[RawCandidate] = []
+    for work in rows:
+        if not isinstance(work, dict):
+            continue
+        title = " ".join(str(work.get("title") or "").split())
+        if not title:
+            continue
+        summary = reconstruct_openalex_abstract(work.get("abstract_inverted_index"))
+        if not summary:
+            summary = title
+
+        pub_date = normalize_iso_date(str(work.get("publication_date") or ""), fallback_date)
+        ids_obj = work.get("ids") if isinstance(work.get("ids"), dict) else {}
+        primary_loc = work.get("primary_location") if isinstance(work.get("primary_location"), dict) else {}
+        locations = work.get("locations") if isinstance(work.get("locations"), list) else []
+
+        # Prioritize explicit arXiv identifiers/URLs BEFORE DOIs, and only accept strings explicitly referencing arXiv
+        # so publisher DOIs (e.g. `10.1145/3290605.3300766`) never corrupt `arxiv_id`!
+        arxiv_candidates = [
+            str(ids_obj.get("arxiv") or ""),
+            str(primary_loc.get("landing_page_url") or ""),
+            str(primary_loc.get("pdf_url") or ""),
+        ]
+        for loc in locations:
+            if isinstance(loc, dict):
+                arxiv_candidates.append(str(loc.get("landing_page_url") or ""))
+                arxiv_candidates.append(str(loc.get("pdf_url") or ""))
+        arxiv_candidates.extend(
+            [
+                str(work.get("doi") or ""),
+                str(ids_obj.get("doi") or ""),
+            ]
+        )
+
+        arxiv_id = ""
+        for cand_str in arxiv_candidates:
+            if "arxiv" not in cand_str.lower():
+                continue
+            ax = normalize_arxiv_id(cand_str)
+            if ax:
+                arxiv_id = ax
+                break
+
+        doi = str(work.get("doi") or ids_obj.get("doi") or "").strip()
+        authors: list[str] = []
+        institutions: list[str] = []
+        for auth in work.get("authorships") or []:
+            if not isinstance(auth, dict):
+                continue
+            author_obj = auth.get("author")
+            if isinstance(author_obj, dict) and author_obj.get("display_name"):
+                authors.append(str(author_obj["display_name"]).strip())
+            for inst in auth.get("institutions") or []:
+                if isinstance(inst, dict) and inst.get("display_name"):
+                    inst_name = str(inst["display_name"]).strip()
+                    if inst_name and inst_name not in institutions:
+                        institutions.append(inst_name)
+
+        gh_match = GITHUB_URL_IN_TEXT_RE.search(summary)
+        hf_match = HF_URL_IN_TEXT_RE.search(summary)
+        gh_repo = normalize_github_repo("", gh_match.group(0)) if gh_match else ""
+        canonical_url = (
+            f"https://arxiv.org/abs/{arxiv_id}"
+            if arxiv_id
+            else str(primary_loc.get("landing_page_url") or work.get("id") or "")
+        )
+        if not canonical_url:
+            continue
+
+        results.append(
+            RawCandidate(
+                source_id=source_cfg["id"],
+                source_name=source_cfg["name"],
+                section=source_cfg.get("section", "papers"),
+                title=title,
+                url=canonical_url,
+                published_at=pub_date,
+                summary_raw=summary,
+                authors=authors,
+                institutions=institutions,
+                arxiv_id=arxiv_id,
+                doi=doi,
+                github_repo=gh_repo,
+                hf_url=hf_match.group(0) if hf_match else "",
+                venue="arXiv (OpenAlex S4306400194)",
+                extra={
+                    "source_kind": "arxiv_api",
+                    "fallback_provider": f"openalex:{OPENALEX_ARXIV_SOURCE_ID}",
+                    "openalex_id": str(work.get("id") or ""),
+                },
             )
         )
     return results
@@ -682,6 +1129,103 @@ def _filter_by_freshness(
     return fresh
 
 
+def _is_arxiv_fallback_trigger(exc: Exception) -> bool:
+    if isinstance(exc, TimeoutError):
+        return True
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code in (429, 500, 502, 503, 504)
+    if isinstance(exc, urllib.error.URLError):
+        reason = exc.reason
+        if isinstance(reason, TimeoutError):
+            return True
+        if "timed out" in str(reason).lower():
+            return True
+    return False
+
+
+def _collect_live_source(
+    src: dict[str, Any],
+    *,
+    run_date: str,
+    max_age_days: int,
+    rate_limiter: HostRateLimiter,
+) -> list[RawCandidate]:
+    src_kind = str(src["kind"])
+    extra_urls = [str(u) for u in (src.get("extra_urls") or []) if str(u).strip()]
+    fallback_urls = [str(u) for u in (src.get("fallback_urls") or []) if str(u).strip()]
+
+    # Multi-feed union mode (e.g. Anthropic research+engineering+news or active Qwen release feeds)
+    if extra_urls:
+        union_urls = [str(src["url"])] + extra_urls
+        merged: list[RawCandidate] = []
+        seen_urls: set[str] = set()
+        any_ok = False
+        last_exc: Exception | None = None
+        for url in union_urls:
+            try:
+                raw_bytes = fetch_url_bytes(url, rate_limiter=rate_limiter)
+                fresh = _filter_by_freshness(
+                    parse_source_payload(raw_bytes, src, run_date),
+                    run_date=run_date,
+                    max_age_days=max_age_days,
+                    source_kind=src_kind,
+                )
+                any_ok = True
+                for cand in fresh:
+                    if cand.url not in seen_urls:
+                        seen_urls.add(cand.url)
+                        merged.append(cand)
+            except Exception as exc:
+                last_exc = exc
+                continue
+        if any_ok:
+            return merged
+        assert last_exc is not None
+        raise last_exc
+
+    urls_to_try = [str(src["url"])] + fallback_urls
+    last_exc = None
+    any_ok = False
+
+    for url in urls_to_try:
+        try:
+            raw_bytes = fetch_url_bytes(url, rate_limiter=rate_limiter)
+            fresh = _filter_by_freshness(
+                parse_source_payload(raw_bytes, src, run_date),
+                run_date=run_date,
+                max_age_days=max_age_days,
+                source_kind=src_kind,
+            )
+            any_ok = True
+            if fresh:
+                return fresh
+        except Exception as exc:
+            last_exc = exc
+            continue
+
+    if any_ok:
+        return []
+
+    assert last_exc is not None
+    if src_kind == "arxiv_api" and _is_arxiv_fallback_trigger(last_exc):
+        openalex_url = build_openalex_arxiv_url(src, run_date=run_date, max_age_days=max_age_days)
+        try:
+            oa_bytes = fetch_url_bytes(openalex_url, rate_limiter=rate_limiter)
+            return _filter_by_freshness(
+                parse_openalex_works(oa_bytes, src, run_date),
+                run_date=run_date,
+                max_age_days=max_age_days,
+                source_kind=src_kind,
+            )
+        except Exception as oa_exc:
+            raise RuntimeError(
+                f"Primary arXiv failed ({type(last_exc).__name__}: {last_exc}); "
+                f"OpenAlex {OPENALEX_ARXIV_SOURCE_ID} fallback failed ({type(oa_exc).__name__}: {oa_exc})"
+            ) from oa_exc
+
+    raise last_exc
+
+
 def collect_all_sources(
     sources_cfg: dict[str, Any],
     *,
@@ -733,12 +1277,11 @@ def collect_all_sources(
             continue
 
         try:
-            raw_bytes = fetch_url_bytes(str(src["url"]), rate_limiter=limiter)
-            parsed = _filter_by_freshness(
-                parse_source_payload(raw_bytes, src, run_date),
+            parsed = _collect_live_source(
+                src,
                 run_date=run_date,
                 max_age_days=src_max_age,
-                source_kind=src_kind,
+                rate_limiter=limiter,
             )
             all_candidates.extend(parsed)
             if health_tracker is not None:

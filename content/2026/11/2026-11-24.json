@@ -15,6 +15,12 @@
   "special_conference_banner": null,
   "source_health_alerts": [],
   "llm_channel_used": "trial-verified-distiller",
+  "run_mode": "trial",
+  "provenance": {
+    "run_mode": "trial",
+    "distiller": "trial-verified-distiller",
+    "source_origin": "local_fixtures"
+  },
   "featured_items": [
     {
       "slug": "gui-rl-2611-18715",

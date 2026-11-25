@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import threading
 import unittest
+from unittest.mock import Mock, patch
 
 from daily_radar.config import RepoConfig
 from daily_radar.models import RawCandidate, assert_no_pr_cliche, visible_char_len
@@ -181,7 +182,9 @@ class PipelineAndLLMTest(unittest.TestCase):
                 institutions=["Shanghai Jiao Tong University"],
                 arxiv_id="2611.77777",
             )
-            issue = build_daily_issue([cand], self.repo_cfg, issue_date="2026-11-24", llm_client=client)
+            issue = build_daily_issue(
+                [cand], self.repo_cfg, issue_date="2026-11-24", llm_client=client, fetch_fulltext=False,
+            )
             self.assertEqual(_FailoverLLMHandler.primary_hits, 1)
             self.assertEqual(_FailoverLLMHandler.backup_hits, 1)
             self.assertEqual(issue.llm_channel_used, "backup-200")
@@ -195,6 +198,54 @@ class PipelineAndLLMTest(unittest.TestCase):
         finally:
             server.shutdown()
             server.server_close()
+
+    def test_reviewer_evidence_and_offline_boundaries(self) -> None:
+        cand = RawCandidate(
+            source_id="ax", source_name="arXiv", section="papers", title="GUI Agent Online RL on OSWorld",
+            url="https://arxiv.org/abs/2611.77777", published_at="2026-11-24", arxiv_id="2611.77777",
+            summary_raw="We evaluate a GUI agent trained with online RL on OSWorld.",
+            extra={"reported_baseline": "41.3%"},
+        )
+        critiques = ["界面元素重排后，状态判分是否仍然可靠？", "基线是否使用相同的交互预算？", "同一基座下移除判分器的消融结果如何？"]
+        client = Mock(spec=DualChannelLLMClient, last_channel_used="reviewer")
+        client.complete_json.return_value = {
+            "verdict_label": "基线仍待核实", "verdict_reason": "任务成功率的分母明确，基线的交互预算仍待核对。",
+            "critique_points": critiques, "metric_badges": ["成功率 62.7%", "基线 41.3%"],
+            "experiment_rows": [{"benchmark": "OSWorld", "metric": "成功率", "value": "62.7%"}],
+            "evidence_boundary": "已通读全文",
+        }
+        excerpt = "On OSWorld, success across all test tasks was 62.7%."
+        with patch("daily_radar.collectors.fetch_arxiv_html_excerpt", return_value=excerpt) as fetch:
+            issue = build_daily_issue([cand], self.repo_cfg, issue_date=cand.published_at, llm_client=client)
+            fetch.assert_called_once_with(cand.arxiv_id)
+            self.assertIn(excerpt, client.complete_json.call_args.args[0][1]["content"])
+            item = issue.featured_items[0]
+            review = item.four_elements
+            self.assertEqual(review.critique_points, critiques)
+            self.assertEqual(review.verdict_label, "基线仍待核实")
+            self.assertEqual(review.verdict_reason, client.complete_json.return_value["verdict_reason"])
+            self.assertEqual(review.evidence_boundary, "已结合 arXiv HTML 正文片段与摘要研判")
+            self.assertTrue(all(b.verified for b in item.metric_badges))
+            self.assertTrue(review.experiment_rows[0].verified)
+
+            fetch.reset_mock()
+            client.complete_json.return_value["critique_points"] = "malformed"
+            for args in ({"fetch_fulltext": False}, {"source_origin": "local_fixtures"}):
+                with self.subTest(args=args):
+                    issue = build_daily_issue(
+                        [cand], self.repo_cfg, issue_date=cand.published_at, llm_client=client, **args,
+                    )
+                    item = issue.featured_items[0]
+                    self.assertEqual(item.four_elements.evidence_boundary, "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文")
+                    self.assertEqual(len(item.four_elements.critique_points), 3)
+                    self.assertFalse(item.metric_badges[0].verified)
+                    self.assertTrue(item.metric_badges[1].verified)
+                    self.assertNotIn(excerpt, client.complete_json.call_args.args[0][1]["content"])
+
+            offline = build_daily_issue([cand], self.repo_cfg, issue_date=cand.published_at).featured_items[0]
+            self.assertEqual(offline.four_elements.evidence_boundary, "确定性离线抽取模式（未调用大模型）")
+            self.assertEqual(len(offline.four_elements.critique_points), 3)
+            fetch.assert_not_called()
 
     def test_pain_point_length_and_pr_cliche_ban(self) -> None:
         for raw in (

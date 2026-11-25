@@ -121,7 +121,7 @@ def verify_radar_item(item: RadarItem, extra_source_text: str = "") -> RadarItem
     verified_rows: list[MetricRow] = []
     for row in item.four_elements.experiment_rows:
         clean_val = row.value.replace(" ⚠️ 原文待核", "").strip()
-        combined_claim = f"{clean_val} {row.baseline_delta}".strip()
+        combined_claim = f"{clean_val} {row.baseline_delta} {row.setup_note}".strip()
         ok, missing = verify_claim_against_source(combined_claim, corpus)
         verified_rows.append(
             MetricRow(

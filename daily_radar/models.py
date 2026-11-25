@@ -19,6 +19,7 @@ BANNED_PR_CLICHES: tuple[str, ...] = (
 
 VALID_SECTIONS = frozenset({"papers", "opensource", "industry"})
 VALID_OPENNESS = frozenset({"code_and_weights", "code_only", "paper_only", "blog_or_release"})
+VALID_RUN_MODES = frozenset({"live", "trial"})
 
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{1,79}$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -112,6 +113,10 @@ class FourElements:
     backbone_and_params: str = "原文未单列"
     gpu_and_duration: str = "原文未单列"
     seeds_note: str = "原文未单列"
+    verdict_label: str = ""
+    verdict_reason: str = ""
+    critique_points: list[str] = field(default_factory=list)
+    evidence_boundary: str = ""
 
 
 @dataclass
@@ -180,6 +185,12 @@ class RadarItem:
         assert self.four_elements.mechanism.strip(), f"Missing mechanism in {self.slug}"
         assert self.four_elements.experiments_summary.strip(), f"Missing experiments_summary in {self.slug}"
         assert self.four_elements.repro_and_reference.strip(), f"Missing repro_and_reference in {self.slug}"
+        fe = self.four_elements
+        for name in ("verdict_label", "verdict_reason", "evidence_boundary"):
+            assert isinstance(getattr(fe, name), str), f"Invalid {name} in {self.slug}"
+        assert isinstance(fe.critique_points, list) and all(
+            isinstance(point, str) and point.strip() for point in fe.critique_points
+        ), f"Invalid critique_points in {self.slug}"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -234,9 +245,23 @@ class DailyIssue:
     special_conference_banner: dict[str, str] | None = None
     source_health_alerts: list[str] = field(default_factory=list)
     llm_channel_used: str = "deterministic-verified"
+    run_mode: str = "live"
+    provenance: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not self.provenance:
+            self.provenance = {
+                "run_mode": self.run_mode,
+                "distiller": self.llm_channel_used,
+                "source_origin": "local_fixtures" if self.run_mode == "trial" else "live_web",
+            }
+        else:
+            self.provenance.setdefault("run_mode", self.run_mode)
+            self.provenance.setdefault("distiller", self.llm_channel_used)
 
     def validate(self, featured_max: int = 10, folded_max: int = 20) -> None:
         assert DATE_RE.match(self.date), f"Invalid issue date: {self.date!r}"
+        assert self.run_mode in VALID_RUN_MODES, f"Invalid run_mode: {self.run_mode!r}"
         assert 1 <= len(self.global_trend_summary) <= 4, "global_trend_summary must have 1–4 sentences"
         assert len(self.highlights_top3) <= 3, "highlights_top3 must have at most 3 bullets"
         assert len(self.featured_items) <= featured_max, (
@@ -275,12 +300,19 @@ class DailyIssue:
             "special_conference_banner": self.special_conference_banner,
             "source_health_alerts": self.source_health_alerts,
             "llm_channel_used": self.llm_channel_used,
+            "run_mode": self.run_mode,
+            "provenance": self.provenance,
             "featured_items": [it.to_dict() for it in self.featured_items],
             "folded_items": [fi.to_dict() for fi in self.folded_items],
         }
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> DailyIssue:
+        llm_channel = str(data.get("llm_channel_used", "unknown"))
+        inferred_mode = "trial" if llm_channel == "trial-verified-distiller" else "live"
+        run_mode = str(data.get("run_mode") or inferred_mode)
+        raw_prov = data.get("provenance")
+        provenance = dict(raw_prov) if isinstance(raw_prov, dict) else {}
         return cls(
             date=data["date"],
             weekday_zh=data["weekday_zh"],
@@ -291,5 +323,7 @@ class DailyIssue:
             folded_items=[FoldedItem.from_dict(x) for x in data.get("folded_items", [])],
             special_conference_banner=data.get("special_conference_banner"),
             source_health_alerts=list(data.get("source_health_alerts", [])),
-            llm_channel_used=data.get("llm_channel_used", "unknown"),
+            llm_channel_used=llm_channel,
+            run_mode=run_mode,
+            provenance=provenance,
         )

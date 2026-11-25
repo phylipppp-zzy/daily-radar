@@ -15,7 +15,12 @@ import sys
 import time
 from zoneinfo import ZoneInfo
 
-from daily_radar.collectors import SourceHealthTracker, collect_all_sources
+from daily_radar.collectors import (
+    HealthCheckSchemaError,
+    SourceHealthTracker,
+    check_source_health,
+    collect_all_sources,
+)
 from daily_radar.config import (
     RepoConfig,
     default_user_config_dir,
@@ -163,6 +168,44 @@ def cmd_send_feishu(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_check_health(args: argparse.Namespace) -> int:
+    repo_root = Path(args.repo_root).resolve()
+    health_file = Path(args.health_file).resolve() if args.health_file else (repo_root / "state" / "source_health.json")
+    expected_ids: list[str] | None = None
+    if args.strict_sources:
+        repo_cfg = RepoConfig.load(repo_root)
+        expected_ids = [
+            str(s["id"]) for s in repo_cfg.sources.get("sources", []) if s.get("enabled", True)
+        ]
+
+    try:
+        report = check_source_health(health_file, expected_source_ids=expected_ids)
+    except HealthCheckSchemaError as exc:
+        print(f"ERROR: Source health schema validation failed: {exc}", file=sys.stderr)
+        return 2
+
+    if args.json:
+        print(json.dumps(report.to_dict(), ensure_ascii=False, indent=2))
+    else:
+        status = "OK" if report.is_healthy else "FAIL"
+        print(
+            f"SOURCE HEALTH {status}: ok={len(report.ok_sources)}/{report.total_sources}, "
+            f"failed={len(report.failing_sources)}, missing={len(report.missing_sources)} "
+            f"({report.state_file})"
+        )
+        for fail in report.failing_sources:
+            print(
+                f"  - FAIL {fail.source_id} ({fail.source_name}): "
+                f"consecutive_failed_dates={fail.consecutive_failed_dates} "
+                f"last_ok_date={fail.last_ok_date or '<never>'} "
+                f"last_error={fail.last_error}"
+            )
+        for miss in report.missing_sources:
+            print(f"  - MISSING {miss}: not present in {report.state_file}")
+
+    return 0 if report.is_healthy else 1
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     repo_root = Path(args.repo_root).resolve()
     repo_cfg = RepoConfig.load(repo_root)
@@ -172,9 +215,22 @@ def cmd_run(args: argparse.Namespace) -> int:
     issue_date = args.date or _today_cst()
     fixtures_dir = Path(args.fixtures_dir).resolve() if args.fixtures_dir else None
     cfg_home = Path(args.config_home).expanduser() if args.config_home else None
+    if args.run_mode == "live" and fixtures_dir is not None:
+        print(
+            "ERROR: Contradictory flags: --run-mode live cannot be combined with --fixtures-dir.",
+            file=sys.stderr,
+        )
+        return 2
+    run_mode = str(args.run_mode or ("trial" if fixtures_dir is not None else "live"))
+    if args.health_file:
+        health_state_file = Path(args.health_file).resolve()
+    elif run_mode == "trial" or fixtures_dir is not None:
+        health_state_file = state_dir / "trial_source_health.json"
+    else:
+        health_state_file = state_dir / "source_health.json"
 
     health_tracker = SourceHealthTracker(
-        state_file=state_dir / "source_health.json",
+        state_file=health_state_file,
         alert_threshold_days=int(repo_cfg.sources.get("rate_limits", {}).get("consecutive_failure_alert_days", 3)),
     )
 
@@ -192,6 +248,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     )
 
     llm_client = None if args.deterministic else DualChannelLLMClient.from_user_config(cfg_home)
+    source_origin = "local_fixtures" if fixtures_dir is not None else "live_web"
     issue = build_daily_issue(
         deduped_candidates,
         repo_cfg,
@@ -199,6 +256,8 @@ def cmd_run(args: argparse.Namespace) -> int:
         llm_client=llm_client,
         source_health_alerts=health_alerts,
         feedback_file=state_dir / "feedback.jsonl",
+        run_mode=run_mode,
+        source_origin=source_origin,
     )
 
     issue_file = _write_issue_json(content_dir, issue)
@@ -255,6 +314,8 @@ def cmd_run(args: argparse.Namespace) -> int:
         json.dumps(
             {
                 "date": issue_date,
+                "run_mode": run_mode,
+                "health_state_file": str(health_state_file),
                 "raw_candidates": len(raw_candidates),
                 "deduped_candidates": len(deduped_candidates),
                 "merged_or_skipped": merged_count,
@@ -398,12 +459,27 @@ def build_parser() -> argparse.ArgumentParser:
     sp_feishu.add_argument("--secret", default="")
     sp_feishu.set_defaults(func=cmd_send_feishu)
 
+    sp_health = sub.add_parser(
+        "check-health",
+        help="Strictly validate source_health.json schema (fail-fast) and report failing sources",
+    )
+    sp_health.add_argument("--health-file", default="")
+    sp_health.add_argument(
+        "--strict-sources",
+        action="store_true",
+        help="Also verify every enabled source in config/sources.yaml is present in the health snapshot",
+    )
+    sp_health.add_argument("--json", action="store_true", help="Emit machine-readable JSON report")
+    sp_health.set_defaults(func=cmd_check_health)
+
     sp_run = sub.add_parser("run", help="Run full daily pipeline: collect -> dedup -> filter -> verify -> scan -> build")
     sp_run.add_argument("--date", default="")
     sp_run.add_argument("--content-dir", default="")
     sp_run.add_argument("--out-dir", default="")
     sp_run.add_argument("--fixtures-dir", default="")
     sp_run.add_argument("--config-home", default="")
+    sp_run.add_argument("--health-file", default="", help="Override source health JSON path (auto-isolated for trial runs)")
+    sp_run.add_argument("--run-mode", choices=("live", "trial"), default="", help="Explicitly label issue provenance as live or trial")
     sp_run.add_argument("--deterministic", action="store_true")
     sp_run.add_argument("--push-git", action="store_true")
     sp_run.add_argument("--wait-pages", action="store_true")

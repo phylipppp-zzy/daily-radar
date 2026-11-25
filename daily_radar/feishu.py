@@ -93,9 +93,11 @@ def build_feishu_morning_card(
             item_url = f"{base}/daily/{issue.date}/item-{item.slug}.html"
             badge_bits: list[str] = []
             if item.metric_badges:
-                badge_bits.append(item.metric_badges[0].text)
+                badge_bits.append(item.metric_badges[0].display_text())
             if item.openness_label:
                 badge_bits.append(item.openness_label)
+            if item.four_elements.verdict_label:
+                badge_bits.append(f"研判：{item.four_elements.verdict_label}")
             meta_suffix = f"　`{' · '.join(badge_bits)}`" if badge_bits else ""
             pain = item.one_line_pain.strip()
             item_blocks.append(
@@ -174,9 +176,10 @@ def build_webhook_payload(
         payload["sign"] = gen_feishu_sign(ts, secret)
 
     encoded = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    assert len(encoded) <= MAX_WEBHOOK_PAYLOAD_BYTES, (
-        f"Feishu webhook payload ({len(encoded)} bytes) exceeds {MAX_WEBHOOK_PAYLOAD_BYTES}-byte safety cap!"
-    )
+    if len(encoded) >= MAX_WEBHOOK_PAYLOAD_BYTES:
+        raise ValueError(
+            f"Feishu webhook payload ({len(encoded)} bytes) must be under {MAX_WEBHOOK_PAYLOAD_BYTES} bytes!"
+        )
     return payload
 
 
@@ -246,6 +249,10 @@ def _send_via_feishu_app_api(
         },
         ensure_ascii=False,
     ).encode("utf-8")
+    if len(msg_body) >= MAX_WEBHOOK_PAYLOAD_BYTES:
+        raise ValueError(
+            f"Feishu app_api payload ({len(msg_body)} bytes) must be under {MAX_WEBHOOK_PAYLOAD_BYTES} bytes!"
+        )
     msg_req = urllib.request.Request(
         f"{api_base}/open-apis/im/v1/messages?receive_id_type={receive_id_type}",
         data=msg_body,

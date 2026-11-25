@@ -6,7 +6,11 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import tempfile
 import unittest
+
+from daily_radar.config import RepoConfig
+from daily_radar.renderer import build_static_site
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -15,7 +19,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 @unittest.skipUnless(shutil.which("node"), "Node.js binary required for frontend JS execution test")
 class FrontendJSBehaviorTest(unittest.TestCase):
     def test_app_js_scroll_restore_prev_next_dark_toggle_search_and_cold_viewer(self) -> None:
-        site_dir = REPO_ROOT / "_site"
+        site_tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(site_tmp.cleanup)
+        site_dir = Path(site_tmp.name) / "site"
+        build_static_site(content_dir=REPO_ROOT / "content", repo_cfg=RepoConfig.load(REPO_ROOT), out_dir=site_dir)
         js_files = list((site_dir / "assets").glob("app.*.js"))
         self.assertEqual(len(js_files), 1)
         app_js_path = js_files[0]
@@ -130,12 +137,12 @@ function mountPage(opts) {
   };
 
   function localFetch(relUrl) {
-    const cleaned = relUrl.replace(/^\.\.\//, "").replace(/^\.\//, "");
     const diskPath = path.resolve(siteDir, opts.baseRelDir || ".", relUrl);
     if (!fs.existsSync(diskPath)) {
       return Promise.resolve({ ok: false, status: 404, json: () => Promise.reject(new Error("404")) });
     }
     const data = JSON.parse(fs.readFileSync(diskPath, "utf8"));
+    if (opts.mapResponse) opts.mapResponse(data);
     return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(data) });
   }
 
@@ -259,18 +266,52 @@ function mountPage(opts) {
   await new Promise(r => setTimeout(r, 30));
   assert.ok(searchResults.innerHTML.includes("OODConceptBench"), "Search failed to find OODConceptBench in index-2026.json");
 
-  const coldMount = makeEl("main", { id: "cold-item-mount" });
-  mountPage({
+  const coldOpts = {
     pathname: "/daily-radar/daily/item.html",
     search: "?date=2026-11-22&slug=gui-rl-2610-03818",
     baseRelDir: "daily",
     rootAttrs: { "data-root": "..", "data-page-kind": "cold-item" },
-    byId: { "cold-item-mount": coldMount },
     sessionStorage: session,
     localStorage: local,
+  };
+  const coldMount = makeEl("main", { id: "cold-item-mount" });
+  mountPage({
+    ...coldOpts,
+    byId: { "cold-item-mount": coldMount },
+    mapResponse(issue) {
+      const fe = issue.featured_items.find(item => item.slug === "gui-rl-2610-03818").four_elements;
+      for (const field of ["verdict_label", "verdict_reason", "critique_points", "evidence_boundary"]) delete fe[field];
+    },
   });
   await new Promise(r => setTimeout(r, 30));
   assert.ok(coldMount.innerHTML.includes("Control OSWorld"), "Cold archive viewer failed to render Control OSWorld");
+  assert.ok(!coldMount.innerHTML.includes("el-critique"), "Legacy items should omit critique");
+
+  const reviewedMount = makeEl("main", { id: "cold-item-mount" });
+  mountPage({
+    ...coldOpts,
+    byId: { "cold-item-mount": reviewedMount },
+    mapResponse(issue) {
+      const item = issue.featured_items.find(item => item.slug === "gui-rl-2610-03818");
+      Object.assign(item.four_elements, {
+        verdict_label: "值得精读",
+        verdict_reason: "值得复核 <小样本> 的表现。",
+        critique_points: ["界面变化后还能泛化吗？", "多种子方差是多少？", "同一基座下的增益有多大？"],
+        evidence_boundary: "已结合 arXiv HTML 正文片段与摘要研判",
+      });
+    },
+  });
+  await new Promise(r => setTimeout(r, 30));
+  assert.ok(reviewedMount.innerHTML.includes('<section id="el-critique" class="four-el-card critique-card">'));
+  assert.ok(reviewedMount.innerHTML.includes("⑤ 审稿人视角批判与独立观点"));
+  assert.ok(reviewedMount.innerHTML.includes('<span class="verdict-pill">值得精读</span>'));
+  assert.ok(reviewedMount.innerHTML.includes("值得复核 &lt;小样本&gt; 的表现。"));
+  assert.ok(reviewedMount.innerHTML.includes(
+    '<ol class="critique-list"><li>界面变化后还能泛化吗？</li><li>多种子方差是多少？</li><li>同一基座下的增益有多大？</li></ol>'
+  ));
+  assert.ok(reviewedMount.innerHTML.includes(
+    '<footer class="evidence-boundary">已结合 arXiv HTML 正文片段与摘要研判</footer>'
+  ));
   console.log(JSON.stringify({ ok: true }));
 })().catch(err => {
   console.error(err);

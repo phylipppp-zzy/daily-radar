@@ -288,6 +288,12 @@ def _seed_historical_issues(content_dir: Path) -> None:
                 venue_or_source="arXiv cs.HC",
             )
         ],
+        run_mode="trial",
+        provenance={
+            "run_mode": "trial",
+            "distiller": "deterministic-verified",
+            "source_origin": "seeded_trial",
+        },
     )
     issue22.validate()
 
@@ -548,6 +554,12 @@ def _seed_historical_issues(content_dir: Path) -> None:
                 venue_or_source="GitHub Release",
             )
         ],
+        run_mode="trial",
+        provenance={
+            "run_mode": "trial",
+            "distiller": "deterministic-verified",
+            "source_origin": "seeded_trial",
+        },
     )
     issue23.validate()
 
@@ -757,6 +769,10 @@ def main() -> int:
                     "run",
                     "--date",
                     "2026-11-24",
+                    "--run-mode",
+                    "trial",
+                    "--health-file",
+                    str(REPO_ROOT / "state" / "trial_source_health.json"),
                     "--content-dir",
                     str(content_dir),
                     "--out-dir",

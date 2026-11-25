@@ -103,10 +103,16 @@ class FeishuAndSchedulerTest(unittest.TestCase):
             "headline": "🎯 AAAI 2027 放榜特刊窗口已开启",
             "url": "conferences/aaai-2027.html",
         }
+        issue.featured_items[0].four_elements.verdict_label = "基准有参考价值"
         card = build_feishu_morning_card(issue, public_base_url="https://phylipppp-zzy.github.io/daily-radar")
         self.assertEqual(card["schema"], "2.0")
         self.assertEqual(card["header"]["template"], "carmine")
         self.assertIn("[顶会特刊]", card["header"]["title"]["content"])
+        item_brief = next(
+            element["content"] for element in card["body"]["elements"]
+            if element.get("content", "").startswith("**1. ")
+        )
+        self.assertIn(" · 研判：基准有参考价值`", item_brief)
 
         payload = build_webhook_payload(card, secret="sec123", timestamp=1795485600)
         raw_bytes = json.dumps(payload, ensure_ascii=False).encode("utf-8")

@@ -16,6 +16,7 @@ sources:
     section: "papers"
     enabled: true
     url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.CL+OR+cat:cs.LG+OR+cat:cs.AI+OR+cat:cs.HC)+AND+(all:%22GUI+agent%22+OR+all:%22computer+use%22+OR+all:%22computer-use%22+OR+all:%22OSWorld%22+OR+all:%22AndroidWorld%22+OR+all:%22WebArena%22)&sortBy=submittedDate&sortOrder=descending&max_results=40"
+    openalex_query: '"GUI agent" OR "computer use" OR "OSWorld" OR "AndroidWorld" OR "WebArena"'
 
   - id: "arxiv-ossl-ood"
     name: "arXiv Daily (Open-Set SSL / VLM OOD / GCD)"
@@ -23,6 +24,7 @@ sources:
     section: "papers"
     enabled: true
     url: "https://export.arxiv.org/api/query?search_query=(cat:cs.CV+OR+cat:cs.LG)+AND+(all:%22open-set+semi-supervised%22+OR+all:%22out-of-distribution+detection%22+OR+all:%22generalized+category+discovery%22+OR+all:%22negative+label%22)&sortBy=submittedDate&sortOrder=descending&max_results=35"
+    openalex_query: '"open-set semi-supervised" OR "out-of-distribution detection" OR "generalized category discovery" OR "negative label"'
 
   - id: "hf-daily-papers"
     name: "Hugging Face Daily Papers"
@@ -94,7 +96,10 @@ sources:
     section: "industry"
     org: "Anthropic"
     enabled: true
-    url: "https://www.anthropic.com/rss.xml"
+    url: "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_research.xml"
+    extra_urls:
+      - "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_engineering.xml"
+      - "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml"
 
   - id: "blog-openai"
     name: "OpenAI News & Research"
@@ -118,7 +123,10 @@ sources:
     section: "industry"
     org: "阿里通义 Qwen"
     enabled: true
-    url: "https://qwenlm.github.io/feed.xml"
+    url: "https://github.com/QwenLM/qwen-code/releases.atom"
+    extra_urls:
+      - "https://github.com/QwenLM/Qwen3/releases.atom"
+      - "https://github.com/QwenLM/Qwen2.5-VL/releases.atom"
 
   - id: "blog-microsoft-research"
     name: "Microsoft Research Blog"

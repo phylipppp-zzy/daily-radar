@@ -541,6 +541,27 @@
             return;
           }
           var fe = found.four_elements || {};
+          var critiqueHtml = "";
+          var points = fe.critique_points || [];
+          if (fe.verdict_label || fe.verdict_reason || points.length || fe.evidence_boundary) {
+            critiqueHtml = '<section id="el-critique" class="four-el-card critique-card">' +
+              '<h2>⑤ 审稿人视角批判与独立观点</h2>';
+            if (fe.verdict_label || fe.verdict_reason) {
+              critiqueHtml += '<div class="verdict-banner">' +
+                (fe.verdict_label ? '<span class="verdict-pill">' + escapeHtml(fe.verdict_label) + '</span>' : '') +
+                (fe.verdict_reason ? '<p>' + escapeHtml(fe.verdict_reason) + '</p>' : '') +
+                '</div>';
+            }
+            if (points.length) {
+              critiqueHtml += '<ol class="critique-list">' + points.map(function (point) {
+                return '<li>' + escapeHtml(point) + '</li>';
+              }).join('') + '</ol>';
+            }
+            if (fe.evidence_boundary) {
+              critiqueHtml += '<footer class="evidence-boundary">' + escapeHtml(fe.evidence_boundary) + '</footer>';
+            }
+            critiqueHtml += '</section>';
+          }
           var backHref = d + "/index.html";
           mount.innerHTML =
             '<div class="detail-header"><h1 class="detail-h1">' + escapeHtml(found.title_zh) + "</h1>" +
@@ -552,6 +573,7 @@
             '<section class="four-el-card"><h2>② 具体方法机制</h2><p>' + escapeHtml(fe.mechanism || "") + "</p></section>" +
             '<section class="four-el-card"><h2>③ 实验基准数字与对比口径</h2><p>' + escapeHtml(fe.experiments_summary || "") + "</p></section>" +
             '<section class="four-el-card"><h2>④ 公开技术参考与复现成本评估</h2><p>' + escapeHtml(fe.repro_and_reference || "") + "</p></section>" +
+            critiqueHtml +
             '<details class="abstract-box"><summary>展开/收起原文英文摘要对照</summary><div class="abstract-content">' + escapeHtml(found.abstract_en || "") + "</div></details>";
           var coldBack = document.getElementById("cold-return-btn");
           if (coldBack) {

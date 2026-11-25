@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 from daily_radar.config import RepoConfig
+from daily_radar.models import RadarItem
 from daily_radar.renderer import build_static_site
 
 
@@ -50,6 +51,51 @@ class RendererAndSiteTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.repo_cfg = RepoConfig.load(REPO_ROOT)
         cls.site_dir = REPO_ROOT / "_site"
+
+    def test_critique_fields_round_trip_and_render_only_when_present(self) -> None:
+        source = REPO_ROOT / "content" / "2026" / "11" / "2026-11-24.json"
+        issue_data = json.loads(source.read_text(encoding="utf-8"))
+        reviewed, legacy = issue_data["featured_items"][:2]
+        critique = {
+            "verdict_label": "基准有参考价值",
+            "verdict_reason": "可借鉴评测划分，训练增益仍待控制变量。",
+            "critique_points": ["界面布局变化后还能泛化吗？", "同算力基线的方差是多少？", "固定数据后微调的增益还有多少？"],
+            "evidence_boundary": "仅基于摘要与元数据研判",
+        }
+        for key in critique:
+            legacy["four_elements"].pop(key, None)
+        legacy_item = RadarItem.from_dict(legacy)
+        self.assertEqual(legacy_item.four_elements.verdict_label, "")
+        self.assertEqual(legacy_item.four_elements.verdict_reason, "")
+        self.assertEqual(legacy_item.four_elements.critique_points, [])
+        self.assertEqual(legacy_item.four_elements.evidence_boundary, "")
+        legacy_item.four_elements.critique_points.append("检查默认列表是否独立")
+        self.assertEqual(RadarItem.from_dict(legacy).four_elements.critique_points, [])
+
+        reviewed["four_elements"].update(critique)
+        restored = RadarItem.from_dict(RadarItem.from_dict(reviewed).to_dict())
+        self.assertEqual({key: getattr(restored.four_elements, key) for key in critique}, critique)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            content_dir = Path(tmp) / "content"
+            content_file = content_dir / "2026" / "11" / source.name
+            content_file.parent.mkdir(parents=True)
+            content_file.write_text(json.dumps(issue_data, ensure_ascii=False), encoding="utf-8")
+            site_dir = Path(tmp) / "site"
+            build_static_site(content_dir=content_dir, repo_cfg=self.repo_cfg, out_dir=site_dir)
+            day_dir = site_dir / "daily" / issue_data["date"]
+            overview = (day_dir / "index.html").read_text(encoding="utf-8")
+            self.assertIn('class="badge verdict-pill">研判：基准有参考价值</span>', overview)
+            detail = (day_dir / f"item-{reviewed['slug']}.html").read_text(encoding="utf-8")
+            self.assertIn('<section id="el-critique" class="four-el-card critique-card">', detail)
+            self.assertIn('<a class="nav-pill" href="#el-critique">⑤ 审稿批判</a>', detail)
+            self.assertIn('<span class="verdict-pill">基准有参考价值</span>', detail)
+            self.assertIn(f"<p>{critique['verdict_reason']}</p>", detail)
+            points = "".join(f"<li>{point}</li>" for point in critique["critique_points"])
+            self.assertIn(f'<ol class="critique-list">{points}</ol>', detail)
+            self.assertIn(f'<footer class="evidence-boundary">{critique["evidence_boundary"]}</footer>', detail)
+            legacy_detail = (day_dir / f"item-{legacy['slug']}.html").read_text(encoding="utf-8")
+            self.assertNotIn("el-critique", legacy_detail)
 
     def test_every_html_file_has_valid_relative_links_and_external_assets(self) -> None:
         html_files = sorted(self.site_dir.rglob("*.html"))
@@ -206,11 +252,25 @@ class RendererAndSiteTest(unittest.TestCase):
             srv.shutdown()
             srv.server_close()
 
-        # Tier-3 search index shard check
+        # Tier-3 search index shard check (computed dynamically from content/2026/*.json)
         years_json = json.loads((self.site_dir / "data" / "years.json").read_text(encoding="utf-8"))
         self.assertIn("2026", years_json["years"])
         shard_2026 = json.loads((self.site_dir / "data" / "index-2026.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(shard_2026), 17)
+        expected_2026_items = sum(
+            len(json.loads(p.read_text(encoding="utf-8")).get("featured_items", []))
+            for p in (REPO_ROOT / "content" / "2026").rglob("*.json")
+        )
+        self.assertEqual(len(shard_2026), expected_2026_items)
+
+        # Provenance badges: trial (2026-11-24) vs live (2026-11-25) must be visually & structurally distinct
+        trial_overview = (self.site_dir / "daily" / "2026-11-24" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('data-run-mode="trial"', trial_overview)
+        self.assertIn("TRIAL 演练样本", trial_overview)
+        self.assertIn("trial-verified-distiller", trial_overview)
+        live_overview = (self.site_dir / "daily" / "2026-11-25" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('data-run-mode="live"', live_overview)
+        self.assertIn("LIVE 实采", live_overview)
+        self.assertIn("gemini-agy-primary", live_overview)
 
     def test_cold_archive_tiering_mode_omits_old_detail_files(self) -> None:
         # With hot_years_override=0, only latest day (0 days diff) is hot; 2026-11-22 & 2026-11-23 become cold

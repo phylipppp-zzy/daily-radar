@@ -15,6 +15,12 @@
   "special_conference_banner": null,
   "source_health_alerts": [],
   "llm_channel_used": "gemini-agy-primary",
+  "run_mode": "live",
+  "provenance": {
+    "run_mode": "live",
+    "distiller": "gemini-agy-primary",
+    "source_origin": "live_web"
+  },
   "featured_items": [
     {
       "slug": "gui-rl-2611-27467",

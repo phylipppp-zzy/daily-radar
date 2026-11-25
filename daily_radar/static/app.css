@@ -533,6 +533,54 @@ a:hover {
   margin-bottom: 0;
 }
 
+.critique-card {
+  border-inline-start: 4px solid var(--amber-border);
+  overflow-wrap: anywhere;
+}
+
+.verdict-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  background: var(--bg-subtle);
+  border-radius: 8px;
+}
+
+.verdict-banner p {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+.verdict-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--amber-border);
+  border-radius: 999px;
+  background: var(--amber-bg);
+  color: var(--amber-fg);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.critique-list {
+  margin: 12px 0 0;
+  padding-inline-start: 1.6em;
+}
+
+.critique-list li + li {
+  margin-top: 8px;
+}
+
+.evidence-boundary {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
 .spec-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

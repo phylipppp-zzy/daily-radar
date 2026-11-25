@@ -6,10 +6,12 @@ from dataclasses import dataclass
 from datetime import date, datetime
 import json
 import math
+import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import tempfile
 from typing import Any
 import urllib.error
 import urllib.request
@@ -338,6 +340,31 @@ class DualChannelLLMClient:
             raise json.JSONDecodeError("Expected JSON object", cleaned, 0)
         return obj
 
+    @staticmethod
+    def _cleanup_agy_conversation(conversation_id: str) -> bool:
+        ls_addr = os.environ.get("ANTIGRAVITY_LS_ADDRESS", "").strip()
+        csrf_token = os.environ.get("ANTIGRAVITY_CSRF_TOKEN", "").strip()
+        if not conversation_id or not ls_addr or not csrf_token:
+            return False
+        endpoint = f"http://{ls_addr}/product.v1.ConversationService/DeleteConversation"
+        body = json.dumps({"conversationId": conversation_id}).encode("utf-8")
+        req = urllib.request.Request(
+            endpoint,
+            data=body,
+            headers={
+                "Content-Type": "application/json",
+                "Connect-Protocol-Version": "1",
+                "x-antigravity-csrf-token": csrf_token,
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                resp.read()
+            return True
+        except (urllib.error.URLError, TimeoutError, OSError):
+            return False
+
     def _call_agy_cli_channel(
         self,
         channel: dict[str, Any],
@@ -351,6 +378,15 @@ class DualChannelLLMClient:
             or ("gemini-4-neon-medium" if stage == "distill" else "gemini-4-hydrogen-medium")
         )
         timeout_sec = float(channel.get("timeout_sec", 120))
+        agy_cwd = str(channel.get("agy_cwd") or tempfile.gettempdir()).strip() or tempfile.gettempdir()
+        cleanup_enabled = bool(channel.get("cleanup_conversation", True))
+        can_delete_via_ls = bool(
+            cleanup_enabled
+            and os.environ.get("ANTIGRAVITY_LS_ADDRESS", "").strip()
+            and os.environ.get("ANTIGRAVITY_CSRF_TOKEN", "").strip()
+        )
+        reuse_when_no_ls = bool(channel.get("reuse_session_when_no_ls", True)) and not can_delete_via_ls
+
         prompt_parts = []
         for msg in messages:
             role = str(msg.get("role") or "user").upper()
@@ -359,27 +395,42 @@ class DualChannelLLMClient:
         prompt_parts.append("\nOutput ONLY one valid JSON object with no markdown commentary.")
         full_prompt = "\n\n".join(prompt_parts)
 
+        cmd = [
+            agy_bin,
+            "--output-format",
+            "json",
+            "--model",
+            model,
+            "--disable-slash-commands",
+        ]
+        reused_conv_id = getattr(self, "_agy_reused_conversation_id", "")
+        if reuse_when_no_ls and reused_conv_id:
+            cmd.extend(["--conversation", reused_conv_id])
+        cmd.append(f"-p={full_prompt}")
+
         proc = subprocess.run(
-            [
-                agy_bin,
-                "--output-format",
-                "json",
-                "--model",
-                model,
-                "--disable-slash-commands",
-                f"-p={full_prompt}",
-            ],
+            cmd,
+            cwd=agy_cwd,
             capture_output=True,
             text=True,
             timeout=timeout_sec,
             check=False,
         )
         if proc.returncode != 0:
+            if reuse_when_no_ls and reused_conv_id:
+                self._agy_reused_conversation_id = ""
             raise RuntimeError(f"agy CLI failed (rc={proc.returncode}): {(proc.stderr or proc.stdout).strip()[:200]}")
         outer = json.loads(proc.stdout)
-        if outer.get("status") != "SUCCESS" or "response" not in outer:
-            raise RuntimeError(f"agy CLI returned non-success payload: {str(outer)[:200]}")
-        return self._extract_json_object(str(outer["response"]))
+        conv_id = str(outer.get("conversation_id") or "").strip()
+        try:
+            if outer.get("status") != "SUCCESS" or "response" not in outer:
+                raise RuntimeError(f"agy CLI returned non-success payload: {str(outer)[:200]}")
+            if reuse_when_no_ls and conv_id and not reused_conv_id:
+                self._agy_reused_conversation_id = conv_id
+            return self._extract_json_object(str(outer["response"]))
+        finally:
+            if can_delete_via_ls and conv_id:
+                self._cleanup_agy_conversation(conv_id)
 
     def _call_single_channel(
         self,

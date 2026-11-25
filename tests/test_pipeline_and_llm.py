@@ -330,10 +330,13 @@ class PipelineAndLLMTest(unittest.TestCase):
 
     def test_agy_cli_gemini_primary_channel(self) -> None:
         from unittest.mock import patch
+        import os
         import subprocess
+        import tempfile
 
         fake_stdout = json.dumps(
             {
+                "conversation_id": "conv-ephemeral-123",
                 "status": "SUCCESS",
                 "response": '```json\n{"title_zh": "Gemini 提炼测试", "one_line_pain": "测试"}\n```',
             },
@@ -351,15 +354,60 @@ class PipelineAndLLMTest(unittest.TestCase):
                 }
             }
         )
-        with patch(
+        with patch.dict(
+            os.environ,
+            {"ANTIGRAVITY_LS_ADDRESS": "127.0.0.1:49999", "ANTIGRAVITY_CSRF_TOKEN": "tok-test"},
+            clear=False,
+        ), patch(
             "daily_radar.pipeline.subprocess.run",
             return_value=subprocess.CompletedProcess(args=["agy"], returncode=0, stdout=fake_stdout, stderr=""),
-        ) as mock_run:
+        ) as mock_run, patch.object(
+            DualChannelLLMClient, "_cleanup_agy_conversation", return_value=True
+        ) as mock_cleanup:
             out = client.complete_json([{"role": "user", "content": "hi"}], stage="distill")
         self.assertEqual(out["title_zh"], "Gemini 提炼测试")
         self.assertEqual(client.last_channel_used, "gemini-agy-primary")
         called_cmd = mock_run.call_args[0][0]
         self.assertIn("gemini-4-neon-medium", called_cmd)
+        self.assertEqual(mock_run.call_args.kwargs.get("cwd"), tempfile.gettempdir())
+        mock_cleanup.assert_called_once_with("conv-ephemeral-123")
+
+    def test_agy_cli_reuses_single_conversation_when_ls_env_absent(self) -> None:
+        from unittest.mock import patch
+        import os
+        import subprocess
+
+        fake_stdout = json.dumps(
+            {
+                "conversation_id": "conv-systemd-001",
+                "status": "SUCCESS",
+                "response": '{"title_zh": "复用会话", "one_line_pain": "测试"}',
+            },
+            ensure_ascii=False,
+        )
+        client = DualChannelLLMClient(
+            {
+                "primary": {
+                    "name": "gemini-agy-primary",
+                    "provider": "agy_cli",
+                    "agy_bin": "/bin/echo",
+                    "distill_model": "gemini-4-neon-medium",
+                    "timeout_sec": 30,
+                }
+            }
+        )
+        clean_env = {k: v for k, v in os.environ.items() if k not in ("ANTIGRAVITY_LS_ADDRESS", "ANTIGRAVITY_CSRF_TOKEN")}
+        with patch.dict(os.environ, clean_env, clear=True), patch(
+            "daily_radar.pipeline.subprocess.run",
+            return_value=subprocess.CompletedProcess(args=["agy"], returncode=0, stdout=fake_stdout, stderr=""),
+        ) as mock_run:
+            client.complete_json([{"role": "user", "content": "first"}], stage="distill")
+            client.complete_json([{"role": "user", "content": "second"}], stage="distill")
+        first_cmd = mock_run.call_args_list[0][0][0]
+        second_cmd = mock_run.call_args_list[1][0][0]
+        self.assertNotIn("--conversation", first_cmd)
+        self.assertIn("--conversation", second_cmd)
+        self.assertIn("conv-systemd-001", second_cmd)
 
 
 if __name__ == "__main__":

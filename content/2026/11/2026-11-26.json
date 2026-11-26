@@ -1,0 +1,542 @@
+{
+  "date": "2026-11-26",
+  "weekday_zh": "周四",
+  "generated_at_cst": "2026-11-26 09:27:25 CST",
+  "global_trend_summary": [
+    "今日共从增量候选池中精选 2 条高信噪比动态（GUI-RL 论文 1 篇、OSSL/OOD 论文 0 篇、开源与业界前沿 1 条），另折叠泛相关速览 20 条。",
+    "核心看点聚焦：[VLM/RL底座] TRL v1.19.0：多教师智能体蒸馏…；[GUI-RL] SPARK：基于冻结VLM语义探针与注意力引导的自适应GUI视觉定位。",
+    "近期顶会关键节点提醒：AAAI 2027（4 天后 2026-11-30）、NeurIPS 2026（10 天后 2026-12-06）、ICLR 2027（20 天后 2026-12-16）。"
+  ],
+  "highlights_top3": [
+    "• [VLM/RL底座] huggingface：TRL v1.19.0：多教师智能体蒸馏、SDPA行打包提速与AsyncGRPO工程加固（SDPA打包SFT提速2倍(2.06→1.02 s/step)）",
+    "• [GUI-RL] SPARK：基于冻结VLM语义探针与注意力引导的自适应GUI视觉定位（ScreenSpot-Pro平均+18.4pp）"
+  ],
+  "special_conference_banner": null,
+  "source_health_alerts": [],
+  "llm_channel_used": "gemini-agy-primary",
+  "run_mode": "live",
+  "provenance": {
+    "run_mode": "live",
+    "distiller": "gemini-agy-primary",
+    "source_origin": "live_web"
+  },
+  "featured_items": [
+    {
+      "slug": "vlm-infra-huggingface-trl-v1-19-0",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "rl-framework",
+        "inference-engine",
+        "multimodal-base"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "huggingface"
+      ],
+      "title_zh": "TRL v1.19.0：多教师智能体蒸馏、SDPA行打包提速与AsyncGRPO工程加固",
+      "title_en": "huggingface/trl v1.19.0",
+      "one_line_pain": "针对SFT打包OOM、AsyncGRPO打包慢及QLoRA同步漂移，改行打包、数组微批与离位合并，并加多教师蒸馏",
+      "metric_badges": [
+        {
+          "text": "SDPA打包SFT提速2倍(2.06→1.02 s/step)",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "AsyncGRPO吞吐+28%(4×B300)",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": true,
+      "small_compute_note": "原文标注：LoRA",
+      "authors": [
+        "huggingface"
+      ],
+      "published_date": "2026-11-25",
+      "venue_or_source": "GitHub Release (v1.19.0)",
+      "url_primary": "https://github.com/huggingface/trl/releases/tag/v1.19.0",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "https://github.com/huggingface/trl",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "Apache-2.0 / MIT",
+      "corroborating_sources": [],
+      "abstract_en": "## Features\r\n### 👥 Multi-teacher and agent distillation\r\n`DistillationTrainer` takes a dict of teachers, and each example's `teacher_id` column picks the one that scores its completion: the fusion stage of [MOPD](https://huggingface.co/papers/2606.30406). It also takes `environment_factory`, with the same contract as `GRPOTrainer`, so agents can be distilled against stateful environments.\r\n```python\r\ntrainer = DistillationTrainer(\r\n model=\"Qwen/Qwen2.5-0.5B-Instruct\",\r\n teacher_model={\"math\": \"Qwen/Qwen2.5-Math-1.5B-Instruct\", \"code\": \"Qwen/Qwen2.5-Coder-1.5B-Instruct\"},\r\n train_dataset=dataset, # with a \"teacher_id\" column: \"math\" or \"code\"\r\n)\r\n```\r\n* Implement MOPD for the `DistillationTrainer` by @cmpatino in https://github.com/huggingface/trl/pull/7215\r\n* Add `environment_factory` support to `DistillationTrainer` by @sergiopaniego in https://github.com/huggingface/trl/pull/8453\r\n### 🕐 Inkling 2 Mini\r\nSupport for [`thinkingmachines/Inkling-2-Mini`](https://huggingface.co/thinkingmachines/Inkling-2-Mini): coverage in the VLM tests and an [example](https://github.com/huggingface/trl/tree/main/examples/sft_inkling_2_mini_clocks) that teaches it to read analog clocks. LoRA SFT on one H100 in 53 min takes it from 0% to **87.0% of held-out clocks read to the second**. Needs `transformers>=5.24.0`.\r\n* Add Inkling 2 Mini: tiny model, tests and clock-reading SFT example by @qgallouedec in https://github.com/huggingface/trl/pull/8517\r\n* Add a tiny Inkling 2 model and run it in the VLM tests by @qgallouedec in https://github.com/huggingface/trl/pull/8498\r\n* Add a tiny Inkling model by @albertvillanova in https://github.com/huggingface/trl/pull/8512\r\n### ⚡ AsyncGRPO: faster packing, more architectures\r\n* **Plan and pack micro-batches with array operations**: on Qwen3-1.7B math rollouts (4×B300), planning + packing goes from 18 s to 1 s per pass, **+28% trained tokens/s**, with bit-identical batches. By @qgallouedec in https://github.com/huggingface/trl/pull/8533\r\n* **Nemotron-H tree packing**: Mamba2 layers (Nemotron-H, Granite-4.0-H, Bamba) now follow the tree, with new Triton tree scan, conv and fused mixer kernels. By @AmineDiro in https://github.com/huggingface/trl/pull/8457\r\n* **LFM in tree attention** by @younesbelkada in https://github.com/huggingface/trl/pull/7966\r\n### ✂️ 2x faster packed SFT with SDPA\r\nBFD packing (the default with `packing=True`) flattened the batch into one row, so SDPA attended across the whole batch: quadratic, and out of memory on Trainium. Packed examples now stay as rows, with `position_ids` restarting at each sequence. `padding_free=True` still flattens.\r\ns/step with `packing_strategy=\"bfd\"`:\r\n| | v1.18 | v1.19 |\r\n| --- | --- | --- |\r\n| H100, Qwen3-1.7B, SDPA | 2.06 | **1.02** |\r\n| H100, Qwen3-1.7B, flash attention 2 | 0.828 | 0.832 |\r\n| Trainium2, Qwen3-0.6B, compiled | crashes | **3.2** |\r\nby @qgallouedec in https://github.com/huggingface/trl/pull/7804\r\n### 🛑 Fine-tuned models stop at the end of their turn\r\nQwen base, Gemma 1/2 instruct, Qwen3.5 and a few others don't list their chat template's end-of-turn token as a stop token, so a model fine-tuned on them generated until `max_new_tokens`. `SFTTrainer` now adds that token to `generation_config.eos_token_id` when it's missing, and changes nothing elsewhere (checked on the 348 matching checkpoints among the 3000 most-downloaded Hub repos).\r\nby @albertvillanova in https://github.com/huggingface/trl/pull/8565\r\n### 💬 More chat templates\r\n`assistant_only_loss=True` and tool calling work on more checkpoints, all by @albertvillanova:\r\n* Assistant-only loss: DeepSeek-V3.1 (#8431), DeepSeek-V3.2-Exp (#8471), DeepSeek-R1-Distill (#8529), SmolLM2 (#8444), Phi-4 (#8445), Gemma 4 (#8493), GLM-4.7 and GLM-5 (#8494), Qwen3-Coder (#8496), Llama 3.1 and 3.2 (#8495), OLMo 3 Think (#8475), LFM2-24B-A2B (#8526), Inkling (#8513)\r\n* Tool calling: DeepSeek-R1-0528 and V3-0324 (#8443), DeepSeek-V3.1 and V3.2-Exp (#8508)\r\n* More template revisions recognized (#8272, #8275, #8317, #8467, #8468, #8503, #8509, #8510, #8527, #8528, #8561, #8562, #8575)\r\n### Other\r\n* **Grade accuracy rewards in a separate process so a pathological answer can't hang training**: an answer like `5^{5^{5^{5^5}}}` blocked math-verify forever and killed AsyncGRPO runs. By @sergiopaniego in https://github.com/huggingface/trl/pull/8330\r\n* Support `pad_to_multiple_of` with vision-language models in SFT, DPO and KTO, which fixes VLM training on Trainium, by @albertvillanova in https://github.com/huggingface/trl/pull/8553\r\n* Raise in AsyncGRPO when a whole pass over the prompts drops every group, instead of hanging, by @albertvillanova in https://github.com/huggingface/trl/pull/8425\r\n* Add an s3 multi-agent aggregation example (held-out team success 4.7% → 60.9%) by @kashif in https://github.com/huggingface/trl/pull/8424\r\n* Detect HF Jobs via `HF_JOB_ID` and add the hardware flavor to the model card by @davanstrien in https://github.com/huggingface/trl/pull/8576\r\n* Load the processing class in `OnlineDPOTrainer` when it is omitted by @behroozazarkhalili in https://github.com/huggingface/trl/pull/7519\r\n* Add Python 3.15 to the test matrix and the classifiers by @qgallouedec in https://github.com/huggingface/trl/pull/7498\r\n### Removals and requirement bumps\r\n* **Add support for vLLM 0.34.x**, so the range is `vllm>=0.23.0, =0.18.0` and drop the peft 0.17 compatibility code by @albertvillanova in https://github.com/huggingface/trl/pull/8426\r\n* Require `accelerate>=1.12.0` and drop the older accelerate fallbacks by @albertvillanova in https://github.com/huggingface/trl/pull/8542\r\n* Default `ModelConfig.model_revision` to `None` like the other revision arguments by @albertvillanova in https://github.com/huggingface/trl/pull/8530\r\n* Follow the transformers 5.23 rename of gradient checkpointing to activation checkpointing by @qgallouedec in https://github.com/huggingface/trl/pull/8113\r\n## Fixes\r\n* **Merge LoRA adapters out of place for the vLLM weight sync.** Frozen weights moved at every sync and a 4-bit base was sent packed. QLoRA in server mode now works, and the server-mode log-prob gap on Qwen2.5-0.5B drops from 0.19–0.24 to 0.02–0.04. By @qgallouedec in https://github.com/huggingface/trl/pull/8269\r\n* **Stop pasting a fake tool call before every tool result** when the eos is ` `, as in Unsloth's Gemma 4 tokenizers (#8521), **and repeating GLM's ` `** (#8522), by @qgallouedec\r\n* **Read vLLM >= 0.32 generate log-probs in AsyncGRPO**, which raised `KeyError: 'token'` on the first rollout with `top_k` or `top_p`, by @rycerzes in https://github.com/huggingface/trl/pull/8573\r\n* **Fix AsyncGRPO score-centering tail ratios and sampler validation** by @kashif in https://github.com/huggingface/trl/pull/8373 and https://github.com/huggingface/trl/pull/8414\r\n* Keep the generation prompt's ` \\n` out of the DeepSeek-V3 (#8313) and DeepSeek-R1-Distill (#8314) assistant-only loss, and its `\\n` out of Qwen2.5's (#8279), by @albertvillanova\r\n* Fix `BEMACallback` when some parameters are frozen by @qgallouedec in https://github.com/huggingface/trl/pull/8455\r\n* Keep the `environment` column in GRPO when `remove_unused_columns=True` by @qgallouedec in https://github.com/huggingface/trl/pull/8520\r\n* Load a reward model given by name without the policy's revision by @albertvillanova in https://github.com/huggingface/trl/pull/8538\r\n* Skip the InternVL tile count for models that split their images by `image_grid_thw`, so GRPO and RLOO no longer crash on Inkling 2, by @qgallouedec in https://github.com/huggingface/trl/pull/8484\r\n* Convert nested image arrays with `np.array` before making tensors in GRPO, RLOO and Distillation by @albertvillanova in https://github.com/huggingface/trl/pull/8394\r\n* Render `None` content as empty text in the GLM-4-MoE training template by @albertvillanova in https://github.com/huggingface/trl/pull/8454\r\n* Skip torch's sparse invariant checks for GOLD's X-Token projection matrix by @albertvillanova in https://github.com/huggingface/trl/pull/8393\r\n* AsyncDistillation: freeze the vision tower of VLM students (#8412), load students with the architecture their config declares (#8413), and fix VLM students on transformers < 5.0 (#8462), by @albertvillanova\r\n* Fix the CLI parser on Python 3.15 by @qgallouedec in https://github.com/huggingface/trl/pull/8271\r\n* Compare version checks against plain release versions, not .dev0, by @qgallouedec in https://github.com/huggingface/trl/pull/8256\r\n* Drop `--api-server-count` from the AsyncGRPO adapter-sync command, which vLLM rejects, by @sergiopaniego in https://github.com/huggingface/trl/pull/8383\r\n* Gate the MoE dense and shared layer LoRA warning on peft 0.22.0 (#8328, #8483) and only check models whose targets peft remaps (#8428), by @albertvillanova\r\n## Documentation\r\n* Fix dead links in the docs by @erdogan-deniz in https://github.com/huggingface/trl/pull/8459\r\n* Clarify `max_completion_length` (#8450) and `max_tool_calling_iterations` (#8464) with tools, the sessions `environment_factory` opens on OpenEnv servers (#8452), and why the rollout worker can't start child processes (#8463), by @sergiopaniego\r\n* Add the results to the Wordle example README (#8099), open one OpenEnv client per game (#8129), update the blog posts on the landing page (#8579) and point to the new OpenEnv docs site (#8586), by @sergiopaniego\r\n* Use the activation checkpointing names in the docs (#8114) and examples (#8117), and the stable `DistillationTrainer` API everywhere (#8293), by @qgallouedec\r\n* Add Albert Villanova del Moral and Sergio Paniego Blanco to the TRL citation by @qgallouedec in https://github.com/huggingface/trl/pull/8335\r\n* Document that assigned issues belong to their assignee by @albertvillanova in https://github.com/huggingface/trl/pull/8534\r\n## CI\r\n**Flash Attention compatible tiny models**, all by @albertvillanova: Gemma3, Mistral Large 4, GLM-5.3-Flash, Remote, Phi-3, Phi-3.5, LFM2, LFM2.5, LFM2.5-MoE, LFM2.5-VL, Qwen2-VL, Qwen3-VL, LLaVA-NeXT, Idefics2, Idefics3, InternVL, Granite 4.0 hybrid, GPT-2, OPT, GPT-NeoX, Bart and Muse Glimmer (#8319, #8320, #8321, #8380, #8381, #8382, #8409, #8410, #8411, #8435, #8436, #8437, #8446, #8478, #8479, #8480, #8481, #8482, #8487, #8488, #8489, #8536, #8537), the Qwen3 models at `head_dim=16`, the smallest vLLM allows (#8415, #8416, #8417), and fallbacks for the models that refuse it (#8399, #8401, #8402, #8403, #8404)\r\n**Tiny models**, all by @albertvillanova: pin every tiny model to a Hub commit (#8262, #8264, #8531, #8539), FP8 checkpoints laid out like their references for GLM-5.3-Flash and Mistral3 (#8227, #8298), and new tiny Qwen3-Coder and Qwen3-Coder-Next (#8449, #8544)\r\n**Tests that run what users run**: AsyncGRPO tests on GRPO's layout (#8146), tools and environments tested through what the user sees (#8251), adapter sync on the stand-in server (#8368), prompt tuning settings (#8557) and consistent test ids (#8563) by @qgallouedec; tiny Qwen3 in the vLLM tests (#8297), tiny models in the async tests (#8470), an MoE teacher in the distillation tests (#8492), conversational data and reward functions in the router and packing tests (#8336, #8337, #8338), AsyncGRPO fp16 (#8421), RewardTrainer with prompt learning (#8485) and the Qwen3-Coder tool-call tests (#8515, #8545) by @albertvillanova\r\n**Other**, all by @albertvillanova: run the OpenEnv harness tests in the experimental CI (#8036), skip experimental tests on draft PRs (#8301), post chat template checks to Slack only from main (#8408), time out test steps after 60 minutes (#8422), report tests that raise peak host memory by 2 GB or more (#8442), stand-in vLLM server fixes (#8379, #8430), chat template tests (#8312, #8570), test fixes (#8261, #8265, #8407, #8448), warning filters (#8392, #8395, #8396, #8397, #8543), plus dependency bumps by @dependabot[bot] (#8374, #8519)\r\n## New Contributors\r\n* @erdogan-deniz made their first contribution in https://github.com/huggingface/trl/pull/8459\r\n**Full Changelog**: https://github.com/huggingface/trl/compare/v1.18.0...v1.19.0",
+      "four_elements": {
+        "pain_point": "① 在后训练和强化学习工程中，旧版存在多处高频翻车点：其一，默认最佳适配降序打包（BFD）会把整个批次展平为单行，导致PyTorch原生缩放点积注意力（SDPA）出现跨序列二次方计算复杂度，不仅拖慢速度，在Trainium2上还会直接内存溢出崩溃；其二，AsyncGRPO的微批规划与打包耗时过长（每轮18秒），且遇到病态数学输出（如多重幂嵌套）会永久卡死math-verify进程拖垮整次训练；其三，vLLM服务模式下原地合并LoRA权重会移动冻结参数并发送打包后的4-bit基座，导致QLoRA不可用且策略与采样对数概率严重漂移；其四，Qwen与Gemma等模型因未将对话模板的回合结束符写入eos_token_id，微调后会一直生成到max_new_tokens上限。",
+        "mechanism": "② 本版本围绕训练吞吐、数值一致性和功能扩展做了五类核心改动：1）多教师与有状态环境蒸馏：DistillationTrainer接受教师字典并按样本的teacher_id列路由打分（实现MOPD融合阶段），同时接入与GRPOTrainer一致的environment_factory接口以支持智能体在有状态环境中蒸馏；2）SDPA行级打包：BFD打包不再把批次展平为单行，而是保留为多行并在每条序列起始处重置position_ids，消除跨样本注意力开销（padding_free=True仍保持展平）；3）AsyncGRPO提速与容错：用数组向量化操作替代原规划打包逻辑并保证批次比特级一致，为Nemotron-H等Mamba2混合架构新增Triton树扫描/卷积/融合混合器核函数，并将准确率奖励判定隔离到独立子进程防止死锁；4）离位LoRA权重合并：向vLLM同步权重时改为离位合并，避免破坏4-bit量化基座与冻结参数；5）自动补齐终止符与模板适配：SFTTrainer在缺失时自动将对话模板回合结束符加入generation_config.eos_token_id，并扩展DeepSeek-V3.1/V3.2、Phi-4、Gemma 4等仅助手损失及工具调用模板支持。",
+        "experiments_summary": "③ 发行说明给出了多项局部微基准与示例结果，但均非严格受控论文评测：1）BFD打包SFT（s/step）：H100上Qwen3-1.7B使用SDPA从v1.18的2.06秒降至1.02秒（提速约2倍），Flash Attention 2基本持平（0.828→0.832秒），Trainium2上Qwen3-0.6B编译模式从崩溃变为3.2秒/步；2）AsyncGRPO规划打包：4×B300上跑Qwen3-1.7B数学采样，每轮规划加打包从18秒降至1秒，训练吞吐提升+28% tokens/s（批次比特级一致）；3）vLLM服务模式权重同步：Qwen2.5-0.5B的对数概率差值从0.19–0.24降至0.02–0.04；4）新示例结果：Inkling-2-Mini在单张H100上LoRA SFT 53分钟，保留测试集时钟精确到秒的读数准确率从0%升至87.0%；s3多智能体聚合示例保留集团队成功率从4.7%升至60.9%。所有实验均未单列随机种子数、样本分母总数、序列长度分布及完整超参。",
+        "repro_and_reference": "④ 代码完全开源于huggingface/trl（v1.19.0），对应每项改动均附有具体PR链接与示例脚本（如sft_inkling_2_mini_clocks），工程可复现性高。门槛主要来自依赖升级与硬件：Inkling 2 Mini需transformers>=5.24.0，全局升级至accelerate>=1.12.0并支持vLLM 0.34.x（同时移除peft 0.17兼容代码）；单卡H100即可复现SFT与时钟示例，但AsyncGRPO的+28%吞吐数据基于4×B300测得，在消费级或旧架构显卡上的加速比例需实测验证。",
+        "experiment_rows": [
+          {
+            "benchmark": "Packed SFT (packing_strategy=bfd, SDPA)",
+            "metric": "单步耗时 (s/step)",
+            "value": "1.02",
+            "baseline_delta": "-1.04 (v1.18为2.06)",
+            "setup_note": "H100，Qwen3-1.7B；样本数、序列长度与批大小未单列",
+            "verified": false,
+            "unverified_numbers": [
+              "1.04"
+            ]
+          },
+          {
+            "benchmark": "Packed SFT (packing_strategy=bfd, Flash Attention 2)",
+            "metric": "单步耗时 (s/step)",
+            "value": "0.832",
+            "baseline_delta": "+0.004 (v1.18为0.828)",
+            "setup_note": "H100，Qwen3-1.7B；验证无明显回归，具体批大小未单列",
+            "verified": false,
+            "unverified_numbers": [
+              "0.004"
+            ]
+          },
+          {
+            "benchmark": "Packed SFT (packing_strategy=bfd, compiled)",
+            "metric": "单步耗时 (s/step)",
+            "value": "3.2",
+            "baseline_delta": "v1.18崩溃(crashes)",
+            "setup_note": "Trainium2，Qwen3-0.6B；具体编译配置与批大小未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "AsyncGRPO数学Rollout微批规划与打包",
+            "metric": "规划+打包耗时 / 训练吞吐",
+            "value": "1 s/pass，+28% trained tokens/s",
+            "baseline_delta": "-17 s/pass (原18 s/pass)，+28% tokens/s",
+            "setup_note": "4×B300，Qwen3-1.7B，保证批次比特级一致；总步数与样本数未单列",
+            "verified": false,
+            "unverified_numbers": [
+              "17"
+            ]
+          },
+          {
+            "benchmark": "vLLM Server模式权重同步 (QLoRA/LoRA)",
+            "metric": "对数概率差值 (log-prob gap)",
+            "value": "0.02–0.04",
+            "baseline_delta": "原0.19–0.24",
+            "setup_note": "Qwen2.5-0.5B；统计分母（token数或样本数）与卡型未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "Inkling-2-Mini 模拟时钟读数示例",
+            "metric": "精确到秒准确率 (held-out)",
+            "value": "87.0%",
+            "baseline_delta": "+87.0个百分点 (原0%)",
+            "setup_note": "1×H100，LoRA SFT耗时53分钟；测试集时钟样本总数未单列",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "s3多智能体聚合示例",
+            "metric": "保留集团队成功率 (held-out team success)",
+            "value": "60.9%",
+            "baseline_delta": "+56.2个百分点 (原4.7%)",
+            "setup_note": "基座模型、算力预算、任务分母与种子数均未单列",
+            "verified": false,
+            "unverified_numbers": [
+              "56.2"
+            ]
+          }
+        ],
+        "backbone_and_params": "示例与基准涉及Qwen2.5-0.5B/1.5B、Qwen3-0.6B/1.7B、Inkling-2-Mini，以及Mamba2混合架构（Nemotron-H、Granite-4.0-H、Bamba）与多款对话模板模型（DeepSeek-V3.1/3.2、Phi-4、Gemma 4、GLM-4.7/5、LFM2-24B-A2B等）；部分架构参数量原文未单列。",
+        "gpu_and_duration": "H100（单卡，Inkling-2-Mini LoRA SFT耗时53分钟；Qwen3-1.7B SFT测单步耗时）、4×B300（Qwen3-1.7B AsyncGRPO测规划打包耗时与吞吐）、Trainium2（Qwen3-0.6B编译SFT测单步耗时）；其余示例与推理硬件及总耗时所给材料未单列。",
+        "seeds_note": "所给材料未单列（发行说明中的所有耗时、吞吐与示例准确率均未报告多种子均值或标准差）。",
+        "verdict_label": "高价值工程迭代建议升级",
+        "verdict_reason": "针对SDPA打包OOM、AsyncGRPO打包瓶颈、奖励判题死锁及QLoRA同步漂移给出了比特级或数值级可验证的工程修复，并补齐多教师与环境交互蒸馏能力；但需注意依赖门槛（transformers>=5.24.0、accelerate>=1.12.0及移除peft 0.17兼容）可能带来迁移成本。",
+        "critique_points": [
+          "核心优化的适用边界与失效条件：BFD行级打包的2倍提速仅针对SDPA后端，在已使用Flash Attention 2时几乎无收益（0.828→0.832 s/step）；AsyncGRPO的+28%吞吐收益依赖于CPU侧规划打包成为瓶颈的高算力配置（4×B300），在低算力卡或长上下文GPU计算受限场景下加速比会显著收窄；此外，多教师蒸馏依赖数据集显式提供teacher_id路由列，在跨领域样本归属模糊或需要动态混合打分的分布变化下该静态路由假设可能失效。",
+          "基准对比口径与方差缺失：发行说明中的速度与准确率数字多为单次示例快照，未交代随机种子、序列长度分布、测试集样本分母及硬件利用率；例如vLLM同步的log-prob gap仅在Qwen2.5-0.5B上给出区间（0.02–0.04），尚未证明在7B/70B或MoE模型及长生成轨迹上仍能保持低漂移，且Inkling-2-Mini时钟读数与s3多智能体示例均缺少外部强基线与多种子方差。",
+          "机制贡献与工程修补的剥离：本版本属于基础设施发布而非算法论文，其中SDPA行打包与AsyncGRPO数组打包通过明确对比v1.18且后者声明批次比特级一致，能清晰剥离出纯系统优化贡献；但多教师DistillationTrainer与environment_factory仅提供了接口实现，所给材料并未包含控制数据与基座后的MOPD多教师对比单教师消融实验，若用于科研立项需自行设计对照实验验证收益来源。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 13.9
+    },
+    {
+      "slug": "gui-rl-2611-31909",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "subtopics": [
+        "gui-online-rl"
+      ],
+      "lab_tags": [],
+      "institution_tags": [],
+      "title_zh": "SPARK：基于冻结VLM语义探针与注意力引导的自适应GUI视觉定位",
+      "title_en": "Your VLM Knows What to Inspect: Semantic Probe-Guided Adaptive Focusing for GUI Grounding",
+      "one_line_pain": "针对高分辨率GUI全图丢细节、紧裁剪缺上下文的问题，用冻结VLM语义探针的视觉注意力自适应选框聚焦",
+      "metric_badges": [
+        {
+          "text": "ScreenSpot-Pro平均+18.4pp",
+          "verified": true,
+          "unverified_numbers": []
+        },
+        {
+          "text": "免训练(Training-free)",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "paper_only",
+      "openness_label": "仅论文",
+      "small_compute_friendly": true,
+      "small_compute_note": "原文标注：training-free",
+      "authors": [
+        "Ruixiao Shi",
+        "Fu Feng",
+        "Yucheng Xie",
+        "Jing Wang",
+        "Xin Geng"
+      ],
+      "published_date": "2026-11-24",
+      "venue_or_source": "arXiv cs.CV",
+      "url_primary": "https://arxiv.org/abs/2611.31909",
+      "url_pdf": "https://arxiv.org/pdf/2611.31909",
+      "url_arxiv_html": "https://arxiv.org/html/2611.31909",
+      "url_github": "",
+      "url_hf": "",
+      "arxiv_id": "2611.31909",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "",
+      "corroborating_sources": [],
+      "abstract_en": "GUI grounding requires resolving fine visual details within the context that gives them meaning. Additional views can improve localization, but their value depends on what evidence they expose and how much context they preserve. We explore a capability of vision-language models (VLMs): even when their coordinate predictions are incorrect, they can describe visual evidence worth inspecting. We introduce \\textbf{SPARK}, \\textit{\\textbf{S}emantic \\textbf{P}robe-guided \\textbf{A}daptive \\textbf{R}egion see\\textbf{K}ing}, a training-free framework that turns this semantic guidance into targeted visual observations. Exploration probes describe relevant context and distinguishing target details, while verification probes identify evidence needed to assess emerging hypotheses. Their spatial attention guides view placement, contextual responses determine crop extent, and observation history encourages complementary inspection. The resulting predictions are combined through uncertainty-weighted voting. On ScreenSpot-Pro, SPARK improves grounding accuracy over single-view inference by 13.9, 25.2, and 16.1 percentage points with Qwen3-VL, Qwen2.5-VL, and UI-TARS, outperforming all compared test-time methods for each backbone. Consistent gains across four additional benchmarks demonstrate its effectiveness across diverse interfaces and grounding tasks. These results establish semantic probing as an effective mechanism for turning a frozen VLM's understanding of what to inspect into more accurate GUI grounding.",
+      "four_elements": {
+        "pain_point": "① 在复杂高分辨率桌面或软件界面中做GUI元素定位存在天然矛盾：看全图能保留面板布局与功能上下文，但小图标和细微文字会糊掉；直接做多视图或局部放大若裁剪区域选不准，容易反复扫到无关区域，或者裁得太紧把决定控件含义的周围地标切掉，导致模型看清了局部却认错目标。",
+        "mechanism": "② 作者利用冻结视觉语言模型（VLM）的一个可检验现象——即使直接预测的点击坐标错了，模型仍能用语言描述出值得检查的视觉线索——设计了免训练的SPARK框架：1）分层语义探针：让VLM针对指令生成两层简短描述，上下文层（Context）指出目标所在面板与地标，细节层（Detail）描述区分目标控件的局部特征；2）双阶段条件化：先用探索探针（仅基于原图与指令）生成初步线索，再把前序视图聚类得分最高的1至2个候选中心点（medoids）标回图上，触发验证探针专门描述用于甄别候选真伪的证据；3）注意力引导自适应聚焦：提取模型生成探针描述词时对应的视觉空间注意力图，用联合注意力决定局部裁剪框位置、用上下文层响应决定保留多大裁剪尺度，并结合观测历史避免重复查看同一区域；4）融合决策：在限定的局部视图预算与视觉token预算内，将多视图坐标预测通过不确定性加权投票合并为最终坐标。",
+        "experiments_summary": "③ 摘要与引言片段报告了ScreenSpot-Pro上相对单视图推理的绝对百分点（pp）增幅：Qwen3-VL提升13.9 pp、Qwen2.5-VL提升25.2 pp、UI-TARS提升16.1 pp，三者平均提升18.4 pp，并称在每个基座上均优于所有对比的测试时方法，同时在另外四个GUI定位基准和四个VLM基座上取得一致增益。但所给材料缺少关键细节：绝对准确率基准值、具体参数规模（如7B还是32B）、第四个基座及另四个基准名称、局部视图数量上限与总推理token开销、评测卡型、单样本延迟及随机种子数均未单列。（⚠️ 原文待核数字：7、32）",
+        "repro_and_reference": "④ 方法完全免训练且不改权重，理论上算力门槛远低于微调或强化学习方案，但所给材料未提供GitHub代码库链接与完整Sec. 3.3（聚类打分与不确定性加权投票公式）及探针提示词模板。复现隐性成本在于需要从冻结VLM内部提取特定生成token对应的跨模态视觉注意力权重，这对依赖黑盒API或使用不支持返回attention权重的加速后端（如默认FlashAttention推理）会形成工程限制，且多轮“生成探针+多裁剪视图前向”会显著放大推理延迟。",
+        "experiment_rows": [
+          {
+            "benchmark": "ScreenSpot-Pro",
+            "metric": "GUI定位准确率 (grounding accuracy)",
+            "value": "原文片段未单列绝对值",
+            "baseline_delta": "+13.9 pp (vs 单视图推理)",
+            "setup_note": "基座Qwen3-VL（参数量、样本分母、视图预算与总token预算未单列）",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "ScreenSpot-Pro",
+            "metric": "GUI定位准确率 (grounding accuracy)",
+            "value": "原文片段未单列绝对值",
+            "baseline_delta": "+25.2 pp (vs 单视图推理)",
+            "setup_note": "基座Qwen2.5-VL（参数量、样本分母、视图预算与总token预算未单列）",
+            "verified": false,
+            "unverified_numbers": [
+              "5"
+            ]
+          },
+          {
+            "benchmark": "ScreenSpot-Pro",
+            "metric": "GUI定位准确率 (grounding accuracy)",
+            "value": "原文片段未单列绝对值",
+            "baseline_delta": "+16.1 pp (vs 单视图推理)",
+            "setup_note": "基座UI-TARS（参数量、样本分母、视图预算与总token预算未单列）",
+            "verified": true,
+            "unverified_numbers": []
+          },
+          {
+            "benchmark": "ScreenSpot-Pro (三基座均值)",
+            "metric": "平均GUI定位准确率",
+            "value": "原文片段未单列绝对值",
+            "baseline_delta": "+18.4 pp (vs 单视图推理)",
+            "setup_note": "Qwen3-VL/Qwen2.5-VL/UI-TARS三模型算术平均；未单列另外4个基准数值",
+            "verified": false,
+            "unverified_numbers": [
+              "4"
+            ]
+          }
+        ],
+        "backbone_and_params": "提及Qwen3-VL、Qwen2.5-VL、UI-TARS（引言另提及共评测四个VLM基座，第四个未具名）；所有基座的具体参数量原文片段未单列。",
+        "gpu_and_duration": "所给材料未单列（未披露评测所用显卡型号、单条指令推理耗时及与单视图基线的延迟倍数）。",
+        "seeds_note": "所给材料未单列（未说明采样解码温度、是否固定贪婪解码或多次运行方差）。",
+        "verdict_label": "免训练机制巧妙待核开销",
+        "verdict_reason": "用“语义探针文本+跨模态空间注意力”桥接看哪里和留多少上下文的思路清晰，在ScreenSpot-Pro三个主流VLM上相对单视图取得13.9至25.2个百分点的显著绝对增幅；但片段缺失与其他测试时缩放方法在等token/等延迟预算下的正面对照及完整消融，精读时需重点核查正文实验表。",
+        "critique_points": [
+          "核心假设的失效边界：SPARK高度依赖“冻结VLM虽标错坐标但能准确描述视觉线索，且其生成词的视觉注意力准确落在对应区域”这一前提。当界面中存在大量外观高度相似的重复控件、极小无字图标，或模型在强分布偏移的专业软件中产生语义幻觉（探针本身描述错面板）时，注意力图会引导裁剪框陷入错误区域，且验证探针仅基于前序预测的前2个聚类中心（medoids），一旦初始探索全军覆没便难以纠偏；所给片段尚未展示对低质量注意力模型或跨分辨率极端场景的失效分析。",
+          "对比公平性与测试时算力预算口径：摘要重点突出相对“单视图推理”的+13.9/+25.2/+16.1 pp增益，但这属于用额外生成探针与多视图前向换取精度（test-time compute scaling）。要判断其相对其他缩放/多视图基线（如[13,14,37,40]）是否公平，需核查正文是否在严格相同的总视觉token数、前向次数与墙钟时间下比较，并检验不确定性加权投票对超参和解码随机性的敏感度。",
+          "机制贡献的独立归因：SPARK打包了分层探针（Context/Detail）、探索+验证双阶段、视觉注意力选框、观测历史去重与不确定性加权投票五个组件。控制同一基座与视图预算后，正文需通过对照消融回答：若将“探针注意力选框”替换为简单的均匀网格多视图或直接让VLM输出边界框坐标再裁剪，精度会掉多少？仅靠“多次前向+投票”本身贡献了多少百分点，语义探针和上下文尺度自适应又各自贡献了多少？"
+        ],
+        "evidence_boundary": "已结合 arXiv HTML 正文片段与摘要研判"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.4
+    }
+  ],
+  "folded_items": [
+    {
+      "slug": "fold-gui-rl-2611-31559",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "COGENT：面向智能体用户模拟的模块化认知架构",
+      "title_en": "COGENT: A Modular Cognitive Architecture for Agentic User Simulation",
+      "one_line_takeaway": "构建模拟人类感知与推理的模块化用户代理用于界面评估，但对GUI智能体核心策略优化贡献有限。",
+      "url": "https://arxiv.org/abs/2611.31559",
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "arxiv_id": "2611.31559"
+    },
+    {
+      "slug": "fold-ossl-ood-2611-30316",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "视频广义类别发现（Video GCD）",
+      "title_en": "Video Generalized Category Discovery",
+      "one_line_takeaway": "将广义类别发现从静态图像拓展至视频领域，直接切中开放世界半监督视觉识别的核心时序挑战。",
+      "url": "https://arxiv.org/abs/2611.30316",
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.CV",
+      "arxiv_id": "2611.30316"
+    },
+    {
+      "slug": "fold-ossl-ood-2611-28611",
+      "section": "papers",
+      "track": "ossl-ood",
+      "track_label": "OSSL/OOD",
+      "title_zh": "基于动作条件转移不可逆性的强化学习分布外状态检测",
+      "title_en": "Action-Conditioned Transition Irreversibility for Out-of-Distribution Detection in Reinforcement Learning",
+      "one_line_takeaway": "指出智能体自身动作会改变观测分布，提出利用动作条件转移不可逆性解决RL中的轨迹级OOD检测。",
+      "url": "https://arxiv.org/abs/2611.28611",
+      "published_date": "2026-11-21",
+      "venue_or_source": "arXiv cs.LG",
+      "arxiv_id": "2611.28611"
+    },
+    {
+      "slug": "fold-vlm-infra-benchmarked-7-local-qwen3",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "单张RTX 5090本地评测7款Qwen3.8智能体构建版本",
+      "title_en": "Benchmarked 7 local Qwen3",
+      "one_line_takeaway": "对比27B稠密与125B MoE模型在54项自主任务上的本地表现，为端侧智能体基座选型提供实测依据。",
+      "url": "https://www.reddit.com/r/LocalLLM/comments/1y4dxn4/benchmarked_7_local_qwen38_builds_27b_dense_vs/",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-weak-to-strong-alignment",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Weak to Strong alignment",
+      "title_en": "Weak to Strong alignment",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://openai.com/index/weak-to-strong-generalization/",
+      "published_date": "2026-11-21",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-tencent-hy4-flagship-multimodal-moe-a49b",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Tencent Hy4 (flagship multimodal MoE A49B/770B) released (Activity: 495)…",
+      "title_en": "Tencent Hy4 (flagship multimodal MoE A49B/770B) released (Activity: 495): The image is a technic",
+      "one_line_takeaway": "属「多模态基座与业界前沿」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y0vaey/tencent_hy4_flagship_multimodal_moe_a49b770b/",
+      "published_date": "2026-11-21",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-vllm-project-vllm-ascend-community-mainta",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "vllm-project/vllm-ascend: Community maintained hardware plugin for vLLM on…",
+      "title_en": "vllm-project/vllm-ascend: Community maintained hardware plugin for vLLM on Huawei Ascend",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：GitHub Trending）",
+      "url": "https://github.com/vllm-project/vllm-ascend",
+      "published_date": "2026-11-26",
+      "venue_or_source": "GitHub Trending",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-2611-29847",
+      "section": "papers",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "MobileGrail：面向端侧部署的紧凑型移动端GUI安全护栏",
+      "title_en": "MobileGrail: Learning Compact Guardrails for On-Device deployable Mobile GUI Agent Safety",
+      "one_line_takeaway": "在本地设备运行轻量级动作安全护栏以替代云端大模型审查，有效避免屏幕隐私数据外泄风险。",
+      "url": "https://arxiv.org/abs/2611.29847",
+      "published_date": "2026-11-23",
+      "venue_or_source": "arXiv cs.AI",
+      "arxiv_id": "2611.29847"
+    },
+    {
+      "slug": "fold-vlm-infra-openai-and-cisco-introduce-shirudo",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "OpenAI与Cisco联合开源Linux运行时安全工具Shirudo",
+      "title_en": "OpenAI and Cisco introduce Shirudo",
+      "one_line_takeaway": "推出用于在打补丁期间保护运行中Linux系统的开源运行时，偏系统运维安全而远离视觉智能体主线。",
+      "url": "https://openai.com/index/introducing-shirudo",
+      "published_date": "2026-11-23",
+      "venue_or_source": "OpenAI",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-how-ifood-scales-coding-agents-across-15",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "iFood如何在1.5万个代码库中规模化部署编码智能体",
+      "title_en": "How iFood scales coding agents across 15,000 repositories",
+      "one_line_takeaway": "企业级编码智能体落地案例分享，主要聚焦软件工程流程而非视觉感知或GUI强化学习。",
+      "url": "https://openai.com/business/customer-stories/ifood",
+      "published_date": "2026-11-24",
+      "venue_or_source": "OpenAI",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-interpreting-a-recent-acceleration-in-pre",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "METR解读近期大模型预训练损失加速下降现象",
+      "title_en": "Interpreting a recent acceleration in pretraining loss",
+      "one_line_takeaway": "分析OpenAI多代基座模型对数困惑度的缩放趋势，对理解大模型底层能力演进有一定参考价值。",
+      "url": "https://metr.org/blog/2026-11-24-interpreting-a-recent-acceleration-in-pretraining-loss/",
+      "published_date": "2026-11-24",
+      "venue_or_source": "METR",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-microsoft-markitdown-python-tool-for-convert",
+      "section": "opensource",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "microsoft/markitdown: Python tool for converting files and office documents…",
+      "title_en": "microsoft/markitdown: Python tool for converting files and office documents to Markdown.",
+      "one_line_takeaway": "属「GUI 在线/离线 RL」方向的边际/常规增量动态（来源：GitHub Trending）",
+      "url": "https://github.com/microsoft/markitdown",
+      "published_date": "2026-11-26",
+      "venue_or_source": "GitHub Trending",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-from-spectrum-to-structure-identifying-mo",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "利用质谱技能包在Google Antigravity中解析分子结构",
+      "title_en": "From spectrum to structure: Identifying molecules with Mass Spec Skills for Google Antigravity",
+      "one_line_takeaway": "面向化学质谱分析的垂直领域技能扩展，属于AI4Science应用而非计算机视觉或GUI研究。",
+      "url": "https://deepmind.google/blog/interpreting-mass-spectra-with-google-antigravity/",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Google DeepMind",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-one-user-reported-a-concrete-local-benchm",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "8GB显存笔记本本地运行27B三值量化编码智能体实测",
+      "title_en": "One user reported a concrete local benchmark running Ternary-Bonsai-2",
+      "one_line_takeaway": "验证三值量化27B模型在消费级笔记本实现54K上下文推理的可行性，对端侧智能体部署有一定启发。",
+      "url": "https://latent.space/p/ainews-math-proofs-are-landing-faster-than-we-can-read-them/?ainews_item=79",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-ling-3-2-air",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Ling-3.2-air：124B总参5.5B激活的多模态MoE模型",
+      "title_en": "Ling-3.2-air",
+      "one_line_takeaway": "vLLM生态支持的新型轻量激活多模态MoE基座简讯，信息量有限但可作为低成本推理备选。",
+      "url": "https://x.com/vllm_project/status/2125026564131930475",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-gpt-6-models-demonstrate-intrinsic-protei",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "GPT-6模型展现出内生蛋白质设计能力",
+      "title_en": "GPT-6 models demonstrate intrinsic protein-design capabilities",
+      "one_line_takeaway": "展示GPT-6结合推理与代码进行蛋白质结构序列设计并获湿实验验证，与视觉及GUI智能体方向无关。",
+      "url": "https://openai.com/index/gpt-6-models-demonstrate-intrinsic-protein-design-capabilities",
+      "published_date": "2026-11-24",
+      "venue_or_source": "OpenAI",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-asyncgrpotrainer",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "AsyncGRPOTrainer",
+      "title_en": "AsyncGRPOTrainer",
+      "one_line_takeaway": "属「RL 训练与并发调度框架」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/_lewtun/status/2125264389892620781",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-local-speed-unsloth-reports-125-tok-s-on",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Local speed : Unsloth reports 125 tok/s on an RTX PRO 6000 and fixed…",
+      "title_en": "Local speed : Unsloth reports 125 tok/s on an RTX PRO 6000 and fixed KV-cache quantization memor",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/danielhanchen/status/2124901209836519479",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-rack-scale-serving",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Rack-scale serving",
+      "title_en": "Rack-scale serving",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/SemiAnalysis_/status/2124637709176016998",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-inkling-2-mini",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Inkling 2 Mini",
+      "title_en": "Inkling 2 Mini",
+      "one_line_takeaway": "属「推理引擎与系统优化」方向的边际/常规增量动态（来源：Latent Space [AINews]）",
+      "url": "https://x.com/thinkymachines/status/2123871643797995872",
+      "published_date": "2026-11-21",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    }
+  ]
+}

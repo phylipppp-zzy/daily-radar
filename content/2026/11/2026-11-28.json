@@ -1,0 +1,274 @@
+{
+  "date": "2026-11-28",
+  "weekday_zh": "周六",
+  "generated_at_cst": "2026-11-28 09:26:17 CST",
+  "global_trend_summary": [
+    "今日共从增量候选池中精选 1 条高信噪比动态（GUI-RL 论文 0 篇、OSSL/OOD 论文 0 篇、开源与业界前沿 1 条），另折叠泛相关速览 13 条。",
+    "核心看点聚焦：[VLM/RL底座] OpenRLHF v0.12.0：PPO数值精度与多卡同步修复及依…。",
+    "近期顶会关键节点提醒：AAAI 2027（2 天后 2026-11-30）、NeurIPS 2026（8 天后 2026-12-06）、ICLR 2027（18 天后 2026-12-16）。"
+  ],
+  "highlights_top3": [
+    "• [VLM/RL底座] OpenRLHF：OpenRLHF v0.12.0：PPO数值精度与多卡同步修复及依赖升级（vLLM 0.34.0 / DeepSpeed 0.20.1 ⚠️ 原文待核）"
+  ],
+  "special_conference_banner": null,
+  "source_health_alerts": [
+    "信源连续 4 天拉取失败：Hugging Face Daily Papers (hf-daily-papers) — URLError: <urlopen error [Errno -3] Temporary failure in name resolution>",
+    "信源连续 4 天拉取失败：Hugging Face Official Blog (Open Weights & TRL/RL) (blog-huggingface) — URLError: <urlopen error [Errno -3] Temporary failure in name resolution>",
+    "信源连续 3 天拉取失败：Bluesky AI Researchers (social-bsky-researchers) — URLError: <urlopen error [Errno -3] Temporary failure in name resolution>"
+  ],
+  "llm_channel_used": "gemini-agy-primary",
+  "run_mode": "live",
+  "provenance": {
+    "run_mode": "live",
+    "distiller": "gemini-agy-primary",
+    "source_origin": "live_web"
+  },
+  "featured_items": [
+    {
+      "slug": "vlm-infra-openrlhf-openrlhf-release-v0-12-0",
+      "section": "opensource",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "subtopics": [
+        "rl-framework",
+        "inference-engine"
+      ],
+      "lab_tags": [],
+      "institution_tags": [
+        "OpenRLHF"
+      ],
+      "title_zh": "OpenRLHF v0.12.0：PPO数值精度与多卡同步修复及依赖升级",
+      "title_en": "OpenRLHF/OpenRLHF Release v0.12.0",
+      "one_line_pain": "针对PPO多卡微批不均、BF16指数移动平均停滞及组归一化残差等隐患，发布含依赖升级与多处数值修复的工程版本",
+      "metric_badges": [
+        {
+          "text": "vLLM 0.34.0 / DeepSpeed 0.20.1",
+          "verified": false,
+          "unverified_numbers": [
+            "0.34",
+            "0",
+            "0.20",
+            "1"
+          ]
+        },
+        {
+          "text": "PPO 数值与多卡同步修复",
+          "verified": true,
+          "unverified_numbers": []
+        }
+      ],
+      "openness": "code_and_weights",
+      "openness_label": "代码+权重已开源",
+      "small_compute_friendly": false,
+      "small_compute_note": "4–8卡未显式单列",
+      "authors": [
+        "OpenRLHF"
+      ],
+      "published_date": "2026-11-27",
+      "venue_or_source": "GitHub Release (v0.12.0)",
+      "url_primary": "https://github.com/OpenRLHF/OpenRLHF/releases/tag/v0.12.0",
+      "url_pdf": "",
+      "url_arxiv_html": "",
+      "url_github": "https://github.com/openrlhf/openrlhf",
+      "url_hf": "",
+      "arxiv_id": "",
+      "doi": "",
+      "github_stars": null,
+      "license_name": "Apache-2.0 / MIT",
+      "corroborating_sources": [],
+      "abstract_en": "## What's Changed\r\n* docs: recommend Molt outside the README blockquote by @hijkzzz in https://github.com/OpenRLHF/OpenRLHF/pull/1390\r\n* docs: make the Molt recommendation concise and actionable by @hijkzzz in https://github.com/OpenRLHF/OpenRLHF/pull/1391\r\n* Deps/vllm 0.34.0 deepspeed 0.20.1 by @hijkzzz in https://github.com/OpenRLHF/OpenRLHF/pull/1432\r\n* fix(ppo): give every rank the same number of rollout micro-batches by @sripadha in https://github.com/OpenRLHF/OpenRLHF/pull/1434\r\n* fix(ppo): accumulate the EMA in fp32 so a bf16 EMA tracks the actor by @sniper35 in https://github.com/OpenRLHF/OpenRLHF/pull/1419\r\n* fix(ppo): give uniform reward groups exactly zero advantage in group_norm by @saloni-garg in https://github.com/OpenRLHF/OpenRLHF/pull/1383\r\n* docs: fix stale CLI flags in the README training commands by @RerankerGuo in https://github.com/OpenRLHF/OpenRLHF/pull/1384\r\n* Make AgentInstance.__init__ synchronous in the GEM multi-turn example and README snippets by @damienen in https://github.com/OpenRLHF/OpenRLHF/pull/1387\r\n* fix(data): load standalone evaluation files with DPO's default split by @doublestrips in https://github.com/OpenRLHF/OpenRLHF/pull/1428\r\n* fix(ppo): bootstrap GAE from the next policy action by @ylwang0701 in https://github.com/OpenRLHF/OpenRLHF/pull/1430\r\n* fix(reward): extract fbox answers in remove_boxed by @dhvani7014 in https://github.com/OpenRLHF/OpenRLHF/pull/1374\r\n* Normalize consecutive thousands groups in math reward answers by @Afloat16 in https://github.com/OpenRLHF/OpenRLHF/pull/1409\r\n* fix(data): normalize SFT chat prompt and completion independently by @doublestrips in https://github.com/OpenRLHF/OpenRLHF/pull/1429\r\n* docs: make the README badges render and fix a dead documentation link by @hijkzzz in https://github.com/OpenRLHF/OpenRLHF/pull/1436\r\n* docs: serve the README badges from a host GitHub's image proxy can reach by @hijkzzz in https://github.com/OpenRLHF/OpenRLHF/pull/1437\r\n* Resolve/pr 1408 by @Afloat16 in https://github.com/OpenRLHF/OpenRLHF/pull/1438\r\n* Resolve/pr 1435 by @AlkaidLu in https://github.com/OpenRLHF/OpenRLHF/pull/1439\r\n## New Contributors\r\n* @sripadha made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1434\r\n* @sniper35 made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1419\r\n* @saloni-garg made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1383\r\n* @RerankerGuo made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1384\r\n* @damienen made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1387\r\n* @doublestrips made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1428\r\n* @ylwang0701 made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1430\r\n* @dhvani7014 made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1374\r\n* @Afloat16 made their first contribution in https://github.com/OpenRLHF/OpenRLHF/pull/1409\r\n**Full Changelog**: https://github.com/OpenRLHF/OpenRLHF/compare/v0.11.2...v0.12.0",
+      "four_elements": {
+        "pain_point": "① 真实痛点与翻车场景：在大规模强化学习微调中，分布式训练各卡分配到的采样微批数量不一致容易引发通信卡死或同步失衡；半精度（BF16）下直接维护策略模型的指数移动平均（EMA）权重会因舍入误差导致参数更新停滞、无法真正跟踪当前策略；组内奖励完全相同时，组归一化可能引入非零数值残差；此外，广义优势估计（GAE）的边界自举偏差、数学奖励提取漏掉 fbox 格式或连续千分位逗号、以及多轮智能体示例异步初始化问题，都会导致训练静默退化或评测误判。",
+        "mechanism": "② 具体方法机制：本次发行版围绕训练稳定性、数据与奖励解析及底层依赖做了四类改动：第一，在 PPO 核心链路中，强制每个分布式进程获得相同数量的采样微批（PR #1434），将指数移动平均改为单精度浮点（FP32）累加以确保 BF16 模型有效跟踪策略更新（PR #1419），在组内奖励完全一致时将组归一化后的优势严格置零（PR #1383），并修正广义优势估计从下一策略动作进行自举（PR #1430）。第二，在奖励与数据处理环节，扩展数学答案提取函数以支持 fbox 包裹格式（PR #1374），对答案中的连续千分位分隔进行规范化（PR #1409），独立规范化有监督微调对话的提示与补全部分（PR #1429），并修复直接偏好优化加载独立验证文件时的默认切分逻辑（PR #1428）。第三，将 GEM 多轮交互示例中的智能体初始化改为同步执行（PR #1387）。第四，将核心推理与训练依赖升级至 vLLM 0.34.0 与 DeepSpeed 0.20.1（PR #1432），并更新文档及两项未在摘要展开的 PR（#1438、#1439）。",
+        "experiments_summary": "③ 实验基准数字与对比口径：所给材料仅为 GitHub Release 变更日志，未包含任何基准测试分数、吞吐加速比或消融实验结果；涉及的模型规模、显卡数量与随机种子数原文均未单列。",
+        "repro_and_reference": "④ 公开技术参考与复现成本评估：代码托管于开源仓库 openrlhf/openrlhf（v0.11.2 至 v0.12.0 完整对比可查），属于生产级 RLHF 框架的常规小版本迭代，工程完整度高。升级成本主要集中在对齐 vLLM 0.34.0 与 DeepSpeed 0.20.1 的环境依赖兼容性，以及核对依赖旧版奖励正则或旧版 GAE 行为的既有训练脚本；具体显存与算力门槛取决于用户自身的模型规模，原文未提供基准配置。",
+        "experiment_rows": [],
+        "backbone_and_params": "原文未单列",
+        "gpu_and_duration": "所给材料未单列",
+        "seeds_note": "所给材料未单列",
+        "verdict_label": "建议跟进升级的稳定版",
+        "verdict_reason": "这是一次针对性很强的工程缺陷修复版本，直接堵住了 PPO 多卡微批不均、BF16 指数移动平均失效、GAE 自举偏差与数学奖励漏匹配等容易引发静默掉点的底层坑，适合正在使用 OpenRLHF 的研究者在验证依赖兼容性后跟进升级。",
+        "critique_points": [
+          "核心机制失效边界与泛化待验：强制各 rank 分配相同 rollout 微批数（PR #1434）在轨迹长度高度不均的多轮智能体或长思维链任务中，是否会因填充开销或丢弃样本导致吞吐下降与梯度偏差，以及数学答案的千分位正则化（PR #1409）和 fbox 提取（PR #1374）在科学计数法、混合单位或嵌套格式下是否引入新的误判，日志未给边界测试证据，需用长短轨迹混合与多格式数学样例做压力对照。",
+          "对比口径与评测器偏差风险：材料未提供 v0.11.2 与 v0.12.0 的同口径实测对比；由于本版同时修改了数学奖励解析器（#1374、#1409）与优化核心（GAE 自举 #1430、FP32 EMA #1419），若直接对比升级前后的任务得分，无法区分收益来自策略优化改善还是打分器召回率变化。建议在固定基座、数据、超参与多随机种子下，先冻结打分器单独评测训练改动。",
+          "打包更新的独立贡献归因：本次发布属于工程修复汇总而非新算法提案，且同时打包了 vLLM 0.34.0 / DeepSpeed 0.20.1 依赖升级及两项摘要未详述的 PR（#1438、#1439）。若要确认哪项修复对特定任务的收敛稳定性或显存吞吐起主导作用，需控制底层框架版本不变，对四个 PPO 补丁逐项进行开关对照实验。"
+        ],
+        "evidence_boundary": "仅基于原文摘要与元数据研判，正文消融与附录算力细节待核原文"
+      },
+      "conference_slug": "",
+      "conference_track_tier": "",
+      "relative_score": 7.6
+    }
+  ],
+  "folded_items": [
+    {
+      "slug": "fold-vlm-infra-sdk-typescript-release-sdk-typescript-v0",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "阿里通义 Qwen TypeScript SDK 发布 v0.1.39",
+      "title_en": "SDK TypeScript Release sdk-typescript-v0.1.39",
+      "one_line_takeaway": "常规SDK补丁版本发布，主要同步打包更新底层命令行工具版本。",
+      "url": "https://github.com/QwenLM/qwen-code/releases/tag/sdk-typescript-v0.1.39",
+      "published_date": "2026-11-27",
+      "venue_or_source": "阿里通义 Qwen",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-migrating-our-messages-api-to-rust",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "Anthropic 将 Messages API 从 Python 迁移至 Rust",
+      "title_en": "Migrating our Messages API to Rust",
+      "one_line_takeaway": "分享高并发大模型推理接口从Python迁移至Rust的工程实践与架构经验。",
+      "url": "https://www.anthropic.com/research/migrating-api-to-rust",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Anthropic",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-claude-ship-beta",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Claude Code 推出自动化 PR 工作流 Claude Ship",
+      "title_en": "Claude Ship (beta)",
+      "one_line_takeaway": "支持在Claude Code中一键发起PR、自动审查并处理CI失败检查的测试功能。",
+      "url": "https://x.com/ClaudeDevs/status/2124959436640858475",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-2611-34597",
+      "section": "papers",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "μMPC：基于Koopman线性化预编译的微秒级非线性与世界模型控制",
+      "title_en": "$μ$MPC: Microsecond-Scale Nonlinear and World Model Control from Edge to GPU via Koopman-Linearized Precompilation",
+      "one_line_takeaway": "通过预编译有限时域控制映射消除提升状态轨迹，实现微秒级世界模型控制。",
+      "url": "https://arxiv.org/abs/2611.34597",
+      "published_date": "2026-11-25",
+      "venue_or_source": "arXiv cs.RO",
+      "arxiv_id": "2611.34597"
+    },
+    {
+      "slug": "fold-gui-rl-working-with-ai",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "Anthropic 发布《与 AI 共事》企业调研报告",
+      "title_en": "Working with AI",
+      "one_line_takeaway": "访谈58家企业探讨AI对岗位重组与招聘的影响，偏宏观职场观察而非技术研究。",
+      "url": "https://www.anthropic.com/research/working-with-ai",
+      "published_date": "2026-11-23",
+      "venue_or_source": "Anthropic",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-ladybird-s-first-alpha-release",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "独立开源浏览器 Ladybird 发布首个 Alpha 版本",
+      "title_en": "Ladybird's first alpha release",
+      "one_line_takeaway": "全新自研HTML、CSS与JS引擎的独立浏览器首个测试版，潜在丰富GUI环境。",
+      "url": "https://simonwillison.net/2026/Nov/23/ladybird/",
+      "published_date": "2026-11-23",
+      "venue_or_source": "Simon Willison",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-funding-and-programs",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Dreamer 团队创立的具身世界模型公司 Embo 获融资",
+      "title_en": "Funding and programs",
+      "one_line_takeaway": "Dreamer与VideoGPT核心团队创立Embo并获1.1亿美元种子轮，聚焦世界模型。",
+      "url": "https://x.com/danijar/status/2124911019562811820",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-t3-code-drama-chinese-post-on-x-activity-699",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "T3 Code 默认遥测争议引发社区讨论",
+      "title_en": "T3 Code drama (Chinese post on X) (Activity: 699): A linked Chinese-language X post ( realchenda",
+      "one_line_takeaway": "社区曝光T3 Code默认开启PostHog遥测且未在文档或界面明示的争议。",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1y4atw3/t3_code_drama_chinese_post_on_x/",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-comparing-ai-r-d-compute-caps-and-deploym",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "Alignment Forum 探讨 AI 研发算力上限与部署延迟",
+      "title_en": "Comparing AI R&D compute caps and deployment lags",
+      "one_line_takeaway": "对比限制内部部署与算力重分配两种AI安全节奏控制机制，属治理政策讨论。",
+      "url": "https://www.alignmentforum.org/posts/e758PJCpwAwyodvEj/comparing-ai-r-and-d-compute-caps-and-deployment-lags",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Alignment Forum",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-the-most-substantive-technical-criticism",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "社区批评某技术报道对模型权重修改的拟人化表述",
+      "title_en": "The most substantive technical criticism was that the headline anthropomorphizes the process: co",
+      "one_line_takeaway": "评论指出某自修改模型报道过度拟人化，实为外部脚本修改数值权重而非自主重写。",
+      "url": "https://latent.space/p/ainews-jensen-is-back-and-openai-shows-its-pretraining-curve-joined-by-microsoft/?ainews_item=103",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-gui-rl-neon-is-ridiculously-good-activity-999-the-l",
+      "section": "industry",
+      "track": "gui-rl",
+      "track_label": "GUI-RL",
+      "title_zh": "社区热议模型切换梗图：开发者转向 Neon",
+      "title_en": "Neon is ridiculously good (Activity: 999): The linked image is a non-technical meme ( image ) us",
+      "one_line_takeaway": "社交媒体非技术性玩梗帖子，调侃开发者放弃旧模型转向使用Neon，无实质信息。",
+      "url": "https://www.reddit.com/r/GeminiAI/comments/1y3hof1/neon_is_ridiculously_good/",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-there-was-a-technical-correction-dispute",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "社区围绕 MoE 技术归属与图表标注的争议",
+      "title_en": "There was a technical correction/dispute about MoE attribution: one commenter claimed MoE should",
+      "one_line_takeaway": "社区评论区就MoE架构归属Mistral或DeepSeek及图表署名展开争论。",
+      "url": "https://latent.space/p/ainews-gemini-4-neon-marks-gdm-s-full-return-as-a-frontier-lab/?ainews_item=86",
+      "published_date": "2026-11-25",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    },
+    {
+      "slug": "fold-vlm-infra-one-commenter-disputed-attribution-around",
+      "section": "industry",
+      "track": "vlm-infra",
+      "track_label": "VLM/RL底座",
+      "title_zh": "开源模型讨论中关于 MoE 贡献归属的评论争议",
+      "title_en": "One commenter disputed attribution around Mixture-of-Experts (MoE) in recent open-weight model d",
+      "one_line_takeaway": "与前条高度重复的社区评论争议，围绕开源权重模型中MoE普及归属问题。",
+      "url": "https://latent.space/p/ainews-jensen-is-back-and-openai-shows-its-pretraining-curve-joined-by-microsoft/?ainews_item=80",
+      "published_date": "2026-11-24",
+      "venue_or_source": "Latent Space [AINews]",
+      "arxiv_id": ""
+    }
+  ]
+}
